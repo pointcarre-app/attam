@@ -28,10 +28,10 @@
     <div class="navbar bg-base-100 shadow-lg mb-8">
       <!-- Logo (left) -->
       <div class="navbar-start">
-        {% if show_potaunoir_logo %}
+        {% if domain and domain.logo %}
           <div class="avatar">
             <div class="w-16 rounded-full">
-              <img src="/static/trames/potaunoir/logo-1.png" alt="Pot au Noir" />
+              <img src="{{ domain.logo }}" alt="{{ domain.name }}" />
             </div>
           </div>
         {% else %}
@@ -45,8 +45,8 @@
 
       <!-- Title (center) -->
       <div class="navbar-center">
-        {% if show_potaunoir_logo %}
-          <span class="text-xl font-bold">Pot au Noir</span>
+        {% if domain %}
+          <span class="text-xl font-bold">{{ domain.name }}</span>
         {% else %}
           <span class="text-xl font-bold">🎨 DaisyUI Showcase</span>
         {% endif %}

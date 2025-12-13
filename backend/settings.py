@@ -56,10 +56,6 @@ class Settings(BaseSettings):
     env: str = "LOCAL"
     local_domain: str | None = None  # Override domain for local dev (e.g., "potaunoir")
 
-    class Config:
-        env_file = ".env"
-        extra = "ignore"
-
 
 settings = Settings()
 

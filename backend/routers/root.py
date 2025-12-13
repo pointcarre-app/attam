@@ -77,15 +77,14 @@ async def health_check(request: Request):
 
 
 @router.get("/fonts")
-async def fonts(request: Request):
+async def fonts(
+    request: Request,
+    domain: DomainConfig | None = Depends(get_domain_config),
+):
     """Fonts endpoint"""
 
     dependencies = get_deps_from("local")
 
-    host = request.headers.get("host", "")
-
-    # Show pot-au-noir logo if LOCAL env or pot-au-noir domain
-    show_potaunoir_logo = ENV == "LOCAL" or "pot-au-noir.fr" in host or "pot-au-noir.com" in host
     context = {
         "request": request,
         "status": "ok",
@@ -93,7 +92,7 @@ async def fonts(request: Request):
         "host": request.headers.get("host"),
         "time_utc": datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S"),
         "deps": dependencies,
-        "show_potaunoir_logo": show_potaunoir_logo,
+        "domain": domain,
     }
 
     return templates.TemplateResponse("fonts.html", context)
