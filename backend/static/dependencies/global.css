@@ -1,0 +1,510 @@
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  -ms-overflow-style: none;
+  height: 100%;
+  /* background-color: var(--color-base-200); */
+
+}
+
+* {
+  scroll-margin-top: 50px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-color) var(--scrollbar-color-bg);
+  touch-action: manipulation;
+}
+
+
+/* #main {
+  padding-bottom: calc(64);
+} */
+
+#app-container {
+  /* min-height: 100dvh; */
+  /* Better than 100vh on iOS */
+  display: flex;
+  flex-direction: column;
+  /* Only apply LEFT and RIGHT safe areas here - top/bottom handled by children */
+  padding-left: var(--safe-area-left);
+  padding-right: var(--safe-area-right);
+  box-sizing: border-box;
+}
+
+/* Fixed overlay to hide content behind notch */
+#notch-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--safe-area-top);
+  background-color: var(--color-base-100);
+  /* Same as bg-base-100 */
+  z-index: 9999;
+}
+
+
+/* Top safe area - push content below notch */
+#safe-area-top {
+  padding-top: var(--safe-area-top);
+}
+
+
+/* Main scrollable area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 80px;
+  
+}
+
+
+
+.padding-safe {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+@media (min-width: 375px) {
+  .padding-safe {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+}
+
+@media (min-width: 430px) {
+  .padding-safe {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
+.padding-safe-min-outer {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+.padding-safe-min-inner {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+@media (min-width: 375px) {
+  .padding-safe-min-inner {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  .padding-safe-min-outer {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
+
+@media (min-width: 430px) {
+  .padding-safe-min-inner {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  .padding-safe-min-outer {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+
+
+.emoji {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+    "Android Emoji", "EmojiSymbols", "EmojiOne Mozilla", "Twemoji Mozilla",
+    "Segoe UI Symbol", "Noto Emoji", sans-serif;
+  /* font-style: normal; */
+  /* font-weight: normal; */
+  /* line-height: 1; */
+}
+
+
+
+
+
+
+/* .non-selectable {
+  -webkit-user-select: none;
+  user-select: none;
+} */
+
+/* @media (width <= 48rem) {
+    body {
+      background-color: var(--color-base-100) !important;
+    }
+  } */
+
+
+
+/**************** Scrollbar ****************/
+/* *::-webkit-scrollbar {
+    display: none;
+  } */
+
+/**************** Hide default number input spinners ****************/
+/* Chrome, Safari, Edge, Opera */
+/* input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  } */
+
+/* Firefox */
+/* input[type="number"] {
+    -moz-appearance: textfield;
+   */
+
+/* Override daisyUI / tailwind for modal */
+/* TODO : should me a more precise selector */
+/* @media (max-width: 640px) {
+    .modal-box {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+    }
+  } */
+
+.brc {
+  border-radius: var(--radius-box);
+}
+.brs {
+  border-radius: var(--radius-selector);
+}
+.brf {
+  border-radius: var(--radius-field);
+}
+
+/**************** Fonts (and font utils like size)  ****************/
+.font-body {
+  font-family: var(--font-body);
+}
+.font-heading {
+  font-family: var(--font-heading);
+}
+.font-sans {
+  font-family: var(--font-sans);
+}
+.font-logo {
+  font-family: var(--font-logo);
+  font-weight: 400;
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+.font-accent {
+  font-family: var(--font-accent);
+}
+.font-handwritten {
+  font-family: var(--font-handwritten);
+}
+
+.font-strong {
+  font-family: var(--font-strong);
+}
+
+.text-2xs {
+  font-size: 0.6rem !important;
+}
+
+/**************** HTML BASE TAGS ****************/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+
+/**************** HTML BASE TAGS ****************/
+
+/* Overrides tailwind / daisyUI */
+
+/*   
+  
+  .badge {
+      gap: 0 !important
+  }
+  
+  
+  .card > figure {
+    margin: 0;
+    padding: 0;
+    border-radius: inherit;
+  }
+  .card > figure > svg {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border-radius: inherit;
+  }
+  
+   */
+
+/************* Extends Tailwind / DaisyUI *************/
+
+/* Tricks Correct DaisyUI */
+
+/* .badge-no-gap-inside {
+    gap: 0 !important;
+  }
+   */
+
+/**************** SVG colors (& Logo Zélie) ****************/
+
+/********* Transprent *********/
+
+.stroke-transparent {
+  stroke: transparent !important;
+}
+
+.fill-transparent {
+  fill: transparent !important;
+}
+
+/********* Primary *********/
+
+.stroke-primary {
+  stroke: var(--color-primary) !important;
+}
+
+.fill-primary {
+  fill: var(--color-primary) !important;
+}
+
+.stroke-primary-soft {
+  stroke: var(--color-primary-soft) !important;
+}
+
+.fill-primary-soft {
+  fill: var(--color-primary-soft) !important;
+}
+
+/********* Primary content *********/
+.stroke-primary-content {
+  stroke: var(--color-primary-content) !important;
+}
+
+.fill-primary-content {
+  fill: var(--color-primary-content) !important;
+}
+
+/********* Secondary *********/
+
+.stroke-secondary {
+  stroke: var(--color-secondary) !important;
+}
+
+.fill-secondary {
+  fill: var(--color-secondary) !important;
+}
+
+.stroke-secondary-soft {
+  stroke: var(--color-secondary-soft) !important;
+}
+
+.fill-secondary-soft {
+  fill: var(--color-secondary-soft) !important;
+}
+
+/********* Secondary content *********/
+
+.stroke-secondary-content {
+  stroke: var(--color-secondary-content) !important;
+}
+
+.fill-secondary-content {
+  fill: var(--color-secondary-content) !important;
+}
+
+/* Legacy error */
+/********* Primary ghost *********/
+.stroke-primary-ghost {
+  stroke: var(--color-primary-ghost) !important;
+}
+
+.fill-primary-ghost {
+  fill: var(--color-primary-ghost) !important;
+}
+
+/********* Secondary ghost *********/
+.stroke-secondary-ghost {
+  stroke: var(--color-secondary-ghost) !important;
+}
+.fill-secondary-ghost {
+  fill: var(--color-secondary-ghost) !important;
+}
+
+/********* Accent *********/
+
+.stroke-accent {
+  stroke: var(--color-accent) !important;
+}
+
+.fill-accent {
+  fill: var(--color-accent) !important;
+}
+
+.stroke-accent-soft {
+  stroke: var(--color-accent-soft) !important;
+}
+
+.fill-accent-soft {
+  fill: var(--color-accent-soft) !important;
+}
+
+/********* Accent content *********/
+
+.stroke-accent-content {
+  stroke: var(--color-accent-content) !important;
+}
+
+.fill-accent-content {
+  fill: var(--color-accent-content) !important;
+}
+
+/********* Base 100 *********/
+
+.stroke-base-100 {
+  stroke: var(--color-base-100) !important;
+}
+
+.fill-base-100 {
+  fill: var(--color-base-100) !important;
+}
+
+/********* Base 200 *********/
+
+.stroke-base-200 {
+  stroke: var(--color-base-200) !important;
+}
+
+.fill-base-200 {
+  fill: var(--color-base-200) !important;
+}
+
+/********* Base 300 *********/
+
+.stroke-base-300 {
+  stroke: var(--color-base-300) !important;
+}
+
+.fill-base-300 {
+  fill: var(--color-base-300) !important;
+}
+
+/********* Base content *********/
+
+.stroke-base-content {
+  stroke: var(--color-base-content) !important;
+}
+
+.fill-base-content {
+  fill: var(--color-base-content) !important;
+}
+
+/* ********* Info *********/
+.stroke-info {
+  stroke: var(--color-info) !important;
+}
+.fill-info {
+  fill: var(--color-info) !important;
+}
+
+.stroke-info-soft {
+  stroke: var(--color-info-soft) !important;
+}
+.fill-info-soft {
+  fill: var(--color-info-soft) !important;
+}
+
+/********* Success *********/
+.stroke-success {
+  stroke: var(--color-success) !important;
+}
+.fill-success {
+  fill: var(--color-success) !important;
+}
+
+.stroke-success-soft {
+  stroke: var(--color-success-soft) !important;
+}
+.fill-success-soft {
+  fill: var(--color-success-soft) !important;
+}
+
+/* ********* Warning *********/
+.stroke-warning {
+  stroke: var(--color-warning) !important;
+}
+.fill-warning {
+  fill: var(--color-warning) !important;
+}
+
+.stroke-warning-soft {
+  stroke: var(--color-warning-soft) !important;
+}
+.fill-warning-soft {
+  fill: var(--color-warning-soft) !important;
+}
+
+/* ********* Error *********/
+.stroke-error {
+  stroke: var(--color-error) !important;
+}
+.fill-error {
+  fill: var(--color-error) !important;
+}
+
+.stroke-error-soft {
+  stroke: var(--color-error-soft) !important;
+}
+.fill-error-soft {
+  fill: var(--color-error-soft) !important;
+}
+
+/********* Backgrounds *********/
+/* TODO : no ... shouldbe fill so already exists or use above syntaxe for X50 */
+
+.bg-base-100 {
+  fill: var(--color-base-100) !important;
+}
+.bg-base-200 {
+  fill: var(--color-base-200) !important;
+}
+.bg-base-300 {
+  fill: var(--color-base-300) !important;
+}
+
+.bg-base-150 {
+  fill: color-mix(
+    in srgb,
+    var(--color-base-100) 50%,
+    var(--color-base-200) 50%
+  );
+}
+.bg-base-250 {
+  fill: color-mix(
+    in srgb,
+    var(--color-base-200) 50%,
+    var(--color-base-300) 50%
+  );
+}
