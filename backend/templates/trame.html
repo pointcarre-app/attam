@@ -112,6 +112,11 @@
           var renderedContent = document.getElementById('rendered-content');
           renderedContent.innerHTML = data.rendered_html;
           
+          // Process attam:path images in the new content
+          if (typeof processAttamImages === 'function') {
+            processAttamImages();
+          }
+          
           showToast('Processed ' + data.piece_count + ' pieces successfully!', 'success');
         })
         .catch(function(error) {

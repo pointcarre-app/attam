@@ -10,4 +10,31 @@
   {% include piece.template %}
 {% endfor %}
 
+<script>
+    function processAttamImages() {
+        var paragraphs = document.querySelectorAll('[data-attam-paragraph]');
+        var imageExtensions = /\.(jpg|jpeg|png|gif|webp)$/i;
+        var attamPattern = /^attam:(.+)$/;
 
+        paragraphs.forEach(function(p) {
+            var text = p.textContent.trim();
+            var match = text.match(attamPattern);
+
+            if (match && imageExtensions.test(match[1])) {
+                var imagePath = match[1];
+                var imageUrl = '/static/' + imagePath;
+
+                // Create DaisyUI styled figure
+                var figure = document.createElement('figure');
+                figure.className = 'my-4 flex justify-center';
+                figure.innerHTML = '<img src="' + imageUrl + '" ' + 'alt="' + imagePath + '" ' + 'class="max-w-full h-auto rounded-lg shadow-xl" ' + 'onerror="this.parentElement.innerHTML=\'<div class=\\\'alert alert-error\\\'>Image not found: ' + imagePath + '</div>\'" />';
+
+                // Replace paragraph with figure
+                p.replaceWith(figure);
+            }
+        });
+    }
+
+    // Run on initial page load
+    processAttamImages();
+</script>

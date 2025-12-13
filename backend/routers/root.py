@@ -26,15 +26,15 @@ async def root(request: Request):
         <p>Host: {host}</p>
         <h2>znd</h2>
         <ul>
-            <li style="padding-bottom:8px;"><a href="/trame/path/trames/alidade/batiment_guepard.jpg"> 🐆Trame Guépard </a></li>
-            <li style="padding-bottom:8px;"><a href="trame/path/trames/alidade/nav_et_trigo.md"> 📝Trame Editor </a></li>
+            <li style="padding-bottom:8px;"><a href="/trame/path/trames/alidade/batiment_guepard.jpg"> 🐆 Trame Guépard </a></li>
+            <li style="padding-bottom:8px;"><a href="trame/path/trames/alidade/nav_et_trigo.md"> 📝 Trame Editor </a></li>
         </ul>
 
         <h2>sel</h2>
         <ul>
             <li style="padding-bottom:8px;"><a href="/template">🎨 Template</a></li>
-            <li style="padding-bottom:8px;"><a href="/health"> 🛡️Health </a></li>
-            <li style="padding-bottom:8px;"><a href="/trame/debug"> ⚙️Trame Debug </a></li>
+            <li style="padding-bottom:8px;"><a href="/health"> 🛡️ Health </a></li>
+            <li style="padding-bottom:8px;"><a href="/trame/debug"> ⚙️ Trame Debug </a></li>
         </ul>
 
 

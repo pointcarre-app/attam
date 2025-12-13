@@ -10,6 +10,9 @@ trignale example vent bateau positions + vecteurs (courants ) etc etc jusque tri
 
 
 
+attam:trames/alidade/batiment_guepard.jpg
+
+
 ## Suivre un cap
 
 
