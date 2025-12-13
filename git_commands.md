@@ -13,5 +13,8 @@ git push origin v<version>
 ```
 
 
+git tag v0.0.4
+git push origin v0.0.4
+
 <!-- git tag v0.0.1
 git push origin v0.0.1 -->
