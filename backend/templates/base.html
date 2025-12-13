@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="anchor">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}Attam{% endblock %}
+    </title>
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="{{ deps.google_fonts }}" />
+    <link rel="stylesheet" href="{{ deps.open_dyslexic_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_themes_css }}" />
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" href="{{ deps.app_root_css }}" />
+    <link rel="stylesheet" href="{{ deps.app_global_css }}" />
+
+    <!-- JavaScript Dependencies -->
+    <script src="{{ deps.tailwind_js }}"></script>
+
+    {% block head_extra %}{% endblock %}
+  </head>
+
+  <body class="{% block body_class %}bg-base-200 min-h-screen{% endblock %}">
+    {% block body %}{% endblock %}
+  </body>
+</html>

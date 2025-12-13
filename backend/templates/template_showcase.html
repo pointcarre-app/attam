@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}DaisyUI Showcase{% endblock %}
+
+{% block body %}
+  <!-- Navbar -->
+  <div class="navbar bg-base-100 shadow-lg">
+    <!-- Logo (left) -->
+    <div class="navbar-start">
+      {% if show_potaunoir_logo %}
+        <div class="avatar">
+          <div class="w-16 rounded-full">
+            <img src="/static/trames/potaunoir/logo-1.png" alt="Pot au Noir" />
+          </div>
+        </div>
+      {% else %}
+        <a class="btn btn-ghost btn-circle avatar">
+          <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+            <span class="text-lg">U</span>
+          </div>
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- Title (center) -->
+    <div class="navbar-center">
+      {% if show_potaunoir_logo %}
+        <span class="text-xl font-bold">Pot au Noir</span>
+      {% else %}
+        <span class="text-xl font-bold">🎨 DaisyUI Showcase</span>
+      {% endif %}
+    </div>
+
+    <!-- Buttons (right) -->
+    <div class="navbar-end gap-2">
+      <div class="badge badge-primary">v5</div>
+      <button class="btn btn-ghost btn-sm">Docs</button>
+      <button class="btn btn-primary btn-sm">Action</button>
+    </div>
+  </div>
+
+  <div class="container mx-auto p-6 max-w-6xl">
+    <!-- Hero Section -->
+    <div class="hero bg-base-100 rounded-box shadow-xl mb-8">
+      <div class="hero-content text-center py-12">
+        <div class="max-w-md">
+          <h1 class="text-5xl font-bold">DaisyUI</h1>
+          <p class="py-6">
+            The most popular component library for Tailwind CSS. Beautiful, accessible, and easy to use.
+          </p>
+          <button class="btn btn-primary">Get Started</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons Section -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+      <div class="card-body">
+        <h2 class="card-title text-2xl mb-4">Buttons</h2>
+        <div class="flex flex-wrap gap-3">
+          <button class="btn">Default</button>
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-accent">Accent</button>
+          <button class="btn btn-info">Info</button>
+          <button class="btn btn-success">Success</button>
+          <button class="btn btn-warning">Warning</button>
+          <button class="btn btn-error">Error</button>
+          <button class="btn btn-outline btn-primary">Outline</button>
+          <button class="btn btn-ghost">Ghost</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <h2 class="text-2xl font-bold mb-4">Cards</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="card bg-base-100 shadow-xl">
+        <figure class="px-10 pt-10">
+          <div class="bg-primary/20 rounded-xl w-full h-32 flex items-center justify-center">
+            <span class="text-4xl">🚀</span>
+          </div>
+        </figure>
+        <div class="card-body items-center text-center">
+          <h2 class="card-title">Fast & Modern</h2>
+          <p>Built on Tailwind CSS for optimal performance.</p>
+          <div class="card-actions">
+            <button class="btn btn-primary btn-sm">Learn More</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-base-100 shadow-xl">
+        <figure class="px-10 pt-10">
+          <div class="bg-secondary/20 rounded-xl w-full h-32 flex items-center justify-center">
+            <span class="text-4xl">🎨</span>
+          </div>
+        </figure>
+        <div class="card-body items-center text-center">
+          <h2 class="card-title">Themeable</h2>
+          <p>29+ themes included, or create your own.</p>
+          <div class="card-actions">
+            <button class="btn btn-secondary btn-sm">Explore</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-base-100 shadow-xl">
+        <figure class="px-10 pt-10">
+          <div class="bg-accent/20 rounded-xl w-full h-32 flex items-center justify-center">
+            <span class="text-4xl">♿</span>
+          </div>
+        </figure>
+        <div class="card-body items-center text-center">
+          <h2 class="card-title">Accessible</h2>
+          <p>Follows WAI-ARIA accessibility guidelines.</p>
+          <div class="card-actions">
+            <button class="btn btn-accent btn-sm">Read Docs</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="card bg-base-100 shadow-xl mb-6">
+      <div class="card-body">
+        <h2 class="card-title text-2xl mb-4">Alerts</h2>
+        <div class="space-y-3">
+          <div role="alert" class="alert alert-info">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 class="stroke-current shrink-0 w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+              </path>
+            </svg>
+            <span>New update available. Click to update now!</span>
+          </div>
+          <div role="alert" class="alert alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="stroke-current shrink-0 h-6 w-6"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Your purchase has been confirmed!</span>
+          </div>
+          <div role="alert" class="alert alert-warning">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="stroke-current shrink-0 h-6 w-6"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span>Warning: Invalid email address!</span>
+          </div>
+          <div role="alert" class="alert alert-error">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="stroke-current shrink-0 h-6 w-6"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Error! Task failed successfully.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Elements & Badges -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Form Elements -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-2xl mb-4">Form Elements</h2>
+          <div class="space-y-4">
+            <input type="text" placeholder="Text input" class="input input-bordered w-full" />
+            <select class="select select-bordered w-full">
+              <option disabled selected>Pick a framework</option>
+              <option>FastAPI</option>
+              <option>Django</option>
+              <option>Flask</option>
+            </select>
+            <textarea class="textarea textarea-bordered w-full" placeholder="Your message..."></textarea>
+            <div class="flex items-center gap-4">
+              <input type="checkbox" checked class="checkbox checkbox-primary" />
+              <input type="checkbox" class="toggle toggle-secondary" checked />
+              <input type="range" min="0" max="100" value="40" class="range range-accent range-sm w-32" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges & Stats -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-2xl mb-4">Badges</h2>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <div class="badge">default</div>
+            <div class="badge badge-primary">primary</div>
+            <div class="badge badge-secondary">secondary</div>
+            <div class="badge badge-accent">accent</div>
+            <div class="badge badge-ghost">ghost</div>
+            <div class="badge badge-outline">outline</div>
+            <div class="badge badge-info">info</div>
+            <div class="badge badge-success">success</div>
+            <div class="badge badge-warning">warning</div>
+            <div class="badge badge-error">error</div>
+          </div>
+
+          <h3 class="font-semibold mb-3">Progress & Loading</h3>
+          <div class="space-y-3">
+            <progress class="progress progress-primary w-full" value="70" max="100"></progress>
+            <progress class="progress progress-secondary w-full" value="40" max="100"></progress>
+            <div class="flex gap-4">
+              <span class="loading loading-spinner loading-md"></span>
+              <span class="loading loading-dots loading-md"></span>
+              <span class="loading loading-ring loading-md"></span>
+              <span class="loading loading-ball loading-md"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats shadow w-full mb-8">
+      <div class="stat">
+        <div class="stat-figure text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               fill="none"
+               viewBox="0 0 24 24"
+               class="inline-block w-8 h-8 stroke-current">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+            </path>
+          </svg>
+        </div>
+        <div class="stat-title">Total Likes</div>
+        <div class="stat-value text-primary">25.6K</div>
+        <div class="stat-desc">21% more than last month</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-figure text-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               fill="none"
+               viewBox="0 0 24 24"
+               class="inline-block w-8 h-8 stroke-current">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+            </path>
+          </svg>
+        </div>
+        <div class="stat-title">Page Views</div>
+        <div class="stat-value text-secondary">2.6M</div>
+        <div class="stat-desc">14% more than last month</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-figure text-accent">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               fill="none"
+               viewBox="0 0 24 24"
+               class="inline-block w-8 h-8 stroke-current">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
+            </path>
+          </svg>
+        </div>
+        <div class="stat-title">Tasks Done</div>
+        <div class="stat-value">86%</div>
+        <div class="stat-desc text-success">↗︎ 12 tasks remaining</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer footer-center p-4 bg-base-100 text-base-content rounded-box">
+      <aside>
+        <p>Made with ❤️ using DaisyUI + Tailwind CSS</p>
+      </aside>
+    </footer>
+  </div>
+{% endblock %}
