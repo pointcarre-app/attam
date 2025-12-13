@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="anchor">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Viewer: {{ image_name }}</title>
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="{{ deps.google_fonts }}" />
+    <link rel="stylesheet" href="{{ deps.open_dyslexic_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_themes_css }}" />
+
+    <!-- JavaScript Dependencies -->
+    <script src="{{ deps.tailwind_js }}"></script>
+
+  </head>
+
+  <body class="bg-base-200 min-h-screen">
+    <div class="container mx-auto max-w-screen-2xl px-4 py-6">
+      <div class="bg-base-100 rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
+
+        <!-- Header -->
+        <div class="mb-6">
+          <h1 class="text-2xl sm:text-3xl font-bold text-base-content mb-2">{{ image_name }}</h1>
+          <div class="text-sm text-base-content/70">
+            <span class="badge badge-primary">{{ file_extension }}</span>
+            <span class="ml-2">{{ image_path }}</span>
+          </div>
+        </div>
+
+        <!-- Image Display -->
+        <div class="flex justify-center items-center bg-base-300 rounded-lg p-4">
+          <img src="{{ image_url }}"
+               alt="{{ image_name }}"
+               class="max-w-full h-auto rounded-lg shadow-xl"
+               style="max-height: calc(100vh - 300px)" />
+        </div>
+
+        <!-- Image Info -->
+        <div class="mt-6 stats stats-vertical lg:stats-horizontal shadow w-full">
+          <div class="stat">
+            <div class="stat-title">File Path</div>
+            <div class="stat-value text-lg">{{ image_path }}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-title">Format</div>
+            <div class="stat-value text-lg">{{ file_extension }}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>
+

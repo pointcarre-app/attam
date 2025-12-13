@@ -6,17 +6,18 @@ import shutil
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Lifespan event to copy dependencies folder to static folder"""
-    # Startup: Copy dependencies folder to backend/static
+    """Lifespan event to copy dependencies and trames folders to static folder"""
+    # Startup: Copy folders to backend/static
     backend_dir = os.path.dirname(__file__)
-    dependencies_src = os.path.join(os.path.dirname(backend_dir), "dependencies")
+    project_root = os.path.dirname(backend_dir)
     static_dir = os.path.join(backend_dir, "static")
-    dependencies_dst = os.path.join(static_dir, "dependencies")
 
     # Create static directory if it doesn't exist
     os.makedirs(static_dir, exist_ok=True)
 
-    # Copy dependencies folder if it exists
+    # Copy dependencies folder
+    dependencies_src = os.path.join(project_root, "dependencies")
+    dependencies_dst = os.path.join(static_dir, "dependencies")
     if os.path.exists(dependencies_src):
         if os.path.exists(dependencies_dst):
             shutil.rmtree(dependencies_dst)
@@ -24,6 +25,17 @@ async def lifespan(app: FastAPI):
         print(f"✓ Copied dependencies from {dependencies_src} to {dependencies_dst}")
     else:
         print(f"⚠ Dependencies folder not found at {dependencies_src}")
+
+    # Copy trames folder
+    trames_src = os.path.join(project_root, "trames")
+    trames_dst = os.path.join(static_dir, "trames")
+    if os.path.exists(trames_src):
+        if os.path.exists(trames_dst):
+            shutil.rmtree(trames_dst)
+        shutil.copytree(trames_src, trames_dst)
+        print(f"✓ Copied trames from {trames_src} to {trames_dst}")
+    else:
+        print(f"⚠ Trames folder not found at {trames_src}")
 
     yield
 

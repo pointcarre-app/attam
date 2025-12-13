@@ -1,6 +1,30 @@
 # CHANGELOG
 
 
+## v0.0.3
+
+- **Multi-Format File Support**
+    - Extension-based routing for different file types
+    - Support for `.md`, `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`
+    - Graceful handling of unsupported file types
+
+- **Image Viewer**
+    - New `image_viewer.html` template for image display
+    - Centered, responsive image viewing with max-height constraints
+    - Image metadata display (filename, path, format)
+    - DaisyUI stats component for file information
+
+- **Static File Management**
+    - Updated lifespan to copy `trames/` folder to `backend/static/`
+    - Automatic synchronization of trames on server startup
+    - Images and files served through FastAPI static mount
+
+- **Routing Improvements**
+    - File extension detection via `Path.suffix`
+    - Clean separation of markdown and image handling logic
+    - Extensible architecture for adding new file types
+
+
 ## v0.0.2
 
 - **Architecture Refactor**

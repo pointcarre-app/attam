@@ -34,20 +34,43 @@ piece_model_fields = list(Piece.model_fields.keys())
 @router.get("/path/{trame_path:path}")
 async def get_trame(request: Request, trame_path: Path):
     dependencies = get_deps_from("local")
-    trame = read_trame(trame_path)
-    prepared_pieces = prepare_trame_for_rendering(trame)
 
-    # Read the raw markdown content from the file
-    trame_html_content = trame_path.read_text(encoding="utf-8")
+    # Detect file extension and route accordingly
+    file_extension = trame_path.suffix.lower()
 
-    context = {
-        "request": request,
-        "trame": trame,
-        "prepared_pieces": prepared_pieces,
-        "trame_html_content": trame_html_content,
-        "deps": dependencies,
-    }
-    return templates.TemplateResponse("trame.html", context)
+    if file_extension == ".md":
+        # Markdown processing
+        trame = read_trame(trame_path)
+        prepared_pieces = prepare_trame_for_rendering(trame)
+        trame_html_content = trame_path.read_text(encoding="utf-8")
+
+        context = {
+            "request": request,
+            "trame": trame,
+            "prepared_pieces": prepared_pieces,
+            "trame_html_content": trame_html_content,
+            "deps": dependencies,
+        }
+        return templates.TemplateResponse("trame.html", context)
+
+    elif file_extension in [".jpg", ".jpeg", ".png", ".gif", ".webp"]:
+        # Image viewer
+        # Serve from static folder (trames are copied there on startup)
+        image_url = f"/static/{trame_path}"
+
+        context = {
+            "request": request,
+            "image_path": str(trame_path),
+            "image_name": trame_path.name,
+            "image_url": image_url,
+            "file_extension": file_extension,
+            "deps": dependencies,
+        }
+        return templates.TemplateResponse("image_viewer.html", context)
+
+    else:
+        # Unsupported file type
+        return {"error": f"Unsupported file type: {file_extension}", "path": str(trame_path)}
 
 
 # TODO : ensure logic
