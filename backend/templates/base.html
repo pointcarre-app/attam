@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="anchor">
+<html lang="en" data-theme="{{ domain.theme }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +8,11 @@
     </title>
 
     <!-- CSS Dependencies -->
+
+
+    {# TODO : add if from_cdn #}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="{{ deps.google_fonts }}" />
     <link rel="stylesheet" href="{{ deps.open_dyslexic_css }}" />
     <link rel="stylesheet" href="{{ deps.daisyui_css }}" />
@@ -20,17 +25,20 @@
     <!-- JavaScript Dependencies -->
     <script src="{{ deps.tailwind_js }}"></script>
 
+
+    {% include "specific_dependencies_per_domain.html" %}
+
     {% block head_extra %}{% endblock %}
   </head>
 
   <body class="bg-base-200 min-h-screen">
     <!-- Navbar -->
-    <div class="navbar bg-base-100 shadow-lg mb-8">
+    <div class="navbar bg-base-100 mb-8">
       <!-- Logo (left) -->
       <div class="navbar-start">
         {% if domain and domain.logo %}
           <div class="avatar">
-            <div class="w-16 rounded-full">
+            <div class="w-16 md:w-24 rounded-full">
               <img src="{{ domain.logo }}" alt="{{ domain.name }}" />
             </div>
           </div>

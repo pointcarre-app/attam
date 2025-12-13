@@ -17,7 +17,9 @@ def get_deps_from(from_: Union[Literal["local"], Literal["cdn"]]):
         # Relative URLs for Capacitor
         return {
             # CSS
+            # TODO:sel So actually need internet for google fonts
             "google_fonts": "/static/dependencies/google_fonts.css",
+            "google_fonts_pan": "/static/dependencies/google_fonts_pan.css",
             "open_dyslexic_css": "/static/dependencies/open_dyslexic_regular.css",
             "tailwind_js": "/static/dependencies/tailwindcssbrowser@4.js",
             "daisyui_css": "/static/dependencies/daisyui@5.css",
@@ -38,6 +40,7 @@ def get_deps_from(from_: Union[Literal["local"], Literal["cdn"]]):
         return {
             # CSS
             "google_fonts": "https://fonts.googleapis.com/css2?family=Lexend:wght@300..900&family=Outfit:wght@300..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Dancing+Script:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:ital,wght@0,400..800;1,400..800&display=swap",
+            "google_fonts_pan": "https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Crimson+Text:wght@400;600&family=Inter:wght@400;600;700&family=Lora:wght@400;600&family=Rajdhani:wght@400;600;700&family=Merriweather:wght@400;700&family=Work+Sans:wght@400;600;700&family=Source+Serif+4:wght@400;600&family=Rubik:wght@400;600;700&family=Spectral:wght@400;600&display=swap",
             "open_dyslexic_css": "https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic-regular.min.css",
             "tailwind_js": "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4",
             "daisyui_css": "https://cdn.jsdelivr.net/npm/daisyui@5",

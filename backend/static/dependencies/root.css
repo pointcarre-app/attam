@@ -9,6 +9,7 @@
   
   --inner-width: 640px;
 
+  /* === Base fonts (google_fonts.css) === */
   --font-lexend: "Lexend", sans-serif;
   --font-outfit: "Outfit", sans-serif;
   --font-eb-garamond: "EB Garamond", serif;
@@ -16,15 +17,19 @@
   --font-lora: "Lora", serif;
   --font-jetbrains: "JetBrains Mono", monospace;
 
-
-  /* --font-inter: "Inter", sans-serif;
-  --font-spectral: "Spectral", serif;
-  --font-playfair: "Playfair Display", serif;
+  /* === Pan fonts (google_fonts_pan.css) === */
+  --font-barlow: "Barlow", sans-serif;
+  --font-crimson-text: "Crimson Text", serif;
+  --font-inter: "Inter", sans-serif;
+  --font-merriweather: "Merriweather", serif;
+  --font-rajdhani: "Rajdhani", sans-serif;
+  --font-rubik: "Rubik", sans-serif;
   --font-source-serif: "Source Serif 4", serif;
-  --font-architects: "Architects Daughter", cursive; */
-  /* New ones */
-  --font-opendyslexic-regular: "OpenDyslexicRegular", sans-serif;
+  --font-spectral: "Spectral", serif;
+  --font-work-sans: "Work Sans", sans-serif;
 
+  /* === Other fonts === */
+  --font-opendyslexic-regular: "OpenDyslexicRegular", sans-serif;
   --font-dm-sans: "DM Sans", sans-serif;
   --font-manrope: "Manrope", sans-serif;
   --font-red-hat-display: "Red Hat Display", sans-serif;
@@ -922,6 +927,57 @@
   --radius-box: 0.5rem; /* Moderate rounding for cards */
   --radius-field: 0.3rem; /* Slightly rounded inputs */
   --radius-selector: 0.3rem; /* Rounded buttons */
+  --size-field: 0.25rem; /* Field border width */
+  --size-selector: 0.25rem; /* Selector border width */
+  --border: 1px; /* Standard border */
+  --depth: 2; /* Shadow depth */
+  --noise: 0; /* No texture noise */
+}
+
+/**************** Custom DaisyUI Theme - Pan Light (DaisyUI v5 format) ****************/
+
+[data-theme="pan-light"] {
+  color-scheme: light;
+
+  /* ===== BASE COLORS (BACKGROUNDS) ===== */
+  --color-base-100: oklch(99% 0.005 145); /* Pretty light with subtle green warmth */
+  --color-base-200: oklch(96% 0.008 145); /* Not too heavy, gentle layering */
+  --color-base-300: oklch(91% 0.012 145); /* A bit heavier for borders */
+  --color-base-content: oklch(18% 0.02 220); /* Deep dark text for readability */
+
+  /* ===== PRIMARY COLORS (STRONG GREEN) ===== */
+  --color-primary: oklch(42% 0.16 145); /* Strong brilliant green, high contrast on white */
+  --color-primary-content: oklch(98% 0.01 145); /* Near-white text on green */
+
+  /* ===== SECONDARY COLORS (STRONG BLUE) ===== */
+  --color-secondary: oklch(40% 0.18 240); /* Strong brilliant blue, high contrast */
+  --color-secondary-content: oklch(98% 0.01 240); /* Near-white text on blue */
+
+  /* ===== ACCENT COLORS (WARM CORAL) ===== */
+  --color-accent: oklch(65% 0.18 25); /* Warm coral accent, complementary */
+  --color-accent-content: oklch(98% 0.01 25); /* Near-white text on coral */
+
+  /* ===== NEUTRAL COLORS ===== */
+  --color-neutral: oklch(25% 0.01 220); /* Dark gray for neutral elements */
+  --color-neutral-content: oklch(96% 0.01 220); /* Light text on neutral */
+
+  /* ===== STATE COLORS (SEMANTIC FEEDBACK) ===== */
+  --color-info: oklch(45% 0.2 240); /* Deep info blue */
+  --color-info-content: oklch(98% 0.01 240); /* Near-white text */
+
+  --color-success: oklch(45% 0.18 145); /* Deep success green */
+  --color-success-content: oklch(98% 0.01 145); /* Near-white text */
+
+  --color-warning: oklch(60% 0.2 70); /* Yellow-amber warning */
+  --color-warning-content: oklch(18% 0.02 70); /* Dark text for readability */
+
+  --color-error: oklch(50% 0.22 20); /* Strong error red */
+  --color-error-content: oklch(98% 0.01 20); /* Near-white text */
+
+  /* ===== COMPONENT STYLING VARIABLES ===== */
+  --radius-box: 0.5rem; /* Moderate rounding for cards */
+  --radius-field: 0.25rem; /* Slightly rounded inputs */
+  --radius-selector: 0.25rem; /* Rounded buttons */
   --size-field: 0.25rem; /* Field border width */
   --size-selector: 0.25rem; /* Selector border width */
   --border: 1px; /* Standard border */

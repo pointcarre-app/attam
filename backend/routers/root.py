@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from datetime import datetime, UTC
 
-from backend.settings import templates, DomainConfig
+from backend.settings import templates
 from backend.dependencies import get_deps_from
-from backend.domain_config import get_domain_config
 
 router = APIRouter()
 
@@ -46,11 +45,7 @@ async def routes(request: Request):
 
 
 @router.get("/template")
-async def template_view(
-    request: Request,
-    deps: str = "local",
-    domain: DomainConfig | None = Depends(get_domain_config),
-):
+async def template_view(request: Request, deps: str = "local"):
     """View that renders the DaisyUI showcase template
 
     Args:
@@ -61,7 +56,6 @@ async def template_view(
     context = {
         "request": request,
         "deps": dependencies,
-        "domain": domain,
     }
     return templates.TemplateResponse("template_showcase.html", context)
 
@@ -78,10 +72,7 @@ async def health_check(request: Request):
 
 
 @router.get("/fonts")
-async def fonts(
-    request: Request,
-    domain: DomainConfig | None = Depends(get_domain_config),
-):
+async def fonts(request: Request):
     """Fonts endpoint"""
 
     dependencies = get_deps_from("local")
@@ -93,7 +84,6 @@ async def fonts(
         "host": request.headers.get("host"),
         "time_utc": datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S"),
         "deps": dependencies,
-        "domain": domain,
     }
 
     return templates.TemplateResponse("fonts.html", context)

@@ -64,6 +64,21 @@
           name: 'Nordic Minimalism',
           title: 'Rubik',
           content: 'Spectral'
+      }, {
+          name: 'Nordic Minimalism (Tighter -0.02em (1rem=16px en général pour le web))',
+          title: 'Rubik',
+          content: 'Spectral',
+          contentStyle: 'letter-spacing: -0.02rem;'
+      }, {
+          name: 'Nordic Minimalism (Tighter -0.03em (1rem=16px en général pour le web))',
+          title: 'Rubik',
+          content: 'Spectral',
+          contentStyle: 'letter-spacing: -0.03rem;'
+      }, {
+          name: 'Nordic Minimalism (Tighter -0.04em (2))',
+          title: 'Rubik',
+          content: 'Spectral',
+          contentStyle: 'letter-spacing: -0.04rem;'
       }];
 
       const sampleText = {
@@ -81,8 +96,8 @@
     <h3>Option: ${pair.name}</h3>
     <h1 style="font-family: '${pair.title}', sans-serif;">${sampleText.h1}</h1>
     <h2 style="font-family: '${pair.title}', sans-serif;">${sampleText.h2}</h2>
-    <p style="font-family: '${pair.content}', serif;">${sampleText.p}</p>
-    <p style="font-family: '${pair.content}', serif; margin-top: 15px; font-size: 14px; color: #95a5a6;">
+    <p style="font-family: '${pair.content}', serif; ${pair.contentStyle || ''}">${sampleText.p}</p>
+    <p style="font-family: '${pair.content}', serif; margin-top: 15px; font-size: 14px; color: #95a5a6; ${pair.contentStyle || ''}">
       Titles: ${pair.title} | Content: ${pair.content}
     </p>
   `;
