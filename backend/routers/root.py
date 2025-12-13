@@ -28,6 +28,7 @@ async def root(request: Request):
         <ul>
             <li style="padding-bottom:8px;"><a href="/trame/path/trames/alidade/batiment_guepard.jpg"> 🐆 Trame Guépard </a></li>
             <li style="padding-bottom:8px;"><a href="trame/path/trames/alidade/nav_et_trigo.md"> 📝 Trame Editor </a></li>
+            <li style="padding-bottom:8px;"><a href="/fonts"> 🎨 Fonts </a></li>
         </ul>
 
         <h2>sel</h2>
