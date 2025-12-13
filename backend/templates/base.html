@@ -23,7 +23,43 @@
     {% block head_extra %}{% endblock %}
   </head>
 
-  <body class="{% block body_class %}bg-base-200 min-h-screen{% endblock %}">
-    {% block body %}{% endblock %}
+  <body class="bg-base-200 min-h-screen">
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-lg mb-8">
+      <!-- Logo (left) -->
+      <div class="navbar-start">
+        {% if show_potaunoir_logo %}
+          <div class="avatar">
+            <div class="w-16 rounded-full">
+              <img src="/static/trames/potaunoir/logo-1.png" alt="Pot au Noir" />
+            </div>
+          </div>
+        {% else %}
+          <a class="btn btn-ghost btn-circle avatar">
+            <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+              <span class="text-lg">U</span>
+            </div>
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Title (center) -->
+      <div class="navbar-center">
+        {% if show_potaunoir_logo %}
+          <span class="text-xl font-bold">Pot au Noir</span>
+        {% else %}
+          <span class="text-xl font-bold">🎨 DaisyUI Showcase</span>
+        {% endif %}
+      </div>
+
+      <!-- Buttons (right) -->
+      <div class="navbar-end gap-2">
+        <div class="badge badge-primary">v5</div>
+        <button class="btn btn-ghost btn-sm">Docs</button>
+        <button class="btn btn-primary btn-sm">Action</button>
+      </div>
+    </div>
+
+    {% block content %}{% endblock %}
   </body>
 </html>

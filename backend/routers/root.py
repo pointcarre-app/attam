@@ -80,6 +80,11 @@ async def fonts(request: Request):
     """Fonts endpoint"""
 
     dependencies = get_deps_from("local")
+
+    host = request.headers.get("host", "")
+
+    # Show pot-au-noir logo if LOCAL env or pot-au-noir domain
+    show_potaunoir_logo = ENV == "LOCAL" or "pot-au-noir.fr" in host or "pot-au-noir.com" in host
     context = {
         "request": request,
         "status": "ok",
@@ -87,6 +92,7 @@ async def fonts(request: Request):
         "host": request.headers.get("host"),
         "time_utc": datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S"),
         "deps": dependencies,
+        "show_potaunoir_logo": show_potaunoir_logo,
     }
 
     return templates.TemplateResponse("fonts.html", context)
