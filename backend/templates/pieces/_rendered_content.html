@@ -1,0 +1,11 @@
+{% for piece in prepared_pieces %}
+  {% set level = piece.data.get('level') %}
+  {% set text = piece.data.get('text') %}
+  {% set items = piece.data.get('items') %}
+  {% set language = piece.data.get('language') %}
+  {% set code = piece.data.get('code') %}
+  {% set thead_rows = piece.data.get('thead_rows') %}
+  {% set tbody_rows = piece.data.get('tbody_rows') %}
+  {% set piece_type = piece.data.get('piece_type') %}
+  {% include piece.template %}
+{% endfor %}

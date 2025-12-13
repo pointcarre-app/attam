@@ -1,12 +1,22 @@
 from pathlib import Path
 from fastapi import APIRouter, Request
+from pydantic import BaseModel
+import tempfile
+import logging
 
 
-from trame import Trame, Piece
+from trame import Trame, Piece, TrameBuilder
 
 from backend.dependencies import get_deps_from
-from backend.trame_reader import read_trame
+from backend.trame_reader import read_trame, prepare_trame_for_rendering
 from backend.settings import templates
+
+
+logger = logging.getLogger(__name__)
+
+
+class MarkdownContent(BaseModel):
+    content: str
 
 
 router = APIRouter(tags=["trame"], prefix="/trame")
@@ -25,16 +35,55 @@ piece_model_fields = list(Piece.model_fields.keys())
 async def get_trame(request: Request, trame_path: Path):
     dependencies = get_deps_from("local")
     trame = read_trame(trame_path)
-    # from pprint import pprint
+    prepared_pieces = prepare_trame_for_rendering(trame)
 
-    # pprint(trame)
+    # Read the raw markdown content from the file
+    trame_html_content = trame_path.read_text(encoding="utf-8")
 
     context = {
         "request": request,
         "trame": trame,
+        "prepared_pieces": prepared_pieces,
+        "trame_html_content": trame_html_content,
         "deps": dependencies,
     }
     return templates.TemplateResponse("trame.html", context)
+
+
+# TODO : ensure logic
+@router.post("/process")
+async def process_markdown(request: Request, markdown_data: MarkdownContent):
+    logger.info("Processing markdown content")
+
+    # Create temporary file with markdown content
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".md", delete=False, encoding="utf-8"
+    ) as tmp_file:
+        tmp_file.write(markdown_data.content)
+        tmp_path = Path(tmp_file.name)
+
+    try:
+        # Process the markdown file
+        trame = TrameBuilder.from_file(path=tmp_path)
+        prepared_pieces = prepare_trame_for_rendering(trame)
+
+        logger.info(f"Processed {len(prepared_pieces)} pieces from markdown")
+        logger.info(f"Prepared pieces: {prepared_pieces}")
+
+        # Render the HTML partial
+        rendered_html = templates.get_template("pieces/_rendered_content.html").render(
+            prepared_pieces=prepared_pieces
+        )
+
+        return {
+            "success": True,
+            "prepared_pieces": prepared_pieces,
+            "piece_count": len(prepared_pieces),
+            "rendered_html": rendered_html,
+        }
+    finally:
+        # Clean up temporary file
+        tmp_path.unlink(missing_ok=True)
 
 
 @router.get("/debug")

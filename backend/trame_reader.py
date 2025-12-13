@@ -1,5 +1,6 @@
 from pathlib import Path
-from trame import Trame, TrameBuilder
+from trame import Trame, TrameBuilder, Piece
+from typing import Dict, Any, List
 
 
 # trame = TrameBuilder.from_string(origin="test", markdown_content=markdown_content)
@@ -7,6 +8,72 @@ from trame import Trame, TrameBuilder
 
 def read_trame(path: Path) -> Trame:
     return TrameBuilder.from_file(path=path)
+
+
+def prepare_piece_for_rendering(piece: Piece) -> Dict[str, Any]:
+    """
+    Prepare a piece for rendering by extracting its data and determining
+    which template to use.
+
+    Returns a dictionary with:
+    - template: the template name to use (e.g., 'pieces/title.html')
+    - data: the data to pass to the template
+    """
+    piece_type = piece.__class__.__name__
+
+    if piece_type == "Title":
+        return {
+            "template": "pieces/title.html",
+            "data": {"level": piece.level, "text": piece.page_element_bs4.string},
+        }
+
+    elif piece_type == "Paragraph":
+        return {
+            "template": "pieces/paragraph.html",
+            "data": {"text": piece.page_element_bs4.string},
+        }
+
+    elif piece_type == "UnorderedList":
+        items = [li.string for li in piece.page_element_bs4.find_all("li")]
+        return {"template": "pieces/unordered_list.html", "data": {"items": items}}
+
+    elif piece_type in ["Code", "YamlCode"]:
+        return {
+            "template": "pieces/code.html",
+            "data": {
+                "language": piece.language if hasattr(piece, "language") else None,
+                "code": piece.code_str,
+            },
+        }
+
+    elif piece_type == "Table":
+        table = piece.page_element_bs4
+        thead_rows = []
+        tbody_rows = []
+
+        if table.thead:
+            for row in table.thead.find_all("tr"):
+                thead_rows.append([th.string for th in row.find_all("th")])
+
+        if table.tbody:
+            for row in table.tbody.find_all("tr"):
+                tbody_rows.append([td.string for td in row.find_all("td")])
+
+        return {
+            "template": "pieces/table.html",
+            "data": {"thead_rows": thead_rows, "tbody_rows": tbody_rows},
+        }
+
+    # Default fallback
+    return {"template": "pieces/unknown.html", "data": {"piece_type": piece_type}}
+
+
+def prepare_trame_for_rendering(trame: Trame) -> List[Dict[str, Any]]:
+    """
+    Process all pieces in a trame and prepare them for rendering.
+    Returns a list of prepared pieces ready for the template.
+    """
+    return [prepare_piece_for_rendering(piece) for piece in trame.pieces]
 
 
 if __name__ == "__main__":

@@ -18,90 +18,109 @@
     <!-- JavaScript Dependencies -->
     <script src="{{ deps.tailwind_js }}"></script>
 
+    <!-- SimpleMDE Markdown Editor -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" />
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 
   </head>
 
   <body class="bg-base-200 min-h-screen">
-    <section class="container mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-12">
-      <article class="bg-base-100 rounded-lg shadow-lg p-4 sm:p-6 md:p-8 lg:p-10">
-        {% for piece in trame.pieces %}
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast toast-top toast-end z-50"></div>
 
-          {# Handle Title elements #}
-          {% if piece.__class__.__name__ == 'Title' %}
-            {% if piece.level == 1 %}
-              <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold lg:font-semibold mb-4 sm:mb-6 text-base-content">
-                {{ piece.page_element_bs4.string }}
-              </h1>
-            {% elif piece.level == 2 %}
-              <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-semibold mt-8 sm:mt-10 md:mt-12 mb-3 sm:mb-4 text-base-content">
-                {{ piece.page_element_bs4.string }}
-              </h2>
-            {% elif piece.level == 3 %}
-              <h3 class="text-lg sm:text-xl md:text-2xl lg:text-2xl font-semibold lg:font-medium mt-6 sm:mt-8 mb-2 sm:mb-3 text-base-content">
-                {{ piece.page_element_bs4.string }}
-              </h3>
-            {% else %}
-              <h4 class="text-base sm:text-lg md:text-xl lg:text-xl font-medium mt-4 sm:mt-6 mb-2 text-base-content">
-                {{ piece.page_element_bs4.string }}
-              </h4>
-            {% endif %}
+    <div class="container mx-auto max-w-screen-2xl px-4 py-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
 
-            {# Handle Paragraph elements #}
-          {% elif piece.__class__.__name__ == 'Paragraph' %}
-            <p class="text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-5 md:mb-6 text-base-content">
-              {{ piece.page_element_bs4.string | safe }}
-            </p>
-
-            {# Handle UnorderedList elements #}
-          {% elif piece.__class__.__name__ == 'UnorderedList' %}
-            <ul class="list-disc list-inside space-y-2 mb-4 sm:mb-5 md:mb-6 ml-4 sm:ml-6">
-              {% for li in piece.page_element_bs4.find_all('li') %}
-                <li class="text-sm sm:text-base md:text-lg text-base-content">{{ li.string }}</li>
-              {% endfor %}
-            </ul>
-
-            {# Handle Code and YamlCode elements #}
-          {% elif piece.__class__.__name__ in ['Code', 'YamlCode'] %}
-            <div class="mockup-code bg-base-300 my-4 sm:my-5 md:my-6 overflow-x-auto text-xs sm:text-sm md:text-base">
-              {% if piece.language %}
-                <pre data-prefix=">" class="text-info"><code>{{ piece.language }}</code></pre>
-              {% endif %}
-              <pre data-prefix="$"><code>{{ piece.code_str }}</code></pre>
+        <!-- Left Column: Markdown Editor -->
+        <section class="h-[calc(100vh-4rem)]">
+          <div class="bg-base-100 rounded-lg shadow-lg h-full overflow-hidden flex flex-col">
+            <div class="bg-base-300 px-4 py-2 border-b border-base-content/10 flex justify-between items-center">
+              <h2 class="text-lg font-semibold text-base-content">Markdown Source</h2>
+              <button id="process-btn" class="btn btn-sm btn-primary">Process</button>
             </div>
-
-            {# Handle Table elements #}
-          {% elif piece.__class__.__name__ == 'Table' %}
-            <div class="overflow-x-auto my-4 sm:my-5 md:my-6">
-              <table class="table table-zebra w-full text-xs sm:text-sm md:text-base">
-                {% set table = piece.page_element_bs4 %}
-                {% if table.thead %}
-                  <thead>
-                    {% for row in table.thead.find_all('tr') %}
-                      <tr>
-                        {% for th in row.find_all('th') %}
-                          <th class="text-base-content font-semibold">{{ th.string }}</th>
-                        {% endfor %}
-                      </tr>
-                    {% endfor %}
-                  </thead>
-                {% endif %}
-                {% if table.tbody %}
-                  <tbody>
-                    {% for row in table.tbody.find_all('tr') %}
-                      <tr>
-                        {% for td in row.find_all('td') %}<td class="text-base-content">{{ td.string }}</td>{% endfor %}
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                {% endif %}
-              </table>
+            <div class="flex-1 overflow-auto">
+              <textarea id="markdown-editor"></textarea>
             </div>
+          </div>
+        </section>
 
-          {% endif %}
+        <!-- Right Column: Rendered Content -->
+        <section class="h-[calc(100vh-4rem)] overflow-y-auto">
+          <article id="rendered-content" class="bg-base-100 rounded-lg shadow-lg p-4 sm:p-6 md:p-8 lg:p-10">
+            {% include 'pieces/_rendered_content.html' %}
+          </article>
+        </section>
 
-        {% endfor %}
-      </article>
-    </section>
+      </div>
+    </div>
+
+    {# djlint:off #}
+    <script>
+      var markdownContent = {{ trame_html_content | tojson }};
+      var simplemde = new SimpleMDE({
+        element: document.getElementById("markdown-editor"),
+        initialValue: markdownContent,
+        spellChecker: false,
+        status: false,
+        toolbar: false,
+        autofocus: false,
+        readOnly: true
+      });
+      window.mdEditor = simplemde;
+
+      // Toast notification function
+      function showToast(message, type) {
+        var toastContainer = document.getElementById('toast-container');
+        var alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+        var icon = type === 'success' ? 
+          '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' :
+          '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+        
+        var toast = document.createElement('div');
+        toast.className = 'alert ' + alertClass;
+        toast.innerHTML = icon + '<span>' + message + '</span>';
+        
+        toastContainer.appendChild(toast);
+        
+        setTimeout(function() {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.3s';
+          setTimeout(function() {
+            toastContainer.removeChild(toast);
+          }, 300);
+        }, 3000);
+      }
+
+      // Handle process button click
+      document.getElementById('process-btn').addEventListener('click', function() {
+        var content = simplemde.value();
+        
+        fetch('/trame/process', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content: content })
+        })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          console.log('Success:', data);
+          
+          // Replace the rendered content with the new HTML
+          var renderedContent = document.getElementById('rendered-content');
+          renderedContent.innerHTML = data.rendered_html;
+          
+          showToast('Processed ' + data.piece_count + ' pieces successfully!', 'success');
+        })
+        .catch(function(error) {
+          console.error('Error:', error);
+          showToast('Error processing markdown', 'error');
+        });
+      });
+</script>
+    {# djlint:on #}
 
   </body>
 </html>

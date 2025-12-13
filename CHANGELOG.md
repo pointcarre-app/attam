@@ -1,6 +1,39 @@
 # CHANGELOG
 
 
+## v0.0.2
+
+- **Architecture Refactor**
+    - Abstracted piece rendering logic from templates to Python
+    - Created `prepare_piece_for_rendering()` and `prepare_trame_for_rendering()` functions
+    - Modular piece templates in `backend/templates/pieces/`
+        - `title.html`, `paragraph.html`, `unordered_list.html`
+        - `code.html`, `table.html`, `unknown.html`
+    - Created `_rendered_content.html` partial template for reusable content rendering
+
+- **Dynamic Markdown Editor**
+    - Two-column layout: markdown source (left) + rendered preview (right)
+    - Integrated SimpleMDE markdown editor (read-only mode)
+    - Responsive grid layout (stacks on mobile, side-by-side on desktop)
+    
+- **Live Processing**
+    - `POST /trame/process` endpoint for dynamic markdown processing
+    - Temporary file handling with context managers
+    - Returns rendered HTML partial for dynamic content replacement
+    - Real-time preview updates via JavaScript
+
+- **UI Improvements**
+    - DaisyUI toast notifications (success/error)
+    - Process button with visual feedback
+    - Auto-dismissing toasts with fade animations
+    - Improved template maintainability
+
+- **Technical**
+    - djlint formatting directives for JavaScript blocks
+    - Separated concerns: Python logic vs template rendering
+    - Clean namespace for global JavaScript objects (cmEditor*, mdEditor)
+
+
 ## v0.0.1
 
 - Python 3.13.7

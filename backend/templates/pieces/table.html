@@ -1,0 +1,22 @@
+<div class="overflow-x-auto my-4 sm:my-5 md:my-6">
+  <table class="table table-zebra w-full text-xs sm:text-sm md:text-base">
+    {% if thead_rows %}
+      <thead>
+        {% for row in thead_rows %}
+          <tr>
+            {% for th in row %}<th class="text-base-content font-semibold">{{ th }}</th>{% endfor %}
+          </tr>
+        {% endfor %}
+      </thead>
+    {% endif %}
+    {% if tbody_rows %}
+      <tbody>
+        {% for row in tbody_rows %}
+          <tr>
+            {% for td in row %}<td class="text-base-content">{{ td }}</td>{% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    {% endif %}
+  </table>
+</div>

@@ -1,0 +1,17 @@
+{% if level == 1 %}
+  <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold lg:font-semibold mb-4 sm:mb-6 text-base-content">
+    {{ text }}
+  </h1>
+{% elif level == 2 %}
+  <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-semibold mt-8 sm:mt-10 md:mt-12 mb-3 sm:mb-4 text-base-content">
+    {{ text }}
+  </h2>
+{% elif level == 3 %}
+  <h3 class="text-lg sm:text-xl md:text-2xl lg:text-2xl font-semibold lg:font-medium mt-6 sm:mt-8 mb-2 sm:mb-3 text-base-content">
+    {{ text }}
+  </h3>
+{% else %}
+  <h4 class="text-base sm:text-lg md:text-xl lg:text-xl font-medium mt-4 sm:mt-6 mb-2 text-base-content">
+    {{ text }}
+  </h4>
+{% endif %}
