@@ -1,15 +1,15 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
 from datetime import datetime, UTC
 
-from ..settings import templates, ENV
-from ..dependencies import get_deps_from
+from ..settings import templates, DomainConfig
+from ..dependencies import get_deps_from, get_domain_config
 
 router = APIRouter()
 
 
-@router.get("/", response_class=HTMLResponse)
-async def root(request: Request):
+@router.get("/routes", response_class=HTMLResponse)
+async def routes(request: Request):
     """Single view that returns an HTTP response"""
 
     host = request.headers.get("host")  # e.g., "example.com" or "other.com"
@@ -45,22 +45,22 @@ async def root(request: Request):
 
 
 @router.get("/template")
-async def template_view(request: Request, deps: str = "local"):
+async def template_view(
+    request: Request,
+    deps: str = "local",
+    domain: DomainConfig | None = Depends(get_domain_config),
+):
     """View that renders the DaisyUI showcase template
 
     Args:
         deps: 'local' to use local static files, 'cdn' to use CDN URLs
     """
     dependencies = get_deps_from(deps)
-    host = request.headers.get("host", "")
-
-    # Show pot-au-noir logo if LOCAL env or pot-au-noir domain
-    show_potaunoir_logo = ENV == "LOCAL" or "pot-au-noir.fr" in host or "pot-au-noir.com" in host
 
     context = {
         "request": request,
         "deps": dependencies,
-        "show_potaunoir_logo": show_potaunoir_logo,
+        "domain": domain,
     }
     return templates.TemplateResponse("template_showcase.html", context)
 
