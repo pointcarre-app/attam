@@ -1,0 +1,26 @@
+# bcrypt==4.2.1
+# issue with passlib : 
+# 2025-11-05 02:09:03 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+# Traceback (most recent call last):
+#   File "/Users/selim/madles/pca-app/env/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+#     version = _bcrypt.__about__.__version__
+bcrypt==4.0.1
+fastapi==0.118.0
+jinja2==3.1.4
+motor==3.7.1
+passlib==1.7.4
+pca-trame==0.0.5
+psycopg2-binary==2.9.11
+python-jose[cryptography]==3.3.0
+pydantic==2.12.5
+pydantic-settings==2.6.1
+pydantic[email]
+pymongo==4.15.3
+python-dotenv==1.1.0
+python-multipart==0.0.9
+python-slugify==8.0.4
+pyyaml==6.0.3
+sib-api-v3-sdk==7.6.0
+uvicorn==0.37.0
+
+

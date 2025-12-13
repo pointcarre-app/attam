@@ -1,0 +1,14 @@
+# Devtools
+djlint==1.36.4
+black==24.4.2
+ruff==0.11.2
+
+# Testing
+bs4==0.0.2
+# pca-scenery==0.1.15
+
+
+# Analytics // Local
+# ipykernel==7.1.0
+# jupyterlab==4.5.0
+# python -m ipykernel install --user --name=pca_env --display-name="PCA App"

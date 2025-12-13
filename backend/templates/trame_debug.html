@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="anchor">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scenery : Dynamic Editor</title>
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="{{ deps.google_fonts }}" />
+    <link rel="stylesheet" href="{{ deps.open_dyslexic_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_themes_css }}" />
+
+    <!-- Our CSS -->
+    {# <link rel="stylesheet" href="{{ deps.app_root_css }}" />
+<link rel="stylesheet" href="{{ deps.app_global_css }}" /> #}
+
+    <!-- JavaScript Dependencies -->
+    <script src="{{ deps.tailwind_js }}"></script>
+
+
+  </head>
+
+  <body class="bg-base-200 min-h-screen">
+    <div class="container mx-auto max-w-7xl p-6">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-base-content mb-2">Trame Debug Dashboard</h1>
+        <p class="text-base-content/70">Model attributes and configuration interface</p>
+      </div>
+
+      <!-- Model Attributes Section -->
+      <!-- Model Fields Section -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-base-content mb-4 text-center">
+          <span class="badge badge-success badge-lg mr-2">✓</span>
+          Pydantic Model Fields (Clean)
+        </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Trame Model Fields -->
+          <div class="card bg-gradient-to-br from-accent/10 to-accent/5 shadow-xl border border-accent/20">
+            <div class="card-body">
+              <h3 class="card-title text-accent flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Trame Fields
+                <div class="badge badge-accent ml-auto">{{ trame_model_fields|length }}</div>
+              </h3>
+              <div class="divider my-2"></div>
+              <div class="flex flex-wrap gap-2 min-h-[100px] content-start">
+                {% for field in trame_model_fields %}
+                  <div class="badge badge-accent badge-lg">{{ field }}</div>
+                {% endfor %}
+                {% if not trame_model_fields %}
+                  <div class="text-base-content/50 italic">No fields defined</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Piece Model Fields -->
+          <div class="card bg-gradient-to-br from-info/10 to-info/5 shadow-xl border border-info/20">
+            <div class="card-body">
+              <h3 class="card-title text-info flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Piece Fields
+                <div class="badge badge-info ml-auto">{{ piece_model_fields|length }}</div>
+              </h3>
+              <div class="divider my-2"></div>
+              <div class="flex flex-wrap gap-2 min-h-[100px] content-start">
+                {% for field in piece_model_fields %}
+                  <div class="badge badge-info badge-lg">{{ field }}</div>
+                {% endfor %}
+                {% if not piece_model_fields %}
+                  <div class="text-base-content/50 italic">No fields defined</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Attributes Section -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-base-content mb-4 text-center">
+          <span class="badge badge-warning badge-lg mr-2">⚠</span>
+          All Attributes (Including Pydantic Methods)
+        </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Trame All Attributes -->
+          <div class="card bg-gradient-to-br from-primary/10 to-primary/5 shadow-xl border border-primary/20">
+            <div class="card-body">
+              <h3 class="card-title text-primary flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+                </svg>
+                Trame All Attributes
+                <div class="badge badge-primary ml-auto">{{ trame_attr|length }}</div>
+              </h3>
+              <div class="divider my-2"></div>
+              <div class="flex flex-wrap gap-1 max-h-[200px] overflow-y-auto content-start">
+                {% for attr in trame_attr %}<div class="badge badge-primary badge-sm">{{ attr }}</div>{% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Piece All Attributes -->
+          <div class="card bg-gradient-to-br from-secondary/10 to-secondary/5 shadow-xl border border-secondary/20">
+            <div class="card-body">
+              <h3 class="card-title text-secondary flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+                </svg>
+                Piece All Attributes
+                <div class="badge badge-secondary ml-auto">{{ piece_attr|length }}</div>
+              </h3>
+              <div class="divider my-2"></div>
+              <div class="flex flex-wrap gap-1 max-h-[200px] overflow-y-auto content-start">
+                {% for attr in piece_attr %}
+                  <div class="badge badge-secondary badge-sm">{{ attr }}</div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

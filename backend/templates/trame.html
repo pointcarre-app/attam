@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="anchor">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scenery : Dynamic Editor</title>
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="{{ deps.google_fonts }}" />
+    <link rel="stylesheet" href="{{ deps.open_dyslexic_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_themes_css }}" />
+
+    <!-- Our CSS -->
+    {# <link rel="stylesheet" href="{{ deps.app_root_css }}" />
+<link rel="stylesheet" href="{{ deps.app_global_css }}" /> #}
+
+    <!-- JavaScript Dependencies -->
+    <script src="{{ deps.tailwind_js }}"></script>
+
+
+  </head>
+
+  <body class="bg-base-200 min-h-screen">
+    <section class="container mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-12">
+      <article class="bg-base-100 rounded-lg shadow-lg p-4 sm:p-6 md:p-8 lg:p-10">
+        {% for piece in trame.pieces %}
+
+          {# Handle Title elements #}
+          {% if piece.__class__.__name__ == 'Title' %}
+            {% if piece.level == 1 %}
+              <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold lg:font-semibold mb-4 sm:mb-6 text-base-content">
+                {{ piece.page_element_bs4.string }}
+              </h1>
+            {% elif piece.level == 2 %}
+              <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-semibold mt-8 sm:mt-10 md:mt-12 mb-3 sm:mb-4 text-base-content">
+                {{ piece.page_element_bs4.string }}
+              </h2>
+            {% elif piece.level == 3 %}
+              <h3 class="text-lg sm:text-xl md:text-2xl lg:text-2xl font-semibold lg:font-medium mt-6 sm:mt-8 mb-2 sm:mb-3 text-base-content">
+                {{ piece.page_element_bs4.string }}
+              </h3>
+            {% else %}
+              <h4 class="text-base sm:text-lg md:text-xl lg:text-xl font-medium mt-4 sm:mt-6 mb-2 text-base-content">
+                {{ piece.page_element_bs4.string }}
+              </h4>
+            {% endif %}
+
+            {# Handle Paragraph elements #}
+          {% elif piece.__class__.__name__ == 'Paragraph' %}
+            <p class="text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-5 md:mb-6 text-base-content">
+              {{ piece.page_element_bs4.string | safe }}
+            </p>
+
+            {# Handle UnorderedList elements #}
+          {% elif piece.__class__.__name__ == 'UnorderedList' %}
+            <ul class="list-disc list-inside space-y-2 mb-4 sm:mb-5 md:mb-6 ml-4 sm:ml-6">
+              {% for li in piece.page_element_bs4.find_all('li') %}
+                <li class="text-sm sm:text-base md:text-lg text-base-content">{{ li.string }}</li>
+              {% endfor %}
+            </ul>
+
+            {# Handle Code and YamlCode elements #}
+          {% elif piece.__class__.__name__ in ['Code', 'YamlCode'] %}
+            <div class="mockup-code bg-base-300 my-4 sm:my-5 md:my-6 overflow-x-auto text-xs sm:text-sm md:text-base">
+              {% if piece.language %}
+                <pre data-prefix=">" class="text-info"><code>{{ piece.language }}</code></pre>
+              {% endif %}
+              <pre data-prefix="$"><code>{{ piece.code_str }}</code></pre>
+            </div>
+
+            {# Handle Table elements #}
+          {% elif piece.__class__.__name__ == 'Table' %}
+            <div class="overflow-x-auto my-4 sm:my-5 md:my-6">
+              <table class="table table-zebra w-full text-xs sm:text-sm md:text-base">
+                {% set table = piece.page_element_bs4 %}
+                {% if table.thead %}
+                  <thead>
+                    {% for row in table.thead.find_all('tr') %}
+                      <tr>
+                        {% for th in row.find_all('th') %}
+                          <th class="text-base-content font-semibold">{{ th.string }}</th>
+                        {% endfor %}
+                      </tr>
+                    {% endfor %}
+                  </thead>
+                {% endif %}
+                {% if table.tbody %}
+                  <tbody>
+                    {% for row in table.tbody.find_all('tr') %}
+                      <tr>
+                        {% for td in row.find_all('td') %}<td class="text-base-content">{{ td.string }}</td>{% endfor %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                {% endif %}
+              </table>
+            </div>
+
+          {% endif %}
+
+        {% endfor %}
+      </article>
+    </section>
+
+  </body>
+</html>
