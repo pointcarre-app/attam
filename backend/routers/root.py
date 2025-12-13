@@ -9,17 +9,28 @@ router = APIRouter()
 
 
 @router.get("/", response_class=HTMLResponse)
-async def root():
+async def root(request: Request):
     """Single view that returns an HTTP response"""
-    return """
+
+    host = request.headers.get("host")  # e.g., "example.com" or "other.com"
+    print(host)
+
+    return f"""
     <!DOCTYPE html>
     <html>
     <head>
         <title>Attam App</title>
     </head>
-    <body>
-        <h1>Welcome to Attam App</h1>
-        <p>This is a minimal FastAPI application running successfully!</p>
+    <body style="max-width: 800px; margin: 0 auto;font-family: monospace; font-size: 1.2rem;">
+        <h1>Root</h1>
+        <p>Host: {host}</p>
+        <ul>
+            <li style="padding-bottom:8px;"><a href="/template">Template</a></li>
+            <li style="padding-bottom:8px;"><a href="/health">Health</a></li>
+            <li style="padding-bottom:8px;"><a href="/trame/debug">Trame Debug</a></li>
+            <li style="padding-bottom:8px;"><a href="/trame/path/trames/alidade/batiment_guepard.jpg">Trame Guépard 🐆</a></li>
+            <li style="padding-bottom:8px;"><a href="trame/path/trames/alidade/nav_et_trigo.md">Trame Editor</a></li>
+        </ul>
     </body>
     </html>
     """
