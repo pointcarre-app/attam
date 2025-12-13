@@ -73,3 +73,20 @@ async def health_check(request: Request):
         "host": request.headers.get("host"),
         "time_utc": datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S"),
     }
+
+
+@router.get("/fonts")
+async def fonts(request: Request):
+    """Fonts endpoint"""
+
+    dependencies = get_deps_from("local")
+    context = {
+        "request": request,
+        "status": "ok",
+        "message": "Fonts are running",
+        "host": request.headers.get("host"),
+        "time_utc": datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S"),
+        "deps": dependencies,
+    }
+
+    return templates.TemplateResponse("fonts.html", context)

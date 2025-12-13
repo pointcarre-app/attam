@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Fonts{% endblock %}
+
+{% block body %}
+  <!-- Load all font pairs -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Crimson+Text:wght@400;600&family=Inter:wght@400;600;700&family=Lora:wght@400;600&family=Rajdhani:wght@400;600;700&family=Merriweather:wght@400;700&family=Work+Sans:wght@400;600;700&family=Source+Serif+4:wght@400;600&family=Rubik:wght@400;600;700&family=Spectral:wght@400;600&display=swap"
+        rel="stylesheet" />
+
+  <style>
+      body {
+          margin: 0;
+          padding: 20px;
+          background: #f5f5f5;
+      }
+
+      .font-sample {
+          background: white;
+          padding: 30px;
+          margin-bottom: 40px;
+          border-left: 4px solid #2c3e50;
+      }
+
+      .font-sample h3 {
+          margin-top: 0;
+          color: #7f8c8d;
+          font-size: 14px;
+          text-transform: uppercase;
+      }
+
+      .font-sample h1 {
+          margin: 10px 0;
+          font-size: 36px;
+      }
+
+      .font-sample h2 {
+          margin: 10px 0 20px 0;
+          font-size: 24px;
+      }
+
+      .font-sample p {
+          line-height: 1.6;
+          font-size: 18px;
+          margin: 0;
+      }
+  </style>
+
+  <div id="samples"></div>
+
+  <script>
+      const fontPairs = [{
+          name: 'Classic Authority',
+          title: 'Barlow',
+          content: 'Crimson Text'
+      }, {
+          name: 'Modern Professional',
+          title: 'Inter',
+          content: 'Lora'
+      }, {
+          name: 'Technical Edge',
+          title: 'Rajdhani',
+          content: 'Merriweather'
+      }, {
+          name: 'Sleek & Serious',
+          title: 'Work Sans',
+          content: 'Source Serif 4'
+      }, {
+          name: 'Nordic Minimalism',
+          title: 'Rubik',
+          content: 'Spectral'
+      }];
+
+      const sampleText = {
+          h1: 'Strategic Maritime Defense',
+          h2: 'Naval Operations & Intelligence Analysis',
+          p: 'The evolution of modern naval doctrine requires a comprehensive understanding of geopolitical dynamics, technological advancement, and strategic resource allocation. Officers must synthesize complex information from multiple sources to make informed decisions in rapidly changing operational environments.'
+      };
+
+      const container = document.getElementById('samples');
+
+      fontPairs.forEach(pair => {
+          const sample = document.createElement('div');
+          sample.className = 'font-sample max-w-4xl mx-auto p-4 bg-base-100 rounded-lg shadow-lg';
+          sample.innerHTML = `
+    <h3>Option: ${pair.name}</h3>
+    <h1 style="font-family: '${pair.title}', sans-serif;">${sampleText.h1}</h1>
+    <h2 style="font-family: '${pair.title}', sans-serif;">${sampleText.h2}</h2>
+    <p style="font-family: '${pair.content}', serif;">${sampleText.p}</p>
+    <p style="font-family: '${pair.content}', serif; margin-top: 15px; font-size: 14px; color: #95a5a6;">
+      Titles: ${pair.title} | Content: ${pair.content}
+    </p>
+  `;
+          container.appendChild(sample);
+      });
+  </script>
+{% endblock %}
