@@ -2,8 +2,9 @@ from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
 from datetime import datetime, UTC
 
-from ..settings import templates, DomainConfig
-from ..dependencies import get_deps_from, get_domain_config
+from backend.settings import templates, DomainConfig
+from backend.dependencies import get_deps_from
+from backend.domain_config import get_domain_config
 
 router = APIRouter()
 

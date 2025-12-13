@@ -29,7 +29,7 @@ class DomainConfig(BaseModel):
 DOMAINS: dict[str, DomainConfig] = {
     "potaunoir": DomainConfig(
         name="Pot au Noir",
-        hosts=["pot-au-noir.fr", "pot-au-noir.com"],
+        hosts=["pot-au-noir.fr", "pot-au-noir.com", "localhost", "127.0.0.1", "*"],
         logo="/static/trames/potaunoir/logo-1.png",
     ),
     # "alidade": DomainConfig(
