@@ -9,6 +9,11 @@ class AccessibilityManager {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const defaultTheme = document.documentElement.getAttribute('data-default-theme');
         
+        console.log('🔍 AccessibilityManager constructor:');
+        console.log('   savedTheme (localStorage):', savedTheme);
+        console.log('   currentTheme (data-theme):', currentTheme);
+        console.log('   defaultTheme (data-default-theme):', defaultTheme);
+        
         // Initialize state from localStorage first, then fall back to domain default or 'anchor'
         this.state = {
             theme: savedTheme || currentTheme || defaultTheme || 'anchor',
@@ -17,6 +22,8 @@ class AccessibilityManager {
         
         // Store the domain's default theme for reference
         this.domainDefaultTheme = defaultTheme || 'anchor';
+        
+        console.log('   → Final theme selected:', this.state.theme);
         
         // Track if theme is enforced
         this.enforcedTheme = null;
@@ -69,6 +76,9 @@ class AccessibilityManager {
         setTimeout(() => {
             this.updateAllUI();
         }, 100);
+        
+        // Listen for modal opening to update UI
+        this.setupModalListener();
         
         // Listen for system theme changes
         this.setupSystemThemeListener();
@@ -211,9 +221,17 @@ class AccessibilityManager {
     }
     
     updateThemeUI() {
-        // Define contrast themes
-        const contrastThemes = ['anchor', 'reinforced-contrast', 'inversed-contrast'];
-        const isContrastTheme = contrastThemes.includes(this.state.theme);
+        console.log('🔄 Updating theme UI for theme:', this.state.theme);
+        
+        // Get all contrast option themes (those with data-contrast-option attribute)
+        const contrastOptions = Array.from(document.querySelectorAll('[data-contrast-option="true"]'))
+            .map(el => el.dataset.themeSelector);
+        
+        console.log('   Contrast options found:', contrastOptions);
+        
+        // Check if current theme matches any contrast option
+        const isContrastTheme = contrastOptions.includes(this.state.theme);
+        console.log('   Is contrast theme?', isContrastTheme);
         
         // Handle the "other theme" radio button for contrast section
         const otherThemeRadio = document.querySelector('[data-contrast-other="true"]');
@@ -222,6 +240,7 @@ class AccessibilityManager {
             
             if (!isContrastTheme) {
                 otherThemeRadio.checked = true;
+                console.log('   ✓ Checked "other theme" radio');
             } else {
                 otherThemeRadio.checked = false;
             }
@@ -229,12 +248,19 @@ class AccessibilityManager {
         
         // Update all theme-related UI elements
         const themeElements = document.querySelectorAll('[data-theme-selector]');
+        console.log('   Found', themeElements.length, 'theme selector elements');
         
+        let checkedCount = 0;
         themeElements.forEach(element => {
             const theme = element.dataset.themeSelector;
             
             if (element.type === 'radio' || element.type === 'checkbox') {
-                element.checked = (theme === this.state.theme);
+                const shouldCheck = (theme === this.state.theme);
+                element.checked = shouldCheck;
+                if (shouldCheck) {
+                    checkedCount++;
+                    console.log('   ✓ Checked element with theme:', theme, 'id:', element.id);
+                }
             } else if (element.tagName === 'BUTTON') {
                 if (theme === this.state.theme) {
                     element.classList.add('btn-active');
@@ -249,6 +275,8 @@ class AccessibilityManager {
                 element.classList.add('btn-disabled');
             }
         });
+        
+        console.log('   Total checked:', checkedCount);
     }
     
     updateFontUI() {
@@ -302,6 +330,32 @@ class AccessibilityManager {
                 this.setFont(e.target.dataset.fontSelector);
             }
         });
+    }
+    
+    setupModalListener() {
+        // Listen for the accessibility modal opening
+        const modal = document.getElementById('attam-accessibility-modal');
+        if (modal) {
+            // Listen for the modal's open event (when showModal() is called)
+            // Use MutationObserver to detect when the modal's 'open' attribute changes
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'open') {
+                        if (modal.hasAttribute('open')) {
+                            console.log('🔓 Modal opened - updating UI');
+                            this.updateAllUI();
+                        }
+                    }
+                });
+            });
+            
+            observer.observe(modal, {
+                attributes: true,
+                attributeFilter: ['open']
+            });
+            
+            console.log('✓ Modal listener set up');
+        }
     }
     
     setupSystemThemeListener() {
@@ -385,6 +439,13 @@ class AccessibilityManager {
     
     getDomainDefaultTheme() {
         return this.domainDefaultTheme;
+    }
+    
+    clearAllPreferences() {
+        console.log('🗑️ Clearing all accessibility preferences');
+        localStorage.removeItem('attam-theme');
+        localStorage.removeItem('attam-font-type');
+        console.log('✓ Preferences cleared. Reload the page to use domain defaults.');
     }
 }
 

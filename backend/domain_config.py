@@ -15,6 +15,7 @@ class DomainConfig(BaseModel):
     """
 
     name: str
+    name_html: str
     hosts: list[str]
     logo: str | None = None
     theme: str = "anchor"  # Default theme for this domain
@@ -23,7 +24,8 @@ class DomainConfig(BaseModel):
 
 DOMAINS: dict[str, DomainConfig] = {
     "potaunoir": DomainConfig(
-        name="Pot au Noir",
+        name="Pot Au Noir",
+        name_html="<span>Pot <span class='text-base-content/50'>Au</span> Noir</span>",
         hosts=["pot-au-noir.fr", "pot-au-noir.com", "localhost", "127.0.0.1", "*"],
         logo="/static/trames/potaunoir/logo-1.png",
         theme="pan-light",
@@ -36,6 +38,7 @@ DOMAINS: dict[str, DomainConfig] = {
     # ),
     "attam": DomainConfig(
         name="All Things to All Men",
+        name_html="<span>All <span class='text-content/70'>Things</span> to <span class='text-content/70'>All</span> Men</span>",
         hosts=["allthingstoallmen.org", "attam0.osc-fr1.scalingo.io"],
         logo=None,
         slug="attam",

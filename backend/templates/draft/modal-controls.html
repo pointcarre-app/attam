@@ -6,8 +6,9 @@
              type="radio"
              name="contrast-radio"
              class="radio radio-secondary radio-sm"
-             data-theme-selector="anchor"
-             data-contrast-option="true" />
+             data-theme-selector="{{ domain.theme if domain else 'anchor' }}"
+             data-contrast-option="true"
+             data-is-domain-default="true" />
       <label for="contrast-default" class="w-full text-sm font-medium text-base-content ml-3">
         Défaut
       </label>

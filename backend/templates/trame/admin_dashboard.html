@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - {{ access_name }}{% endblock %}
+
+{% block content %}
+  <div class="container mx-auto p-6 md:p-12 mt-10">
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title text-3xl mb-6 font-heading">
+          Welcome, <span class="text-primary">{{ access_name }}</span>!
+        </h2>
+
+        <div class="alert alert-success mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="stroke-current shrink-0 h-6 w-6"
+               fill="none"
+               viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>You are successfully authenticated!</span>
+        </div>
+
+        <div class="prose max-w-none">
+          <p>This is your protected dashboard. Your session will expire in 24 hours.</p>
+
+          <h3>Session Information</h3>
+          <ul>
+            <li>
+              <strong>Access Name:</strong> {{ access_name }}
+            </li>
+            <li>
+              <strong>Authentication:</strong> JWT Token (HTTP-only cookie)
+            </li>
+            <li>
+              <strong>Session Duration:</strong> 24 hours
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-actions justify-end mt-6">
+          <a href="/trame/admin/{{ access_name_slug }}/logout" class="btn btn-outline btn-error">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

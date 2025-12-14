@@ -10,6 +10,7 @@ from trame import Trame, Piece, TrameBuilder
 from backend.dependencies import get_deps_from
 from backend.trame_reader import read_trame, prepare_trame_for_rendering
 from backend.settings import templates
+from backend import admin_login
 
 
 logger = logging.getLogger(__name__)
@@ -125,13 +126,8 @@ async def debug(request: Request):
     return templates.TemplateResponse("trame_debug.html", context)
 
 
-@router.get("/admin/{access_name:str}")
-async def admin_access(request: Request, access_name: str):
-    dependencies = get_deps_from("local")
-
-    context = {
-        "request": request,
-        "deps": dependencies,
-        "access_name": access_name,
-    }
-    return templates.TemplateResponse("trame/admin.html", context)
+# Admin login routes
+router.get("/admin/{access_name:str}")(admin_login.admin_access)
+router.post("/admin/login")(admin_login.login_submit)
+router.get("/admin/{access_name:str}/dashboard")(admin_login.admin_dashboard)
+router.get("/admin/{access_name:str}/logout")(admin_login.admin_logout)

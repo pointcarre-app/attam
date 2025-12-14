@@ -1,7 +1,10 @@
+import os
+from dotenv import load_dotenv
+
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic_settings import BaseSettings
-import os
+
 
 from backend.domain_config import (
     get_domain_config,
@@ -31,6 +34,14 @@ settings = Settings()
 
 # Convenience exports (backwards compatible)
 ENV = settings.env
+
+
+if ENV == "LOCAL":
+    load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ZND_PASSWORD = os.getenv("ZND_PASSWORD")
+SEL_PASSWORD = os.getenv("SEL_PASSWORD")
 
 
 # =============================================================================
