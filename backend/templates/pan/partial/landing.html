@@ -1,61 +1,80 @@
-<div class="container mx-auto max-w-2xl px-4">
+<div class="container mx-auto max-w-3xl px-4">
 
-  <header class="py-20 text-center border-b border-base-300">
-    <div class="avatar">
-      <div class="w-16 md:w-48 rounded-full">
-        <img src="{{ domain.logo }}" alt="{{ domain.name }}" />
+  <!-- Hero Section -->
+  <header class="py-24">
+    <div class="flex items-center gap-8">
+      <div class="avatar shrink-0">
+        <div class="w-32 md:w-48 rounded-full">
+          <img src="{{ domain.logo }}" alt="{{ domain.name }}" />
+        </div>
+      </div>
+      <div>
+        <h1 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-3 tracking-tight">
+          Cartographier l'incertitude
+        </h1>
+        <p class="text-xl text-base-content/70">Faire parler les cartes pour un engagement éclairé</p>
       </div>
     </div>
-
-    <h1 class="text-5xl font-bold mb-6 tracking-tight">Décider dans l'incertitude</h1>
-
-    <p class="text-xl mb-2">Lire la mer pour décider</p>
-    <p class="text-lg text-base-content/70">Observer, comprendre, manœuvrer.</p>
   </header>
 
-  <section class="py-16 border-b border-base-300">
-    <div class="prose prose-lg max-w-none">
-      <p class="text-xl leading-relaxed">
-        Faire parler les cartes pour un engagement éclairé.
-        Synthèse de lectures sur la stratégie, l'analyse et la décision.
-      </p>
+  <!-- Philosophy Section -->
+  <section class="py-16 border-t border-base-300">
+    <div class="grid md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="font-semibold text-lg mb-2">Faire parler les cartes</h3>
+        <p class="text-base-content/70 text-sm">Révéler ce que les données cachent</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-lg mb-2">Apprendre à lire</h3>
+        <p class="text-base-content/70 text-sm">Décoder les signaux dans le bruit</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-lg mb-2">Engagement éclairé</h3>
+        <p class="text-base-content/70 text-sm">Décider avec discernement</p>
+      </div>
     </div>
   </section>
 
-  <section class="py-16">
-    <h2 class="text-3xl font-bold mb-8">Articles récents</h2>
+  <!-- About Section -->
+  <section class="py-16 border-t border-base-300">
+    <p class="text-xl leading-relaxed text-base-content/80 italic text-center">
+      « Apprendre à lire pour mieux s'engager. »
+    </p>
+    <p class="text-base text-base-content/60 mt-4 text-center">
+      Synthèse de lectures sur la stratégie, l'analyse et la décision.
+    </p>
+  </section>
+
+  <!-- Articles Section -->
+  <section class="py-16 border-t border-base-300">
+    <h2 class="text-2xl font-bold mb-10">Articles récents</h2>
 
     <div class="space-y-8">
-      <article class="card">
-        <div class="card-body p-0">
-          <h3 class="card-title text-2xl">
-            <a href="#" class="link link-hover">Titre de l'article</a>
+      <article>
+        <div class="flex items-baseline justify-between gap-4 mb-2">
+          <h3 class="text-xl font-medium">
+            <a href="#" class="hover:text-primary transition-colors">Titre de l'article</a>
           </h3>
-          <p class="text-base-content/80">Extrait de l'article ou résumé du livre analysé...</p>
-          <div class="card-actions justify-between items-center mt-4">
-            <span class="text-sm text-base-content/60">12 décembre 2024</span>
-            <a href="#" class="btn btn-ghost btn-sm">Lire →</a>
-          </div>
+          <span class="text-sm text-base-content/50 whitespace-nowrap">12 déc 2024</span>
         </div>
+        <p class="text-base-content/70">Extrait de l'article ou résumé du livre analysé...</p>
       </article>
 
-      <div class="divider"></div>
-
-      <article class="card">
-        <div class="card-body p-0">
-          <h3 class="card-title text-2xl">
-            <a href="#" class="link link-hover">Autre article</a>
+      <article>
+        <div class="flex items-baseline justify-between gap-4 mb-2">
+          <h3 class="text-xl font-medium">
+            <a href="#" class="hover:text-primary transition-colors">Autre article</a>
           </h3>
-          <p class="text-base-content/80">Extrait de l'article ou résumé du livre analysé...</p>
-          <div class="card-actions justify-between items-center mt-4">
-            <span class="text-sm text-base-content/60">5 décembre 2024</span>
-            <a href="#" class="btn btn-ghost btn-sm">Lire →</a>
-          </div>
+          <span class="text-sm text-base-content/50 whitespace-nowrap">5 déc 2024</span>
         </div>
+        <p class="text-base-content/70">Extrait de l'article ou résumé du livre analysé...</p>
       </article>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="py-12 text-center border-t border-base-300">
-    <p class="text-sm text-base-content/60">© 2024 — Décider dans l'incertitude</p>
+    <p class="text-sm text-base-content/50">© 2024 — Cartographier l'incertitude</p>
   </footer>
+
+</div>
