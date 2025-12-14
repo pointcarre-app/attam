@@ -114,3 +114,14 @@ async def fonts(request: Request):
     }
 
     return templates.TemplateResponse("fonts.html", context)
+
+
+@router.get("/sonnentanz")
+async def sonnentanz(request: Request):
+    """Sonnentanz endpoint"""
+    dependencies = get_deps_from("local")
+    context = {
+        "request": request,
+        "deps": dependencies,
+    }
+    return templates.TemplateResponse("sonnentanz.html", context)

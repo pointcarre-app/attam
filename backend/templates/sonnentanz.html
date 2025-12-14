@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block title %}Tutorial - Sonnentanz{% endblock %}
+{% block content %}
+  <div class="container mx-auto p-6 max-w-4xl my-8">
+    <div class="mb-8">
+      <h1 class="font-heading text-4xl font-bold mb-2">Sonnentanz Tutorial</h1>
+      <p class="text-base-content/70 text-lg">
+        A minimalistic guide to navigating the Attam application.
+      </p>
+    </div>
+
+    <!-- Public Resources -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="text-primary">✦</span> Public Resources
+      </h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <a href="/" class="card bg-base-200 hover:bg-base-300 transition-colors">
+          <div class="card-body p-5">
+            <h3 class="card-title text-lg">Landing Page</h3>
+            <p class="text-sm opacity-80">The main entry point of the application.</p>
+          </div>
+        </a>
+        <a href="/template" class="card bg-base-200 hover:bg-base-300 transition-colors">
+          <div class="card-body p-5">
+            <h3 class="card-title text-lg">Design System</h3>
+            <p class="text-sm opacity-80">DaisyUI component showcase and theme testing.</p>
+          </div>
+        </a>
+        <a href="/fonts" class="card bg-base-200 hover:bg-base-300 transition-colors">
+          <div class="card-body p-5">
+            <h3 class="card-title text-lg">Font Gallery</h3>
+            <p class="text-sm opacity-80">Preview all available typefaces.</p>
+          </div>
+        </a>
+        <a href="/routes" class="card bg-base-200 hover:bg-base-300 transition-colors">
+          <div class="card-body p-5">
+            <h3 class="card-title text-lg">Route Map</h3>
+            <p class="text-sm opacity-80">Raw list of all registered endpoints.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Content System -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="text-secondary">✦</span> Content Viewer (Trame)
+      </h2>
+      <div class="overflow-x-auto bg-base-100 rounded-box border border-base-300">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hover">
+              <td class="font-medium">Markdown</td>
+              <td>Renders structured content from .md files</td>
+              <td>
+                <a href="/trame/path/trames/alidade/nav_et_trigo.md" class="link link-primary">Nav et Trigo</a>
+              </td>
+            </tr>
+            <tr class="hover">
+              <td class="font-medium">Image</td>
+              <td>Displays static images served via Trame</td>
+              <td>
+                <a href="/trame/path/trames/alidade/batiment_guepard.jpg" class="link link-primary">Batiment Guepard</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Dynamic URL Generator -->
+    <section class="mb-10" id="url-generator">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="text-info">✦</span> Access URL Generator
+      </h2>
+      <div class="bg-base-200 p-6 rounded-box">
+        <div class="form-control w-full max-w-xs mb-6">
+          <label class="label">
+            <span class="label-text">Enter Access Name (e.g. username)</span>
+          </label>
+          <input type="text"
+                 id="accessNameInput"
+                 placeholder="Type here..."
+                 class="input input-bordered w-full max-w-xs"
+                 oninput="updateUrls()" />
+        </div>
+
+        <div id="urlList" class="hidden space-y-4">
+          <div class="overflow-x-auto bg-base-100 rounded-box border border-base-300">
+            <table class="table table-zebra w-full">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Description</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody id="urlTableBody">
+                <!-- Rows will be injected here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p id="placeholderText" class="text-base-content/60 italic">
+          Type an access name above to see personalized URLs.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- Administration -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="text-accent">✦</span> Administration
+      </h2>
+      <div class="alert bg-base-200 shadow-sm mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             class="stroke-info shrink-0 w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+          </path>
+        </svg>
+        <div>
+          <h3 class="font-bold">Access Pattern</h3>
+          <div class="text-xs">
+            Admin URL pattern: <code class="badge badge-ghost">/trame/admin/{username}</code>
+            <br />
+            Replace <span class="font-mono">{username}</span> with your assigned user slug.
+          </div>
+        </div>
+      </div>
+
+      <div class="steps steps-vertical lg:steps-horizontal w-full bg-base-100 p-4 rounded-box border border-base-300">
+        <div class="step step-primary">
+          <div class="text-left ml-2">
+            <p class="font-bold">Login</p>
+            <a href="/trame/admin/sel" class="link text-xs">Example: /trame/admin/sel</a>
+          </div>
+        </div>
+        <div class="step step-primary">
+          <div class="text-left ml-2">
+            <p class="font-bold">Dashboard</p>
+            <p class="text-xs opacity-70">View & Manage Trames</p>
+          </div>
+        </div>
+        <div class="step step-primary">
+          <div class="text-left ml-2">
+            <p class="font-bold">Editor</p>
+            <p class="text-xs opacity-70">Create & Edit Content</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dev Tools -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="text-neutral-content">✦</span> Dev Tools
+      </h2>
+      <div class="flex flex-wrap gap-2">
+        <a href="/trame/debug" class="btn btn-sm btn-outline">Trame Debugger</a>
+        <a href="/health" class="btn btn-sm btn-outline">System Health</a>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      const urlTemplates = [{
+          method: "GET",
+          path: "/trame/admin/{access_name}",
+          desc: "Admin Access (Login Page)"
+      }, {
+          method: "GET",
+          path: "/trame/admin/{access_name}/dashboard",
+          desc: "Admin Dashboard"
+      }, {
+          method: "GET",
+          path: "/trame/admin/{access_name}/raw_trame_list",
+          desc: "Raw Trame List"
+      }, {
+          method: "GET",
+          path: "/trame/admin/{access_name}/raw_trame/1",
+          desc: "View Raw Trame (ID: 1 example)"
+      }, {
+          method: "GET",
+          path: "/trame/admin/{access_name}/raw_trame_editor/1",
+          desc: "Edit Raw Trame (ID: 1 example)"
+      }, ];
+
+      function updateUrls() {
+          const accessName = document.getElementById('accessNameInput').value.trim();
+          const listContainer = document.getElementById('urlList');
+          const placeholder = document.getElementById('placeholderText');
+          const tableBody = document.getElementById('urlTableBody');
+
+          if (!accessName) {
+              listContainer.classList.add('hidden');
+              placeholder.classList.remove('hidden');
+              return;
+          }
+
+          placeholder.classList.add('hidden');
+          listContainer.classList.remove('hidden');
+          tableBody.innerHTML = '';
+
+          urlTemplates.forEach(template => {
+              const finalUrl = template.path.replace('{access_name}', accessName);
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td><span class="badge badge-ghost font-mono">${template.method}</span></td>
+                <td>${template.desc}</td>
+                <td><a href="${finalUrl}" class="link link-primary font-mono text-sm break-all" target="_blank">${finalUrl}</a></td>
+            `;
+              tableBody.appendChild(row);
+          });
+      }
+  </script>
+{% endblock %}
