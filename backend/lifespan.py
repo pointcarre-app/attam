@@ -2,9 +2,11 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 import os
 import shutil
+from pathlib import Path
 
 from backend.settings import DATABASE_URL
 from backend.postgres_manager import PostgresManager
+from backend.trame_reader import read_trame
 
 
 @asynccontextmanager
@@ -27,11 +29,22 @@ async def lifespan(app: FastAPI):
 
             # Example insertion preparation
             example_username = "sel"
-            example_md_content = "# Example Title\n\nThis is a test content."
-            example_piece_count = 1
-            example_title = "Example Title"
-            example_slug = "example-title"
-            example_saving_origin = "lifespan_test"
+
+            trame_path = Path(project_root) / "trames" / "alidade" / "nav_et_trigo.md"
+            if trame_path.exists():
+                trame = read_trame(trame_path)
+                example_md_content = trame_path.read_text(encoding="utf-8")
+                example_piece_count = len(trame.pieces)
+                example_title = "Nav et Trigo"
+                example_slug = "nav-et-trigo"
+            else:
+                print(f"⚠ Trame file not found at {trame_path}, using defaults")
+                example_md_content = "# Example Title\n\nThis is a test content."
+                example_piece_count = 1
+                example_title = "Example Title"
+                example_slug = "example-title"
+
+            example_saving_origin = "lifespan"
             example_metadata = {"key": "value", "description": "Test insertion"}
 
             # Use upsert to prevent ID increment on restart

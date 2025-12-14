@@ -3,7 +3,7 @@
 {% block title %}Raw Trame List - {{ access_name }}{% endblock %}
 
 {% block content %}
-  <div class="container mx-auto p-4">
+  <div class="container mx-auto p-4 max-w-4xl">
     <div class="card bg-base-100 shadow-xl">
       <div class="card-body">
         <div class="flex justify-between items-center mb-4">
@@ -18,37 +18,47 @@
 
         {% if raw_trame_records %}
           <div class="overflow-x-auto">
-            <table class="table table-zebra w-full">
+            <table class="table table-zebra table-compact w-full text-sm brc">
               <!-- head -->
-              <thead>
+              <thead class="font-heading font-light">
                 <tr>
-                  <th>ID</th>
+                  <th class="w-16">ID</th>
                   <th>Title</th>
-                  <th>User</th>
-                  <th>Origin</th>
-                  <th>Pieces</th>
-                  <th>Created At</th>
-                  <th>Modified At</th>
+                  <th>User / Origin</th>
+                  <th class="text-right">Pieces</th>
+                  <th class="text-right">Created / Modified (UTC)</th>
                 </tr>
               </thead>
               <tbody>
                 {% for record in raw_trame_records %}
-                  <tr class="hover">
-                    <th>{{ record.id }}</th>
+                  <tr class="hover group">
+                    <th class="font-mono text-xs">{{ record.id }}</th>
                     <td>
-                      <div class="font-bold">{{ record.title or "Untitled" }}</div>
-                      {% if record.slug %}<div class="text-xs opacity-50">{{ record.slug }}</div>{% endif %}
+                      <div class="font-bold truncate max-w-[200px]" title="{{ record.title or "Untitled" }}">
+                        {{ record.title or "Untitled" }}
+                      </div>
+                      {# {% if record.slug %}
+                        <div class="text-xs opacity-50 font-mono truncate max-w-[200px]" title="{{ record.slug }}">
+                          {{ record.slug }}
+                        </div>
+                      {% endif %} #}
                     </td>
-                    <td>{{ record.username }}</td>
                     <td>
-                      <div class="badge badge-ghost badge-sm">{{ record.saving_origin }}</div>
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-primary badge-sm">{{ record.username }}</span>
+                        <span class="badge badge-ghost badge-sm">{{ record.saving_origin }}</span>
+                      </div>
                     </td>
-                    <td>{{ record.piece_count }}</td>
-                    <td class="text-sm">
-                      {{ record.created_at.strftime("%Y-%m-%d %H:%M") if record.created_at else '-' }}
-                    </td>
-                    <td class="text-sm">
-                      {{ record.modified_at.strftime("%Y-%m-%d %H:%M") if record.modified_at else '-' }}
+                    <td class="text-center font-mono text-right">{{ record.piece_count }}</td>
+                    <td class="text-right text-xs">
+                      <div class="flex justify-end gap-3 font-body">
+                        <span title="Created At">
+                          <span class="opacity-50 mr-1">C:</span>{{ record.created_at.strftime("%Y-%m-%d %H:%M") if record.created_at else '-' }}
+                        </span>
+                        <span title="Modified At">
+                          <span class="opacity-50 mr-1">M:</span>{{ record.modified_at.strftime("%Y-%m-%d %H:%M") if record.modified_at else '-' }}
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 {% endfor %}

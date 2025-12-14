@@ -121,12 +121,42 @@ async def admin_dashboard(
         return RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
 
     # Token is valid - show dashboard
+
+    # Hardcoded routes as requested
+    routes = [
+        {
+            "path": f"/trame/admin/{access_name}/dashboard",
+            "name": "Admin Dashboard",
+            "methods": "GET",
+            "is_clickable": True,
+        },
+        {
+            "path": f"/trame/admin/{access_name}/raw_trame_list",
+            "name": "Raw Trame List",
+            "methods": "GET",
+            "is_clickable": True,
+        },
+        {
+            "path": f"/trame/admin/{access_name}/protected-example",
+            "name": "Protected Example",
+            "methods": "GET",
+            "is_clickable": True,
+        },
+        # {
+        #     "path": f"/trame/admin/{access_name}",
+        #     "name": "🔓 Admin Access (Login)",
+        #     "methods": "GET",
+        #     "is_clickable": True,
+        # },
+    ]
+
     dependencies = get_deps_from("local")
     context = {
         "request": request,
         "deps": dependencies,
         "access_name": ACCESS_NAMES.get(access_name, "Unknown"),
         "access_name_slug": access_name,
+        "routes": routes,
     }
 
     response = templates.TemplateResponse("trame/admin_dashboard.html", context)
