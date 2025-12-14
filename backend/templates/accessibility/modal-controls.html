@@ -1,4 +1,4 @@
-<h3 class="text-base sm:text-lg mb-2 font-semibold text-base-content">Contrastes</h3>
+<h3 class="text-base sm:text-lg mb-2 font-semibold text-base-content font-heading">Contrastes</h3>
 <ul class="text-sm font-medium text-base-content bg-base-100 mb-6">
   <li>
     <div class="flex items-center">
@@ -55,7 +55,9 @@
   </li>
 </ul>
 
-<h3 class="text-base sm:text-lg mb-2 font-semibold text-base-content mt-4">Police (dyslexie)</h3>
+<h3 class="text-base sm:text-lg mb-2 font-semibold text-base-content mt-4 font-heading">
+  Police (dyslexie)
+</h3>
 <ul class="text-sm font-medium text-base-content bg-base-100 mb-6">
   <li>
     <div class="flex items-center">
@@ -64,9 +66,7 @@
              name="font-radio"
              class="radio radio-secondary radio-sm"
              data-font-selector="default" />
-      <label for="font-default" class="w-full text-sm font-medium text-base-content ml-3">
-        Défaut (<span style="font-family:var(--font-lexend)">Lexend</span> / <span style="font-family:var(--font-spectral)">Spectral</span>)
-      </label>
+      <label for="font-default" class="w-full text-sm font-medium text-base-content ml-3">Défaut</label>
     </div>
   </li>
   <li class="mt-2">
@@ -85,7 +85,9 @@
 </ul>
 
 
-<h3 class="text-base sm:text-lg mb-2 font-semibold text-base-content mt-4">
+<hr class="my-6 border-base-300 h-px" />
+
+<h3 class="text-base sm:text-lg mb-2 font-semibold text-base-content mt-4 font-heading">
   Choisir un thème spécifique
 </h3>
 
@@ -94,5 +96,5 @@
   <span>Afficher les thèmes</span>
 </button>
 <div class="overflow-hidden max-h-0 transition-all duration-300 ease-in-out">
-  <div class="mt-2">{% include "draft/modal-themes-selectable-list.html" %}</div>
+  <div class="mt-2">{% include "accessibility/modal-themes-selectable-list.html" %}</div>
 </div>

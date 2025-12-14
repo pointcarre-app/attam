@@ -1,4 +1,4 @@
-<div class="navbar bg-base-100 md:p-6">
+<div class="navbar bg-base-100 md:px-6 py-2 shadow-lg">
   <!-- Logo (left) -->
   <div class="navbar-start">
 
@@ -25,7 +25,7 @@
     {% if domain and domain.slug =='pot-au-noir' and request.path == "/" %}
 
     {% elif domain %}
-      <span class="text-xl md:text-3xl font-heading font-light">{{ domain.name_html | safe }}</span>
+      <span class="text-xl md:text-3xl lg:text-4xl font-heading font-light">{{ domain.name_html | safe }}</span>
     {% else %}
       <span class="text-xl font-bold">🎨 DaisyUI Showcase</span>
     {% endif %}
@@ -34,9 +34,9 @@
   <!-- Buttons (right) -->
   <div class="navbar-end gap-4">
     {# <div class="badge badge-primary">Contatact</div> #}
-    <button class="btn">Contact</button>
+    <button class="btn lg:btn-lg">Contact</button>
     <button id="attam-accessibility-button"
-            class="btn btn-square btn-accent btn-outline"
+            class="btn btn-square btn-accent btn-outline lg:btn-lg"
             style="font-weight:400">
       <svg xmlns="http://www.w3.org/2000/svg"
            viewBox="0 0 24 24"
