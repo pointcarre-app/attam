@@ -11,9 +11,10 @@ from trame import Trame, Piece, TrameBuilder
 
 from backend.dependencies import get_deps_from
 from backend.trame_reader import read_trame, prepare_trame_for_rendering
-from backend.settings import templates
+from backend.settings import templates, DATABASE_URL
 from backend import admin_login
 from backend.jwt_handler import verify_access_token
+from backend.postgres_manager import PostgresManager
 
 
 logger = logging.getLogger(__name__)
@@ -131,7 +132,7 @@ async def debug(request: Request):
 
 # TODO : after dashboard
 @router.get("/admin/{access_name:str}/raw_trame_list")
-async def protected_example_view(
+async def raw_trame_list(
     request: Request,
     access_name: str,
     trame_access_token: Optional[str] = Cookie(None),
@@ -147,14 +148,23 @@ async def protected_example_view(
         # Redirect to login page if not authenticated
         return RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
 
+    raw_trame_records = []
+    if DATABASE_URL:
+        try:
+            db_manager = PostgresManager(DATABASE_URL)
+            raw_trame_records = db_manager.get_all_raw_trames()
+        except Exception as e:
+            logger.error(f"Failed to fetch raw trames: {e}")
+
     dependencies = get_deps_from("local")
     context = {
         "request": request,
         "deps": dependencies,
         "access_name": token_user,
         "access_name_slug": access_name,
+        "raw_trame_records": raw_trame_records,
     }
-    return templates.TemplateResponse("trame/protected_example.html", context)
+    return templates.TemplateResponse("trame/raw_trame_list.html", context)
 
 
 # Admin login routes
@@ -163,5 +173,5 @@ router.post("/admin/login")(admin_login.login_submit)
 router.get("/admin/logout")(admin_login.admin_logout)
 router.get("/admin/logout/confirmed")(admin_login.admin_logout_confirmed)
 router.get("/admin/{access_name:str}/dashboard")(admin_login.admin_dashboard)
-router.get("/admin/{access_name:str}/protected-example")(protected_example_view)
+router.get("/admin/{access_name:str}/protected-example")(raw_trame_list)
 router.get("/admin/{access_name:str}")(admin_login.admin_access)

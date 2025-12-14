@@ -24,6 +24,29 @@ async def lifespan(app: FastAPI):
             db_manager = PostgresManager(DATABASE_URL)
             db_manager.create_raw_trame_table_if_not_exists()
             print("✓ Database initialized and table 'raw_trame' checked.")
+
+            # Example insertion preparation
+            example_username = "sel"
+            example_md_content = "# Example Title\n\nThis is a test content."
+            example_piece_count = 1
+            example_title = "Example Title"
+            example_slug = "example-title"
+            example_saving_origin = "lifespan_test"
+            example_metadata = {"key": "value", "description": "Test insertion"}
+
+            # Delete existing example trame if it exists
+            db_manager.delete_raw_trame_by_slug(example_slug)
+
+            db_manager.save_raw_trame(
+                username=example_username,
+                md_content=example_md_content,
+                piece_count=example_piece_count,
+                title=example_title,
+                slug=example_slug,
+                saving_origin=example_saving_origin,
+                metadata=example_metadata,
+            )
+
         except Exception as e:
             print(f"⚠ Database initialization failed: {e}")
     else:

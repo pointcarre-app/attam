@@ -1,7 +1,7 @@
 import logging
 import psycopg2
 from psycopg2.extras import Json
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 # Configure logger
 logger = logging.getLogger(__name__)
@@ -11,9 +11,10 @@ class PostgresManager:
     def __init__(self, db_url: str):
         self.db_url = db_url
 
-    def safely_execute(self, query: str, vars: tuple = None) -> bool:
+    def safely_execute(self, query: str, vars: tuple = None, fetch_all: bool = False) -> Any:
         """
         Executes a query safely with commit/rollback handling.
+        If fetch_all is True, returns a list of dictionaries.
         """
         conn = None
         try:
@@ -21,6 +22,12 @@ class PostgresManager:
             cur = conn.cursor()
             try:
                 cur.execute(query, vars)
+                if fetch_all:
+                    columns = [desc[0] for desc in cur.description]
+                    results = [dict(zip(columns, row)) for row in cur.fetchall()]
+                    conn.commit()
+                    return results
+
                 conn.commit()
                 return True
             except Exception as e:
@@ -116,3 +123,18 @@ class PostgresManager:
             ),
         )
         logger.info(f"Saved raw_trame for user {username}")
+
+    def delete_raw_trame_by_slug(self, slug: str):
+        """
+        Deletes a record from the raw_trame table by slug.
+        """
+        query = "DELETE FROM raw_trame WHERE slug = %s"
+        self.safely_execute(query, vars=(slug,))
+        logger.info(f"Deleted raw_trame with slug: {slug}")
+
+    def get_all_raw_trames(self) -> List[Dict[str, Any]]:
+        """
+        Retrieves all records from the raw_trame table.
+        """
+        query = "SELECT * FROM raw_trame ORDER BY created_at DESC"
+        return self.safely_execute(query, fetch_all=True)
