@@ -1,5 +1,7 @@
 from pathlib import Path
-from fastapi import APIRouter, Request
+from typing import Optional
+from fastapi import APIRouter, Request, Cookie
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 import tempfile
 import logging
@@ -11,6 +13,7 @@ from backend.dependencies import get_deps_from
 from backend.trame_reader import read_trame, prepare_trame_for_rendering
 from backend.settings import templates
 from backend import admin_login
+from backend.jwt_handler import verify_access_token
 
 
 logger = logging.getLogger(__name__)
@@ -126,10 +129,39 @@ async def debug(request: Request):
     return templates.TemplateResponse("trame_debug.html", context)
 
 
+# TODO : after dashboard
+@router.get("/admin/{access_name:str}/raw_trame_list")
+async def protected_example_view(
+    request: Request,
+    access_name: str,
+    trame_access_token: Optional[str] = Cookie(None),
+):
+    """
+    Example protected view that requires login.
+    """
+    # Verify token
+    token_user = verify_access_token(trame_access_token) if trame_access_token else None
+
+    # Check if logged in and user matches
+    if not token_user or token_user != access_name:
+        # Redirect to login page if not authenticated
+        return RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
+
+    dependencies = get_deps_from("local")
+    context = {
+        "request": request,
+        "deps": dependencies,
+        "access_name": token_user,
+        "access_name_slug": access_name,
+    }
+    return templates.TemplateResponse("trame/protected_example.html", context)
+
+
 # Admin login routes
 # Specific routes must come before parameterized routes
 router.post("/admin/login")(admin_login.login_submit)
 router.get("/admin/logout")(admin_login.admin_logout)
 router.get("/admin/logout/confirmed")(admin_login.admin_logout_confirmed)
 router.get("/admin/{access_name:str}/dashboard")(admin_login.admin_dashboard)
+router.get("/admin/{access_name:str}/protected-example")(protected_example_view)
 router.get("/admin/{access_name:str}")(admin_login.admin_access)

@@ -28,6 +28,7 @@ class Settings(BaseSettings):
 
     env: str = "LOCAL"
     local_domain: str | None = None  # Override domain for local dev (e.g., "potaunoir")
+    database_url: str | None = None
 
 
 settings = Settings()
@@ -42,6 +43,7 @@ if ENV == "LOCAL":
 SECRET_KEY = os.getenv("SECRET_KEY")
 WASABI_PASSWORD = os.getenv("WASABI_PASSWORD")
 SEL_PASSWORD = os.getenv("SEL_PASSWORD")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 # =============================================================================

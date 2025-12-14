@@ -3,6 +3,9 @@ from contextlib import asynccontextmanager
 import os
 import shutil
 
+from backend.settings import DATABASE_URL
+from backend.postgres_manager import PostgresManager
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -14,6 +17,17 @@ async def lifespan(app: FastAPI):
 
     # Create static directory if it doesn't exist
     os.makedirs(static_dir, exist_ok=True)
+
+    # Initialize Database
+    if DATABASE_URL:
+        try:
+            db_manager = PostgresManager(DATABASE_URL)
+            db_manager.create_raw_trame_table_if_not_exists()
+            print("✓ Database initialized and table 'raw_trame' checked.")
+        except Exception as e:
+            print(f"⚠ Database initialization failed: {e}")
+    else:
+        print("⚠ DATABASE_URL not found in environment variables. Database initialization skipped.")
 
     # Copy dependencies folder
     dependencies_src = os.path.join(project_root, "dependencies")

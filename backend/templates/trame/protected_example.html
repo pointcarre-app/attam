@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Protected Page - {{ access_name }}{% endblock %}
+
+{% block content %}
+  <div class="container mx-auto p-4">
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">Protected View</h2>
+        <p class="text-lg">
+          Hello, <span class="font-bold text-primary">{{ access_name }}</span>!
+        </p>
+        <p>You are seeing this page because you are successfully logged in.</p>
+
+        <div class="card-actions justify-end mt-4">
+          <a href="/trame/admin/{{ access_name_slug }}/dashboard" class="btn btn-primary">
+            Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
