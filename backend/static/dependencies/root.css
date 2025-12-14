@@ -955,7 +955,7 @@
   transform: translate(-50%, -50%) scale(1);
   border: 1px solid var(--color-primary);
   opacity: 0;
-  animation: ripple-emit 3s ease-out infinite;
+  animation: ripple-emit 3s ease-out 4;
   pointer-events: none;
   z-index: 1;
 }
