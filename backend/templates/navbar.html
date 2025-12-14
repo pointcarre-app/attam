@@ -1,7 +1,10 @@
-<div class="navbar bg-base-100 mb-8">
+<div class="navbar bg-base-100 md:p-6">
   <!-- Logo (left) -->
   <div class="navbar-start">
-    {% if domain and domain.logo %}
+
+    {% if domain and domain.slug =='pot-au-noir' and request.path == "/" %}
+
+    {% elif domain and domain.logo %}
       <div class="avatar">
         <div class="w-16 md:w-22 rounded-full">
           <img src="{{ domain.logo }}" alt="{{ domain.name }}" />
@@ -18,17 +21,97 @@
 
   <!-- Title (center) -->
   <div class="navbar-center">
-    {% if domain %}
-      <span class="text-xl font-bold">{{ domain.name }}</span>
+
+    {% if domain and domain.slug =='pot-au-noir' and request.path == "/" %}
+
+    {% elif domain %}
+      <span class="text-xl md:text-3xl font-heading">{{ domain.name }}</span>
     {% else %}
       <span class="text-xl font-bold">🎨 DaisyUI Showcase</span>
     {% endif %}
   </div>
 
   <!-- Buttons (right) -->
-  <div class="navbar-end gap-2">
-    <div class="badge badge-primary">v5</div>
-    <button class="btn btn-ghost btn-sm">Docs</button>
-    <button class="btn btn-primary btn-sm">Action</button>
+  <div class="navbar-end gap-4">
+    {# <div class="badge badge-primary">Contatact</div> #}
+    <button class="btn">Contact</button>
+    <button id="attam-accessibility-button"
+            class="btn btn-square btn-accent btn-outline"
+            style="font-weight:400">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           width="24"
+           height="24"
+           viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="2"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           class="lucide lucide-eye-icon lucide-eye">
+        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+    </button>
+
+
   </div>
 </div>
+
+<script>
+    // Function to extract all themes from loaded CSS
+    function getAllThemes() {
+        const themes = new Set();
+
+        // Iterate through all stylesheets
+        for (const stylesheet of document.styleSheets) {
+            try {
+                // Try to access the CSS rules (may fail for cross-origin stylesheets)
+                const rules = stylesheet.cssRules || stylesheet.rules;
+
+                if (rules) {
+                    for (const rule of rules) {
+                        // Check if the rule is a style rule with a selector
+                        if (rule.selectorText) {
+                            // Match [data-theme="theme-name"] pattern
+                            const match = rule.selectorText.match(/\[data-theme=["']([^"']+)["']\]/);
+                            if (match) {
+                                themes.add(match[1]);
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                // Skip stylesheets that can't be accessed (cross-origin)
+                console.warn('Could not access stylesheet:', stylesheet.href, e);
+            }
+        }
+
+        return Array.from(themes).sort();
+    }
+
+    // Log all themes when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        const themes = getAllThemes();
+        console.log('🎨 Available themes:', themes);
+        console.log(`📊 Total themes found: ${themes.length}`);
+
+        // Log them in a nice table format
+        console.table(themes.map((theme, index) => ({
+            index: index + 1,
+            theme
+        })));
+
+        // Add event listener to accessibility button
+        const accessibilityButton = document.getElementById('attam-accessibility-button');
+        if (accessibilityButton) {
+            accessibilityButton.addEventListener('click', () => {
+                const modal = document.getElementById('attam-accessibility-modal');
+                if (modal) {
+                    modal.showModal();
+                } else {
+                    console.warn('Modal with id "attam-accessibility-modal" not found');
+                }
+            });
+        }
+    });
+</script>

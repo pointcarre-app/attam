@@ -134,4 +134,4 @@ async def admin_access(request: Request, access_name: str):
         "deps": dependencies,
         "access_name": access_name,
     }
-    return templates.TemplateResponse("trame_debug.html", context)
+    return templates.TemplateResponse("trame/admin.html", context)

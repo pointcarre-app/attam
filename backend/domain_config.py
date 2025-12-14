@@ -7,12 +7,17 @@ from starlette.requests import Request
 
 
 class DomainConfig(BaseModel):
-    """Configuration for a single domain/brand"""
+    """Configuration for a single domain/brand
+
+    The theme property sets the default theme for the domain.
+    This is passed to the AccessibilityManager via data-default-theme attribute
+    in base.html, allowing the JS to know the domain's preferred theme.
+    """
 
     name: str
     hosts: list[str]
     logo: str | None = None
-    theme: str = "anchor"
+    theme: str = "anchor"  # Default theme for this domain
     slug: str
 
 

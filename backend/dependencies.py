@@ -33,6 +33,7 @@ def get_deps_from(from_: Union[Literal["local"], Literal["cdn"]]):
             "katex_css": "/static/dependencies/katex.css",
             "katex_js": "/static/dependencies/katex.js",
             "katex_autorender_js": "/static/dependencies/katex-autorender.js",
+            "accessibility_manager_js": "/static/dependencies/accessibility-manager.js",
             # "app_styles_css": "/static/common/css/styles.css",
         }
     elif from_ == "cdn":
@@ -54,6 +55,7 @@ def get_deps_from(from_: Union[Literal["local"], Literal["cdn"]]):
             "katex_css": "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css",
             "katex_js": "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js",
             "katex_autorender_js": "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js",
+            "accessibility_manager_js": "/static/dependencies/accessibility-manager.js",
             # "app_styles_css": "/static/common/css/styles.css",
         }
 

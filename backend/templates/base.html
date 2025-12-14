@@ -1,6 +1,6 @@
 {% set domain = get_domain(request) %}
 <!DOCTYPE html>
-<html lang="en" data-theme="{{ domain.theme }}">
+<html lang="en" data-theme="{{ domain.theme }}" data-default-theme="{{ domain.theme }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -25,6 +25,7 @@
 
     <!-- JavaScript Dependencies -->
     <script src="{{ deps.tailwind_js }}"></script>
+    <script src="{{ deps.accessibility_manager_js }}"></script>
 
 
     {% include "specific_dependencies_per_domain.html" %}
@@ -32,13 +33,16 @@
     {% block head_extra %}{% endblock %}
   </head>
 
-  <body class="bg-base-100 min-h-screen">
+  <body class="bg-base-100">
     <!-- Navbar -->
 
-    {% if request.path != "/" %}
-      {% include "navbar.html" %}
-    {% endif %}
+
+    {% include "navbar.html" %}
+
 
     {% block content %}{% endblock %}
+
+    <!-- Accessibility Modal -->
+    {% include "draft/modal.html" %}
   </body>
 </html>
