@@ -939,6 +939,11 @@
 [data-theme="pan-light"] {
   color-scheme: light;
 
+
+
+  --font-body: var(--font-spectral);
+  --font-heading: var(--font-rubik);
+
   /* ===== BASE COLORS (BACKGROUNDS) ===== */
   --color-base-100: oklch(99% 0.005 145); /* Pretty light with subtle green warmth */
   --color-base-200: oklch(96% 0.008 145); /* Not too heavy, gentle layering */

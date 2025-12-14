@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Landing{% endblock %}
+
+{% block content %}
+
+
+  {% if domain.slug == "pot-au-noir" %}
+    {% include "pan/partial/landing.html" %}
+  {% else %}
+    <div class="container mx-auto p-6 max-w-4xl">
+      <span class="font-heading text-3xl font-bold mb-4">Landing</span>
+      <p class="text-base-content/70">This is the landing template extending base.html</p>
+    </div>
+
+  {% endif %}
+{% endblock %}

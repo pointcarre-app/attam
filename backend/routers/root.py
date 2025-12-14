@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Query, Request
 from fastapi.responses import HTMLResponse
 from datetime import datetime, UTC
 
@@ -6,6 +6,25 @@ from backend.settings import templates
 from backend.dependencies import get_deps_from
 
 router = APIRouter()
+
+
+@router.get("/")
+async def index(
+    request: Request,
+    deps_from: str = Query(default="local", pattern="^(cdn|local)$"),
+):
+    """View that renders the DaisyUI showcase template
+
+    Args:
+        deps_from: 'local' to use local static files, 'cdn' to use CDN URLs
+    """
+    dependencies = get_deps_from(deps_from)
+
+    context = {
+        "request": request,
+        "deps": dependencies,
+    }
+    return templates.TemplateResponse("landing.html", context)
 
 
 @router.get("/routes", response_class=HTMLResponse)

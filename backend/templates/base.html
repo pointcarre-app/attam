@@ -1,3 +1,4 @@
+{% set domain = get_domain(request) %}
 <!DOCTYPE html>
 <html lang="en" data-theme="{{ domain.theme }}">
   <head>
@@ -38,7 +39,7 @@
       <div class="navbar-start">
         {% if domain and domain.logo %}
           <div class="avatar">
-            <div class="w-16 md:w-24 rounded-full">
+            <div class="w-16 md:w-22 rounded-full">
               <img src="{{ domain.logo }}" alt="{{ domain.name }}" />
             </div>
           </div>

@@ -1,10 +1,44 @@
 """
-Get domain config from request host.
+Domain configuration for multi-tenant support.
 """
 
-from fastapi import Request
+from pydantic import BaseModel
+from starlette.requests import Request
 
-from .settings import DOMAINS, DomainConfig
+
+class DomainConfig(BaseModel):
+    """Configuration for a single domain/brand"""
+
+    name: str
+    hosts: list[str]
+    logo: str | None = None
+    theme: str = "anchor"
+    slug: str
+
+
+DOMAINS: dict[str, DomainConfig] = {
+    "potaunoir": DomainConfig(
+        name="Pot au Noir",
+        hosts=["pot-au-noir.fr", "pot-au-noir.com", "localhost", "127.0.0.1", "*"],
+        logo="/static/trames/potaunoir/logo-1.png",
+        theme="pan-light",
+        slug="pot-au-noir",
+    ),
+    # "alidade": DomainConfig(
+    #     name="Alidade",
+    #     hosts=["alidade.fr"],
+    #     logo=None,
+    # ),
+    "attam": DomainConfig(
+        name="All Things to All Men",
+        hosts=["allthingstoallmen.org", "attam0.osc-fr1.scalingo.io"],
+        logo=None,
+        slug="attam",
+    ),
+}
+
+# Production allowed hosts (derived from DOMAINS)
+PRODUCTION_HOSTS = [host for domain in DOMAINS.values() for host in domain.hosts]
 
 
 def get_domain_config(request: Request) -> DomainConfig | None:
