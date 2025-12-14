@@ -43,14 +43,15 @@ async def routes(request: Request):
     <body style="max-width: 800px; margin: 0 auto;font-family: monospace; font-size: 1.2rem;">
         <h1>Root</h1>
         <p>Host: {host}</p>
-        <h2>znd</h2>
+        <h2>Usage</h2>
         <ul>
+            <li style="padding-bottom:8px;"><a href="/trame/admin/<>"> 🔒 Admin </a></li>
             <li style="padding-bottom:8px;"><a href="/trame/path/trames/alidade/batiment_guepard.jpg"> 🐆 Trame Guépard </a></li>
             <li style="padding-bottom:8px;"><a href="trame/path/trames/alidade/nav_et_trigo.md"> 📝 Trame Editor </a></li>
             <li style="padding-bottom:8px;"><a href="/fonts"> 🎨 Fonts </a></li>
         </ul>
 
-        <h2>sel</h2>
+        <h2>Dev</h2>
         <ul>
             <li style="padding-bottom:8px;"><a href="/template">🎨 Template</a></li>
             <li style="padding-bottom:8px;"><a href="/health"> 🛡️ Health </a></li>

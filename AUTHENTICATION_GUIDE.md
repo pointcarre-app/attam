@@ -65,7 +65,7 @@ ACCESS_TOKEN_EXPIRE_HOURS = 24
 
 # Access credentials
 ACCESS_CREDENTIALS = {
-    "znd": "password123",  # Change these!
+    "<username>": "password123",  # Change these!
     "sel": "password456",  # Change these!
 }
 ```
@@ -95,7 +95,7 @@ ACCESS_CREDENTIALS = {
    
    # Store hashed passwords
    ACCESS_CREDENTIALS = {
-       "znd": pwd_context.hash("password123"),
+       "<username>": pwd_context.hash("password123"),
        "sel": pwd_context.hash("password456"),
    }
    
@@ -117,7 +117,7 @@ ACCESS_CREDENTIALS = {
 4. **Move credentials to environment variables or secure config**
    ```bash
    # .env file
-   ZND_PASSWORD=secure_password_here
+   <username>_PASSWORD=secure_password_here
    SEL_PASSWORD=another_secure_password
    ```
 
@@ -139,7 +139,7 @@ ACCESS_CREDENTIALS = {
 
 ## Testing
 
-1. Visit: `http://localhost:8000/trame/admin/znd`
+1. Visit: `http://localhost:8000/trame/admin/<username>`
 2. Enter password: `password123`
 3. You should be redirected to the dashboard
 4. Try accessing dashboard directly without login - should redirect to login

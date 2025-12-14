@@ -10,7 +10,7 @@ from fastapi import Request, Form, Cookie, HTTPException
 from fastapi.responses import RedirectResponse
 
 from backend.dependencies import get_deps_from
-from backend.settings import templates, ZND_PASSWORD, SEL_PASSWORD
+from backend.settings import templates, SEL_PASSWORD, WASABI_PASSWORD
 from backend.jwt_handler import (
     create_access_token,
     verify_access_token,
@@ -21,12 +21,12 @@ logger = logging.getLogger(__name__)
 
 
 # Access names mapping
-ACCESS_NAMES = {"znd": "Znd", "sel": "Sel"}
+ACCESS_NAMES = {"wasabi": "Wasabi", "sel": "Sel"}
 
 # Access credentials (access_name: password)
 # TODO: Move to environment variables or secure config
 ACCESS_CREDENTIALS = {
-    "znd": ZND_PASSWORD,  # Change these!
+    "wasabi": WASABI_PASSWORD,  # Change these!
     "sel": SEL_PASSWORD,  # Change these!
 }
 

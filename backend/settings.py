@@ -40,7 +40,7 @@ if ENV == "LOCAL":
     load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
-ZND_PASSWORD = os.getenv("ZND_PASSWORD")
+WASABI_PASSWORD = os.getenv("WASABI_PASSWORD")
 SEL_PASSWORD = os.getenv("SEL_PASSWORD")
 
 
