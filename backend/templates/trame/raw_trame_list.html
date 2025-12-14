@@ -28,6 +28,7 @@
                   <th>Origin</th>
                   <th>Pieces</th>
                   <th>Created At</th>
+                  <th>Modified At</th>
                 </tr>
               </thead>
               <tbody>
@@ -45,6 +46,9 @@
                     <td>{{ record.piece_count }}</td>
                     <td class="text-sm">
                       {{ record.created_at.strftime("%Y-%m-%d %H:%M") if record.created_at else '-' }}
+                    </td>
+                    <td class="text-sm">
+                      {{ record.modified_at.strftime("%Y-%m-%d %H:%M") if record.modified_at else '-' }}
                     </td>
                   </tr>
                 {% endfor %}

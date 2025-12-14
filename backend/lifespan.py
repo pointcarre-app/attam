@@ -34,10 +34,8 @@ async def lifespan(app: FastAPI):
             example_saving_origin = "lifespan_test"
             example_metadata = {"key": "value", "description": "Test insertion"}
 
-            # Delete existing example trame if it exists
-            db_manager.delete_raw_trame_by_slug(example_slug)
-
-            db_manager.save_raw_trame(
+            # Use upsert to prevent ID increment on restart
+            db_manager.upsert_raw_trame(
                 username=example_username,
                 md_content=example_md_content,
                 piece_count=example_piece_count,
