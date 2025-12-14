@@ -45,10 +45,17 @@ async def routes(request: Request):
         <p>Host: {host}</p>
         <h2>Usage</h2>
         <ul>
-            <li style="padding-bottom:8px;"><a href="/trame/admin/<>"> 🔒 Admin </a></li>
             <li style="padding-bottom:8px;"><a href="/trame/path/trames/alidade/batiment_guepard.jpg"> 🐆 Trame Guépard </a></li>
             <li style="padding-bottom:8px;"><a href="trame/path/trames/alidade/nav_et_trigo.md"> 📝 Trame Editor </a></li>
             <li style="padding-bottom:8px;"><a href="/fonts"> 🎨 Fonts </a></li>
+        </ul>
+
+        <h2>Trame Admin</h2>
+        <ul>
+            <li style="padding-bottom:8px;"><a href="/trame/admin/username"> 🔒 Admin Access </a></li>
+            <li style="padding-bottom:8px;"><a href="/trame/admin/username/dashboard"> 🔒 Admin Dashboard </a></li>
+            <li style="padding-bottom:8px;"><a href="/trame/admin/username/logout"> 🔒 Logout </a></li>
+            <li style="padding-bottom:8px;"><a href="/trame/admin/username/logout/confirmed"> 🔒 Logout Confirmed </a></li>
         </ul>
 
         <h2>Dev</h2>
