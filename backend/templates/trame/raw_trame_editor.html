@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="anchor">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raw Trame Editor - {{ raw_trame.title }}</title>
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="{{ deps.google_fonts }}" />
+    <link rel="stylesheet" href="{{ deps.open_dyslexic_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_css }}" />
+    <link rel="stylesheet" href="{{ deps.daisyui_themes_css }}" />
+
+    <!-- JavaScript Dependencies -->
+    <script src="{{ deps.tailwind_js }}"></script>
+
+    <!-- SimpleMDE Markdown Editor -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" />
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+    <style>
+        .CodeMirror {
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+        }
+    </style>
+
+  </head>
+
+  <body class="bg-base-200 min-h-screen">
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast toast-top toast-end z-50"></div>
+
+    <div class="container mx-auto max-w-screen-2xl px-4 py-6">
+      <div class="mb-4 flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold">
+            {{ raw_trame.title or "Untitled Trame" }} <span class="text-sm font-normal opacity-70 ml-2">(Editor)</span>
+          </h1>
+        </div>
+        <div class="flex gap-2">
+          <a href="/trame/admin/{{ access_name }}/raw_trame_list" class="btn btn-sm btn-outline">Back to List</a>
+          <button class="btn btn-sm btn-primary">Save (Coming Soon)</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+
+        <!-- Left Column: Markdown Editor -->
+        <section class="h-[calc(100vh-8rem)]">
+          <div class="bg-base-100 rounded-lg shadow-lg h-full overflow-hidden flex flex-col">
+            <div class="bg-base-300 px-4 py-2 border-b border-base-content/10 flex justify-between items-center">
+              <h2 class="text-lg font-semibold text-base-content">Markdown Source</h2>
+              <div class="flex items-center gap-3">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <span class="text-sm text-base-content/70">Mono</span>
+                  <input type="checkbox" id="mono-toggle" class="toggle toggle-sm toggle-primary" checked />
+                </label>
+                <button id="process-btn" class="btn btn-sm btn-secondary">Preview Update</button>
+              </div>
+            </div>
+            <div class="flex-1 overflow-auto">
+              <textarea id="markdown-editor"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Column: Rendered Content -->
+        <section class="h-[calc(100vh-8rem)] overflow-y-auto">
+          <article id="rendered-content" class="bg-base-100 rounded-lg shadow-lg p-4 sm:p-6 md:p-8 lg:p-10">
+            {% include 'pieces/_rendered_content.html' %}
+          </article>
+        </section>
+
+      </div>
+    </div>
+
+    {# djlint:off #}
+    <script>
+      var markdownContent = {{ trame_html_content | tojson }};
+      var simplemde = new SimpleMDE({
+        element: document.getElementById("markdown-editor"),
+        initialValue: markdownContent,
+        spellChecker: false,
+        status: false,
+        toolbar: [
+            "bold", "italic", "heading", "|", 
+            "quote", "unordered-list", "ordered-list", "|", 
+            "link", "image", "|", 
+            "preview", "side-by-side", "fullscreen"
+        ],
+        autofocus: false,
+      });
+      window.mdEditor = simplemde;
+
+      // Handle mono toggle
+      document.getElementById('mono-toggle').addEventListener('change', function() {
+        var cm = document.querySelector('.CodeMirror');
+        if (this.checked) {
+          cm.style.fontFamily = 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace';
+        } else {
+          cm.style.fontFamily = 'ui-sans-serif, system-ui, sans-serif';
+        }
+      });
+
+      // Toast notification function
+      function showToast(message, type) {
+        var toastContainer = document.getElementById('toast-container');
+        var alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+        var icon = type === 'success' ? 
+          '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' :
+          '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+        
+        var toast = document.createElement('div');
+        toast.className = 'alert ' + alertClass;
+        toast.innerHTML = icon + '<span>' + message + '</span>';
+        
+        toastContainer.appendChild(toast);
+        
+        setTimeout(function() {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.3s';
+          setTimeout(function() {
+            toastContainer.removeChild(toast);
+          }, 300);
+        }, 3000);
+      }
+
+      // Handle process button click
+      document.getElementById('process-btn').addEventListener('click', function() {
+        var content = simplemde.value();
+        
+        fetch('/trame/process', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content: content })
+        })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          console.log('Success:', data);
+          
+          // Replace the rendered content with the new HTML
+          var renderedContent = document.getElementById('rendered-content');
+          renderedContent.innerHTML = data.rendered_html;
+          
+          // Process attam:path images in the new content
+          if (typeof processAttamImages === 'function') {
+            processAttamImages();
+          }
+          
+          showToast('Processed ' + data.piece_count + ' pieces successfully!', 'success');
+        })
+        .catch(function(error) {
+          console.error('Error:', error);
+          showToast('Error processing markdown', 'error');
+        });
+      });
+</script>
+    {# djlint:on #}
+
+  </body>
+</html>

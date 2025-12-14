@@ -1,16 +1,15 @@
 from pathlib import Path
 from typing import Optional
-from fastapi import APIRouter, Request, Cookie
+from fastapi import APIRouter, Request, Cookie, HTTPException
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
-import tempfile
 import logging
 
 
-from trame import Trame, Piece, TrameBuilder
+from trame import Trame, Piece
 
 from backend.dependencies import get_deps_from
-from backend.trame_reader import read_trame, prepare_trame_for_rendering
+from backend.trame_reader import read_trame, prepare_trame_for_rendering, process_markdown_content
 from backend.settings import templates, DATABASE_URL
 from backend import admin_login
 from backend.jwt_handler import verify_access_token
@@ -83,35 +82,19 @@ async def get_trame(request: Request, trame_path: Path):
 async def process_markdown(request: Request, markdown_data: MarkdownContent):
     logger.info("Processing markdown content")
 
-    # Create temporary file with markdown content
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".md", delete=False, encoding="utf-8"
-    ) as tmp_file:
-        tmp_file.write(markdown_data.content)
-        tmp_path = Path(tmp_file.name)
+    prepared_pieces = process_markdown_content(markdown_data.content)
 
-    try:
-        # Process the markdown file
-        trame = TrameBuilder.from_file(path=tmp_path)
-        prepared_pieces = prepare_trame_for_rendering(trame)
+    # Render the HTML partial
+    rendered_html = templates.get_template("pieces/_rendered_content.html").render(
+        prepared_pieces=prepared_pieces
+    )
 
-        logger.info(f"Processed {len(prepared_pieces)} pieces from markdown")
-        logger.info(f"Prepared pieces: {prepared_pieces}")
-
-        # Render the HTML partial
-        rendered_html = templates.get_template("pieces/_rendered_content.html").render(
-            prepared_pieces=prepared_pieces
-        )
-
-        return {
-            "success": True,
-            "prepared_pieces": prepared_pieces,
-            "piece_count": len(prepared_pieces),
-            "rendered_html": rendered_html,
-        }
-    finally:
-        # Clean up temporary file
-        tmp_path.unlink(missing_ok=True)
+    return {
+        "success": True,
+        "prepared_pieces": prepared_pieces,
+        "piece_count": len(prepared_pieces),
+        "rendered_html": rendered_html,
+    }
 
 
 @router.get("/debug")
@@ -167,11 +150,107 @@ async def raw_trame_list(
     return templates.TemplateResponse("trame/raw_trame_list.html", context)
 
 
+@router.get("/admin/{access_name:str}/raw_trame/{raw_trame_id:int}")
+async def view_raw_trame(
+    request: Request,
+    access_name: str,
+    raw_trame_id: int,
+    trame_access_token: Optional[str] = Cookie(None),
+):
+    """
+    Protected view to render a specific raw trame from the database.
+    """
+    # Verify token
+    token_user = verify_access_token(trame_access_token) if trame_access_token else None
+
+    # Check if logged in and user matches
+    if not token_user or token_user != access_name:
+        return RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
+
+    raw_trame = None
+    prepared_pieces = []
+    trame_html_content = ""
+
+    if DATABASE_URL:
+        try:
+            db_manager = PostgresManager(DATABASE_URL)
+            raw_trame = db_manager.get_raw_trame_by_id(raw_trame_id)
+        except Exception as e:
+            logger.error(f"Failed to fetch raw trame {raw_trame_id}: {e}")
+
+    if not raw_trame:
+        raise HTTPException(status_code=404, detail="Raw trame not found")
+
+    # Process content
+    trame_html_content = raw_trame.get("md_content", "")
+    prepared_pieces = process_markdown_content(trame_html_content)
+
+    dependencies = get_deps_from("local")
+    context = {
+        "request": request,
+        "trame": None,  # Not needed for raw rendering
+        "raw_trame": raw_trame,
+        "prepared_pieces": prepared_pieces,
+        "trame_html_content": trame_html_content,
+        "deps": dependencies,
+        "access_name": token_user,
+    }
+    return templates.TemplateResponse("trame/raw_trame_view.html", context)
+
+
+@router.get("/admin/{access_name:str}/raw_trame_editor/{raw_trame_id:int}")
+async def editor_raw_trame(
+    request: Request,
+    access_name: str,
+    raw_trame_id: int,
+    trame_access_token: Optional[str] = Cookie(None),
+):
+    """
+    Protected view to edit a specific raw trame.
+    """
+    # Verify token
+    token_user = verify_access_token(trame_access_token) if trame_access_token else None
+
+    # Check if logged in and user matches
+    if not token_user or token_user != access_name:
+        return RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
+
+    raw_trame = None
+    prepared_pieces = []
+    trame_html_content = ""
+
+    if DATABASE_URL:
+        try:
+            db_manager = PostgresManager(DATABASE_URL)
+            raw_trame = db_manager.get_raw_trame_by_id(raw_trame_id)
+        except Exception as e:
+            logger.error(f"Failed to fetch raw trame {raw_trame_id}: {e}")
+
+    if not raw_trame:
+        raise HTTPException(status_code=404, detail="Raw trame not found")
+
+    # Process content
+    trame_html_content = raw_trame.get("md_content", "")
+    prepared_pieces = process_markdown_content(trame_html_content)
+
+    dependencies = get_deps_from("local")
+    context = {
+        "request": request,
+        "trame": None,
+        "raw_trame": raw_trame,
+        "prepared_pieces": prepared_pieces,
+        "trame_html_content": trame_html_content,
+        "deps": dependencies,
+        "access_name": token_user,
+    }
+    return templates.TemplateResponse("trame/raw_trame_editor.html", context)
+
+
 # Admin login routes
 # Specific routes must come before parameterized routes
 router.post("/admin/login")(admin_login.login_submit)
 router.get("/admin/logout")(admin_login.admin_logout)
 router.get("/admin/logout/confirmed")(admin_login.admin_logout_confirmed)
 router.get("/admin/{access_name:str}/dashboard")(admin_login.admin_dashboard)
-router.get("/admin/{access_name:str}/protected-example")(raw_trame_list)
+# router.get("/admin/{access_name:str}/protected-example")(raw_trame_list)
 router.get("/admin/{access_name:str}")(admin_login.admin_access)

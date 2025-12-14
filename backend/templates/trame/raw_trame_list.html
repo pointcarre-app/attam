@@ -22,7 +22,7 @@
               <!-- head -->
               <thead class="font-heading">
                 <tr>
-                  <th class="font-extralight w-16">ID</th>
+                  <th class="font-extralight">ID</th>
                   <th class="font-extralight">Title</th>
                   <th class="font-extralight">User / Origin</th>
                   <th class="font-extralight text-right">Pieces</th>
@@ -32,7 +32,11 @@
               <tbody>
                 {% for record in raw_trame_records %}
                   <tr class="hover group">
-                    <th class="font-mono text-xs">{{ record.id }}</th>
+                    <th class="font-mono">
+                      <a href="/trame/admin/{{ access_name_slug }}/raw_trame/{{ record.id }}" class="btn btn-sm btn-primary">{{ record.id }}</a>
+                      <a href="/trame/admin/{{ access_name_slug }}/raw_trame_editor/{{ record.id }}"
+                         class="btn btn-sm btn-outline btn-secondary">Edit</a>
+                    </th>
                     <td>
                       <div class="font-bold truncate max-w-[200px]" title="{{ record.title or "Untitled" }}">
                         {{ record.title or "Untitled" }}
@@ -45,7 +49,7 @@
                     </td>
                     <td>
                       <div class="flex items-center gap-2">
-                        <span class="badge badge-primary badge-sm">{{ record.username }}</span>
+                        <span class="badge badge-primary badge-sm badge-outline">{{ record.username }}</span>
                         <span class="badge badge-ghost badge-sm">{{ record.saving_origin }}</span>
                       </div>
                     </td>

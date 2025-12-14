@@ -136,12 +136,12 @@ async def admin_dashboard(
             "methods": "GET",
             "is_clickable": True,
         },
-        {
-            "path": f"/trame/admin/{access_name}/protected-example",
-            "name": "Protected Example",
-            "methods": "GET",
-            "is_clickable": True,
-        },
+        # {
+        #     "path": f"/trame/admin/{access_name}/protected-example",
+        #     "name": "Protected Example",
+        #     "methods": "GET",
+        #     "is_clickable": True,
+        # },
         # {
         #     "path": f"/trame/admin/{access_name}",
         #     "name": "🔓 Admin Access (Login)",

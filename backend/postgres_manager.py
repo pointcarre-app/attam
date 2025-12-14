@@ -214,6 +214,14 @@ class PostgresManager:
         self.safely_execute(query, vars=(slug,))
         logger.info(f"Deleted raw_trame with slug: {slug}")
 
+    def get_raw_trame_by_id(self, trame_id: int) -> Optional[Dict[str, Any]]:
+        """
+        Retrieves a single record from the raw_trame table by id.
+        """
+        query = "SELECT * FROM raw_trame WHERE id = %s"
+        result = self.safely_execute(query, vars=(trame_id,), fetch_all=True)
+        return result[0] if result else None
+
     def get_all_raw_trames(self) -> List[Dict[str, Any]]:
         """
         Retrieves all records from the raw_trame table.

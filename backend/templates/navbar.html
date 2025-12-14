@@ -25,7 +25,7 @@
     {% if domain and domain.slug =='pot-au-noir' and request.path == "/" %}
 
     {% elif domain %}
-      <span class="text-xl md:text-3xl lg:text-4xl font-heading font-light">{{ domain.name_html | safe }}</span>
+      <span class="text-xl md:text-3xl lg:text-3xl font-heading">{{ domain.name_html | safe }}</span>
     {% else %}
       <span class="text-xl font-bold">🎨 DaisyUI Showcase</span>
     {% endif %}

@@ -1,6 +1,10 @@
 from pathlib import Path
 from trame import Trame, TrameBuilder, Piece
 from typing import Dict, Any, List
+import tempfile
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 # trame = TrameBuilder.from_string(origin="test", markdown_content=markdown_content)
@@ -74,6 +78,32 @@ def prepare_trame_for_rendering(trame: Trame) -> List[Dict[str, Any]]:
     Returns a list of prepared pieces ready for the template.
     """
     return [prepare_piece_for_rendering(piece) for piece in trame.pieces]
+
+
+def process_markdown_content(content: str) -> List[Dict[str, Any]]:
+    """
+    Process markdown content string into prepared pieces for rendering.
+    Creates a temporary file, processes it, and cleans up.
+    """
+    # Create temporary file with markdown content
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".md", delete=False, encoding="utf-8"
+    ) as tmp_file:
+        tmp_file.write(content)
+        tmp_path = Path(tmp_file.name)
+
+    try:
+        # Process the markdown file
+        trame = TrameBuilder.from_file(path=tmp_path)
+        prepared_pieces = prepare_trame_for_rendering(trame)
+
+        logger.info(f"Processed {len(prepared_pieces)} pieces from markdown")
+        logger.info(f"Prepared pieces: {prepared_pieces}")
+
+        return prepared_pieces
+    finally:
+        # Clean up temporary file
+        tmp_path.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":
