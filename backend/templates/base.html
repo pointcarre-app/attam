@@ -34,40 +34,10 @@
 
   <body class="bg-base-200 min-h-screen">
     <!-- Navbar -->
-    <div class="navbar bg-base-100 mb-8">
-      <!-- Logo (left) -->
-      <div class="navbar-start">
-        {% if domain and domain.logo %}
-          <div class="avatar">
-            <div class="w-16 md:w-22 rounded-full">
-              <img src="{{ domain.logo }}" alt="{{ domain.name }}" />
-            </div>
-          </div>
-        {% else %}
-          <a class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
-              <span class="text-lg">U</span>
-            </div>
-          </a>
-        {% endif %}
-      </div>
 
-      <!-- Title (center) -->
-      <div class="navbar-center">
-        {% if domain %}
-          <span class="text-xl font-bold">{{ domain.name }}</span>
-        {% else %}
-          <span class="text-xl font-bold">🎨 DaisyUI Showcase</span>
-        {% endif %}
-      </div>
-
-      <!-- Buttons (right) -->
-      <div class="navbar-end gap-2">
-        <div class="badge badge-primary">v5</div>
-        <button class="btn btn-ghost btn-sm">Docs</button>
-        <button class="btn btn-primary btn-sm">Action</button>
-      </div>
-    </div>
+    {% if request.path != "/" %}
+      {% include "navbar.html" %}
+    {% endif %}
 
     {% block content %}{% endblock %}
   </body>
