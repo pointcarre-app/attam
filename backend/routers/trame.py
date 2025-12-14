@@ -123,3 +123,15 @@ async def debug(request: Request):
         "piece_model_fields": piece_model_fields,
     }
     return templates.TemplateResponse("trame_debug.html", context)
+
+
+@router.get("/admin/{access_name:str}")
+async def admin_access(request: Request, access_name: str):
+    dependencies = get_deps_from("local")
+
+    context = {
+        "request": request,
+        "deps": dependencies,
+        "access_name": access_name,
+    }
+    return templates.TemplateResponse("trame_debug.html", context)
