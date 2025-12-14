@@ -127,7 +127,9 @@ async def debug(request: Request):
 
 
 # Admin login routes
-router.get("/admin/{access_name:str}")(admin_login.admin_access)
+# Specific routes must come before parameterized routes
 router.post("/admin/login")(admin_login.login_submit)
+router.get("/admin/logout")(admin_login.admin_logout)
+router.get("/admin/logout/confirmed")(admin_login.admin_logout_confirmed)
 router.get("/admin/{access_name:str}/dashboard")(admin_login.admin_dashboard)
-router.get("/admin/{access_name:str}/logout")(admin_login.admin_logout)
+router.get("/admin/{access_name:str}")(admin_login.admin_access)

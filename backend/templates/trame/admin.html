@@ -24,6 +24,7 @@
 
         {% if access_makes_sense %}
           <form method="POST" action="/trame/admin/login">
+            <input type="hidden" name="access_name" value="{{ access_name_slug }}" />
             <div class="form-control">
               <label class="label mb-2">
                 <span class="label-text">Password</span>

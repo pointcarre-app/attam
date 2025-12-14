@@ -5,6 +5,7 @@ Simple, stateless authentication without database or session storage.
 
 from datetime import timedelta
 from typing import Optional
+import logging
 from fastapi import Request, Form, Cookie, HTTPException
 from fastapi.responses import RedirectResponse
 
@@ -15,6 +16,8 @@ from backend.jwt_handler import (
     verify_access_token,
     ACCESS_TOKEN_EXPIRE_HOURS,
 )
+
+logger = logging.getLogger(__name__)
 
 
 # Access names mapping
@@ -50,22 +53,11 @@ async def admin_access(request: Request, access_name: str):
     return templates.TemplateResponse("trame/admin.html", context)
 
 
-async def login_submit(request: Request, password: str = Form(...)):
+async def login_submit(request: Request, password: str = Form(...), access_name: str = Form(...)):
     """
     Handle login form submission.
     Verifies password and sets JWT token in HTTP-only cookie if valid.
     """
-    # Get the referer to extract access_name
-    referer = request.headers.get("referer", "")
-
-    # Extract access_name from referer URL
-    # Expected format: /trame/admin/{access_name}
-    access_name = None
-    if "/trame/admin/" in referer:
-        parts = referer.split("/trame/admin/")
-        if len(parts) > 1:
-            access_name = parts[1].split("/")[0].split("?")[0]
-
     # Validate access_name exists
     if not access_name or access_name not in ACCESS_CREDENTIALS:
         raise HTTPException(status_code=400, detail="Invalid access")
@@ -97,6 +89,7 @@ async def login_submit(request: Request, password: str = Form(...)):
         value=token,
         httponly=True,
         max_age=ACCESS_TOKEN_EXPIRE_HOURS * 3600,
+        path="/",  # Explicitly set path to root
         secure=False,  # Set to True in production with HTTPS
         samesite="lax",
     )
@@ -112,8 +105,13 @@ async def admin_dashboard(
     """
     Protected dashboard - requires valid JWT token.
     """
+    logger.info(
+        f"Dashboard access attempt for {access_name}, token present: {trame_access_token is not None}"
+    )
+
     # Verify token
     if not trame_access_token:
+        logger.warning("No token found, redirecting to login")
         return RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
 
     token_access_name = verify_access_token(trame_access_token)
@@ -131,13 +129,98 @@ async def admin_dashboard(
         "access_name_slug": access_name,
     }
 
-    return templates.TemplateResponse("trame/admin_dashboard.html", context)
+    response = templates.TemplateResponse("trame/admin_dashboard.html", context)
+
+    # Add cache control headers to prevent caching of authenticated pages
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, private"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+
+    return response
 
 
-async def admin_logout(access_name: str):
+async def admin_logout_confirmed(
+    request: Request, trame_access_token: Optional[str] = Cookie(None)
+):
     """
-    Logout - clears the JWT cookie and redirects to login page.
+    Logout confirmation page - shown after cookie is cleared.
     """
-    redirect_response = RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
-    redirect_response.delete_cookie(key="trame_access_token")
+    logger.info(f"Logout confirmed page, token still present: {trame_access_token is not None}")
+
+    # Check if we successfully logged out (token should be None)
+    access_name = None
+    display_name = "Unknown"
+
+    if trame_access_token:
+        # Token still exists! Try to get info from it
+        access_name = verify_access_token(trame_access_token)
+        if access_name:
+            display_name = ACCESS_NAMES.get(access_name, access_name)
+            logger.warning(f"Token still present after logout for {display_name}!")
+
+    dependencies = get_deps_from("local")
+    context = {
+        "request": request,
+        "deps": dependencies,
+        "logged_out": True,
+        "access_name": display_name,
+        "access_name_slug": access_name,
+    }
+
+    response = templates.TemplateResponse("trame/admin_logout.html", context)
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, private"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+
+    # Ensure cookie is deleted if it still exists
+    if trame_access_token:
+        response.delete_cookie(
+            key="trame_access_token",
+            path="/",
+            secure=False,
+            httponly=True,
+            samesite="lax",
+        )
+
+    return response
+
+
+async def admin_logout(request: Request, trame_access_token: Optional[str] = Cookie(None)):
+    """
+    Logout - clears the JWT cookie and shows confirmation.
+    Reads the token to determine which user is logging out.
+    """
+    logger.info(f"Logout attempt, token present: {trame_access_token is not None}")
+
+    # Try to get the access_name from the token
+    access_name = None
+    display_name = "Unknown"
+
+    if trame_access_token:
+        access_name = verify_access_token(trame_access_token)
+        if access_name:
+            display_name = ACCESS_NAMES.get(access_name, access_name)
+            logger.info(f"Logging out user: {display_name}")
+
+    # Prepare response
+
+    # Instead of rendering a template, redirect immediately after clearing cookie
+    redirect_response = RedirectResponse(url="/trame/admin/logout/confirmed", status_code=303)
+
+    # Add cache control headers
+    redirect_response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, private"
+    redirect_response.headers["Pragma"] = "no-cache"
+    redirect_response.headers["Expires"] = "0"
+
+    # Delete the cookie
+    redirect_response.delete_cookie(
+        key="trame_access_token",
+        path="/",
+        secure=False,
+        httponly=True,
+        samesite="lax",
+    )
+
+    logger.info("Cookie deletion command sent in response")
+
     return redirect_response
