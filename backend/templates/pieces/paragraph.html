@@ -1,2 +1,4 @@
-<p class="text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-5 md:mb-6 text-base-content"
-   data-attam-paragraph>{{ text | safe }}</p>
+<div data-piece-type="paragraph"
+     class="text-sm sm:text-base md:text-lg mb-4 sm:mb-5 md:mb-6 text-base-content {{ css_classes }}">
+  {{ text | safe }}
+</div>

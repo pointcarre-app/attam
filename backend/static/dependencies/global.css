@@ -68,6 +68,13 @@ body {
 
 
 
+
+[data-piece-type="paragraph"]>p>strong {
+  font-weight: 800 !important;
+}
+
+
+
 .padding-safe {
   padding-left: 1rem !important;
   padding-right: 1rem !important;

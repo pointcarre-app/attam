@@ -32,9 +32,10 @@ def prepare_piece_for_rendering(piece: Piece) -> Dict[str, Any]:
         }
 
     elif piece_type == "Paragraph":
+        print(piece.page_element_bs4)
         return {
             "template": "pieces/paragraph.html",
-            "data": {"text": piece.page_element_bs4.string},
+            "data": {"text": str(piece.page_element_bs4)},
         }
 
     elif piece_type == "UnorderedList":

@@ -68,6 +68,13 @@ body {
 
 
 
+
+[data-piece-type="paragraph"]>p>strong {
+  font-weight: 900 !important;
+}
+
+
+
 .padding-safe {
   padding-left: 1rem !important;
   padding-right: 1rem !important;
@@ -230,7 +237,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-body);
-  font-weight: 300;
+  font-weight: 400;
 }
 
 
