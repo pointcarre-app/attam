@@ -4,87 +4,97 @@
 
 {% block content %}
   <div class="container mx-auto p-4 max-w-4xl mt-8">
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <div class="flex justify-between items-center mb-4">
-          <div>
-            <h2 class="card-title text-2xl">Raw Trame Records</h2>
-            <p class="text-sm opacity-70">List of all saved raw trames.</p>
-          </div>
-          <a href="/trame/admin/{{ access_name_slug }}/dashboard" class="btn btn-outline btn-sm">
-            Back to Dashboard
-          </a>
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold font-heading">Trames</h1>
+      <a href="/trame/admin/{{ access_name_slug }}/dashboard" class="btn btn-outline btn-sm">
+        Back to Dashboard
+      </a>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="text-xl mb-4 font-heading font-semibold border-b border-base-200 pb-2">Create New</h2>
+      <form action="/trame/admin/{{ access_name_slug }}/raw_trame_create" method="post" class="space-y-4">
+        <div class="form-control w-full">
+          <label class="label mb-2">
+            <span class="label-text">Title</span>
+          </label>
+          <input type="text" name="title" placeholder="Trame Title" class="input input-bordered w-full" required />
         </div>
 
-        {% if raw_trame_records %}
-          <div class="overflow-x-auto">
-            <table class="table table-zebra table-compact w-full text-sm brc">
-              <!-- head -->
-              <thead class="font-heading">
-                <tr>
-                  <th class="font-extralight">ID</th>
-                  <th class="font-extralight">Title</th>
-                  <th class="font-extralight">User / Origin</th>
-                  <th class="font-extralight text-right">Pieces</th>
-                  <th class="font-extralight text-right">Created / Modified (UTC)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for record in raw_trame_records %}
-                  <tr class="hover group">
-                    <th class="font-mono">
-                      <a href="/trame/admin/{{ access_name_slug }}/raw_trame/{{ record.id }}" class="btn btn-sm btn-primary">{{ record.id }}</a>
-                      <a href="/trame/admin/{{ access_name_slug }}/raw_trame_editor/{{ record.id }}"
-                         class="btn btn-sm btn-outline btn-secondary">Edit</a>
-                    </th>
-                    <td>
-                      <div class="font-bold truncate max-w-[200px]" title="{{ record.title or "Untitled" }}">
-                        {{ record.title or "Untitled" }}
-                      </div>
-                      {# {% if record.slug %}
-                        <div class="text-xs opacity-50 font-mono truncate max-w-[200px]" title="{{ record.slug }}">
-                          {{ record.slug }}
-                        </div>
-                      {% endif %} #}
-                    </td>
-                    <td>
-                      <div class="flex items-center gap-2">
-                        <span class="badge badge-primary badge-sm badge-outline">{{ record.username }}</span>
-                        <span class="badge badge-ghost badge-sm">{{ record.saving_origin }}</span>
-                      </div>
-                    </td>
-                    <td class="text-center font-mono text-right">{{ record.piece_count }}</td>
-                    <td class="text-right text-xs">
-                      <div class="flex justify-end gap-3 font-body">
-                        <span title="Created At">
-                          <span class="opacity-50 mr-1">C:</span>{{ record.created_at.strftime("%Y-%m-%d %H:%M") if record.created_at else '-' }}
-                        </span>
-                        <span title="Modified At">
-                          <span class="opacity-50 mr-1">M:</span>{{ record.modified_at.strftime("%Y-%m-%d %H:%M") if record.modified_at else '-' }}
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        {% else %}
-          <div class="alert alert-info shadow-lg mt-4">
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg"
-                   fill="none"
-                   viewBox="0 0 24 24"
-                   class="stroke-current flex-shrink-0 w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                </path>
-              </svg>
-              <span>No records found.</span>
-            </div>
-          </div>
-        {% endif %}
+        <div class="form-control w-full">
+          <label class="label mb-2">
+            <span class="label-text">Markdown Content</span>
+          </label>
+          <textarea name="md_content"
+                    class="textarea textarea-bordered h-24 font-mono w-full"
+                    placeholder="# New Trame content..."></textarea>
+        </div>
 
+        <div class="flex justify-end mt-4">
+          <button type="submit" class="btn btn-primary">Create Trame</button>
+        </div>
+      </form>
+    </div>
+
+    <div>
+      <div class="mb-6">
+        <h2 class="text-xl font-heading font-semibold border-b border-base-200 pb-2">List</h2>
+        <p class="text-sm opacity-70 mt-1">List of all saved raw trames.</p>
       </div>
+
+      {% if raw_trame_records %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {% for record in raw_trame_records %}
+            <div class="card bg-base-100 border border-base-200 hover:border-base-300 transition-colors">
+              <div class="card-body p-5">
+                <div class="flex justify-between items-start mb-2">
+                  <h3 class="card-title text-lg font-bold truncate w-full pr-2" title="{{ record.title or "Untitled" }}">
+                    {{ record.title or "Untitled" }}
+                  </h3>
+                  <span class="badge badge-ghost font-mono text-xs shrink-0">#{{ record.id }}</span>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="badge badge-primary badge-sm badge-outline">{{ record.username }}</span>
+                  <span class="badge badge-ghost badge-sm text-xs">{{ record.saving_origin }}</span>
+                  <span class="badge badge-secondary badge-sm badge-outline">{{ record.piece_count }} pieces</span>
+                </div>
+
+                <div class="text-xs opacity-60 mb-4 font-mono space-y-1">
+                  <div class="flex justify-between">
+                    <span>Created:</span>
+                    <span>{{ record.created_at.strftime("%Y-%m-%d %H:%M") if record.created_at else '-' }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Modified:</span>
+                    <span>{{ record.modified_at.strftime("%Y-%m-%d %H:%M") if record.modified_at else '-' }}</span>
+                  </div>
+                </div>
+
+                <div class="card-actions justify-end mt-auto pt-2 border-t border-base-200">
+                  <a href="/trame/admin/{{ access_name_slug }}/raw_trame/{{ record.id }}"
+                     class="btn btn-sm btn-ghost hover:bg-base-200">View</a>
+                  <a href="/trame/admin/{{ access_name_slug }}/raw_trame_editor/{{ record.id }}"
+                     class="btn btn-sm btn-primary">Edit</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-info mt-4 rounded-none border border-info/20 bg-info/10 text-info-content">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 class="stroke-current flex-shrink-0 w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+              </path>
+            </svg>
+            <span>No records found.</span>
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

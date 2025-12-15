@@ -1,32 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="anchor">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Raw Trame View - {{ raw_trame.title }}</title>
+{% extends "base.html" %}
 
-    <!-- CSS Dependencies -->
-    <link rel="stylesheet" href="{{ deps.google_fonts }}" />
-    <link rel="stylesheet" href="{{ deps.open_dyslexic_css }}" />
-    <link rel="stylesheet" href="{{ deps.daisyui_css }}" />
-    <link rel="stylesheet" href="{{ deps.daisyui_themes_css }}" />
+{% block title %}Raw Trame View - {{ raw_trame.title }}{% endblock %}
 
-    <!-- JavaScript Dependencies -->
-    <script src="{{ deps.tailwind_js }}"></script>
-  </head>
+{% block content %}
+  <div class="bg-base-100 min-h-[calc(100vh-64px)]">
+    <div class="container mx-auto max-w-screen-xl sm:px-4 sm:py-6">
+      <div class="bg-base-100 rounded-lg sm:p-4 md:p-8 max-w-3xl mx-auto">
 
-  <body class="bg-base-200 min-h-screen">
-
-    <div class="container mx-auto max-w-screen-xl px-4 py-6">
-      <div class="mb-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">{{ raw_trame.title or "Untitled Trame" }}</h1>
-        <a href="/trame/admin/{{ access_name }}/raw_trame_list" class="btn btn-sm btn-outline">Back to List</a>
+        <div class="mb-4 flex justify-between items-center mb-4 px-4 sm:px-0">
+          <h1 class="text-2xl font-bold">{{ raw_trame.title or "Untitled Trame" }}</h1>
+          <a href="/trame/admin/{{ access_name }}/raw_trame_list" class="btn btn-sm btn-outline">Back to List</a>
+        </div>
+        <div class="divider"></div>
+        <article id="rendered-content">{% include 'pieces/_rendered_content.html' %}</article>
       </div>
-
-      <article id="rendered-content" class="bg-base-100 rounded-lg shadow-lg p-8 sm:p-12 md:p-16 lg:p-20">
-        {% include 'pieces/_rendered_content.html' %}
-      </article>
     </div>
-
-  </body>
-</html>
+  </div>
+{% endblock %}

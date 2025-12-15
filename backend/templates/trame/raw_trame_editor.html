@@ -1,99 +1,159 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="anchor">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Raw Trame Editor - {{ raw_trame.title }}</title>
+{% extends "base.html" %}
 
-    <!-- CSS Dependencies -->
-    <link rel="stylesheet" href="{{ deps.google_fonts }}" />
-    <link rel="stylesheet" href="{{ deps.open_dyslexic_css }}" />
-    <link rel="stylesheet" href="{{ deps.daisyui_css }}" />
-    <link rel="stylesheet" href="{{ deps.daisyui_themes_css }}" />
+{% block title %}Raw Trame Editor - {{ raw_trame.title }}{% endblock %}
 
-    <!-- JavaScript Dependencies -->
-    <script src="{{ deps.tailwind_js }}"></script>
+{% block head_extra %}
+  <!-- SimpleMDE Markdown Editor -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" />
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 
-    <!-- SimpleMDE Markdown Editor -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" />
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <style>
+      /* Custom overrides for SimpleMDE to fit full height using IDs */
+      #attam-trame-editor-column .CodeMirror {
+          font-family: var(--font-mono);
+          height: 100%;
+          min-height: 100%;
+          border: none;
+          border-radius: 0;
+          padding: 1rem;
+      }
 
-    <style>
-        .CodeMirror {
-            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-        }
-    </style>
+      /* Reduce line-height for headers in the editor */
+      #attam-trame-editor-column .CodeMirror .cm-header {
+          line-height: 1.25;
+      }
 
-  </head>
+      #attam-trame-editor-column .editor-toolbar {
+          border: none;
+          border-bottom: 1px solid hsl(var(--bc) / 0.1);
+          border-radius: 0;
+          background-color: hsl(var(--b2));
+          opacity: 1;
+      }
 
-  <body class="bg-base-200 min-h-screen">
+      #attam-trame-editor-column .editor-preview-side {
+          border-color: hsl(var(--bc) / 0.1);
+      }
+
+      /* Container adjustments for full height editor */
+      #attam-trame-editor-column {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+      }
+
+      /* Make CodeMirror flex to fill remaining space */
+      #attam-trame-editor-column .CodeMirror {
+          flex: 1;
+      }
+
+      /* Fix line-height for rendered content titles */
+      #attam-trame-rendered-content h1,
+      #attam-trame-rendered-content h2,
+      #attam-trame-rendered-content h3,
+      #attam-trame-rendered-content h4,
+      #attam-trame-rendered-content h5,
+      #attam-trame-rendered-content h6 {
+          line-height: 1.2 !important;
+          margin-top: 1.5em;
+          margin-bottom: 0.5em;
+      }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- Full height container (assuming navbar is removed) -->
+  <div id="attam-trame-main-container" class="bg-base-200 h-screen flex flex-col">
     <!-- Toast Container -->
-    <div id="toast-container" class="toast toast-top toast-end z-50"></div>
+    <div id="attam-trame-toast-container" class="toast toast-top toast-end z-50 top-16"></div>
 
-    <div class="container mx-auto max-w-screen-2xl px-4 py-6">
-      <div class="mb-4 flex justify-between items-center">
-        <div>
-          <h1 class="text-2xl font-bold">
-            {{ raw_trame.title or "Untitled Trame" }} <span class="text-sm font-normal opacity-70 ml-2">(Editor)</span>
+    <!-- Header Section -->
+    <div id="attam-trame-header" class="w-full px-4 py-3 flex-none bg-base-200">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <h1 class="text-2xl font-bold whitespace-nowrap">
+            {{ raw_trame.title or "Untitled Trame" }} <span class="text-sm font-normal opacity-70 ml-2 hidden sm:inline">(Editor)</span>
           </h1>
         </div>
-        <div class="flex gap-2">
-          <a href="/trame/admin/{{ access_name }}/raw_trame_list" class="btn btn-sm btn-outline">Back to List</a>
-          <button class="btn btn-sm btn-primary">Save (Coming Soon)</button>
-        </div>
-      </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-
-        <!-- Left Column: Markdown Editor -->
-        <section class="h-[calc(100vh-8rem)]">
-          <div class="bg-base-100 rounded-lg shadow-lg h-full overflow-hidden flex flex-col">
-            <div class="bg-base-300 px-4 py-2 border-b border-base-content/10 flex justify-between items-center">
-              <h2 class="text-lg font-semibold text-base-content">Markdown Source</h2>
-              <div class="flex items-center gap-3">
-                <label class="flex items-center gap-2 cursor-pointer">
-                  <span class="text-sm text-base-content/70">Mono</span>
-                  <input type="checkbox" id="mono-toggle" class="toggle toggle-sm toggle-primary" checked />
-                </label>
-                <button id="process-btn" class="btn btn-sm btn-secondary">Preview Update</button>
-              </div>
-            </div>
-            <div class="flex-1 overflow-auto">
-              <textarea id="markdown-editor"></textarea>
-            </div>
+        <div class="flex items-center gap-3">
+          <!-- Editor Controls moved to top bar -->
+          <div id="attam-trame-controls"
+               class="flex items-center gap-3 mr-2 px-3 py-1 bg-base-100 rounded-lg border border-base-content/10">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <span class="text-xs font-bold text-base-content/70 uppercase tracking-wider">Mono</span>
+              <input type="checkbox" id="attam-trame-mono-toggle" class="toggle toggle-xs toggle-primary" checked />
+            </label>
+            <div class="w-px h-4 bg-base-content/20"></div>
+            <button id="attam-trame-process-btn"
+                    class="btn btn-xs btn-ghost hover:bg-secondary/20 hover:text-secondary whitespace-nowrap">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-3 w-3 mr-1"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Preview Update
+            </button>
           </div>
-        </section>
 
-        <!-- Right Column: Rendered Content -->
-        <section class="h-[calc(100vh-8rem)] overflow-y-auto">
-          <article id="rendered-content" class="bg-base-100 rounded-lg shadow-lg p-4 sm:p-6 md:p-8 lg:p-10">
-            {% include 'pieces/_rendered_content.html' %}
-          </article>
-        </section>
-
+          <div class="flex gap-2">
+            <a href="/trame/admin/{{ access_name }}/raw_trame_list" class="btn btn-sm btn-outline">Back to List</a>
+            <button id="attam-trame-save-btn" class="btn btn-sm btn-primary">Save</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    {# djlint:off #}
+    <!-- Main Content: Full width/height split view -->
+    <div id="attam-trame-content-wrapper" class="flex-1 w-full px-4 pb-4 overflow-hidden">
+      <div class="h-full w-full bg-base-100 rounded-lg shadow-lg flex border border-base-300 overflow-hidden">
+
+        <!-- Left Column: Markdown Editor -->
+        <div id="attam-trame-editor-column" class="w-1/2 flex flex-col border-r border-base-300 h-full relative">
+          <textarea id="attam-trame-markdown-editor"></textarea>
+        </div>
+
+        <!-- Right Column: Rendered Content -->
+        <div id="attam-trame-preview-column" class="w-1/2 h-full bg-base-100 flex flex-col relative">
+          <!-- Preview Label overlay -->
+          <div class="absolute top-0 right-0 p-2 z-10 pointer-events-none">
+            <span class="badge badge-ghost text-xs font-mono opacity-50">PREVIEW</span>
+          </div>
+
+          <div id="attam-trame-rendered-content-scroll" class="flex-1 overflow-y-auto p-4 sm:p-8 custom-scroll">
+            <article id="attam-trame-rendered-content" class="prose max-w-none">
+              {% include 'pieces/_rendered_content.html' %}
+            </article>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {# djlint:off #}
     <script>
       var markdownContent = {{ trame_html_content | tojson }};
+      
       var simplemde = new SimpleMDE({
-        element: document.getElementById("markdown-editor"),
+        element: document.getElementById("attam-trame-markdown-editor"),
         initialValue: markdownContent,
         spellChecker: false,
-        status: false,
+        status: false, // Hide status bar to maximize space
         toolbar: [
             "bold", "italic", "heading", "|", 
             "quote", "unordered-list", "ordered-list", "|", 
-            "link", "image", "|", 
-            "preview", "side-by-side", "fullscreen"
+            "link", "image", "table", "horizontal-rule", "|", 
+            "fullscreen"
         ],
         autofocus: false,
       });
       window.mdEditor = simplemde;
 
       // Handle mono toggle
-      document.getElementById('mono-toggle').addEventListener('change', function() {
+      document.getElementById('attam-trame-mono-toggle').addEventListener('change', function() {
         var cm = document.querySelector('.CodeMirror');
         if (this.checked) {
           cm.style.fontFamily = 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace';
@@ -104,7 +164,7 @@
 
       // Toast notification function
       function showToast(message, type) {
-        var toastContainer = document.getElementById('toast-container');
+        var toastContainer = document.getElementById('attam-trame-toast-container');
         var alertClass = type === 'success' ? 'alert-success' : 'alert-error';
         var icon = type === 'success' ? 
           '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' :
@@ -126,9 +186,15 @@
       }
 
       // Handle process button click
-      document.getElementById('process-btn').addEventListener('click', function() {
+      document.getElementById('attam-trame-process-btn').addEventListener('click', function() {
         var content = simplemde.value();
         
+        // Show loading state
+        var btn = this;
+        var originalText = btn.innerHTML;
+        btn.innerHTML = '<span class="loading loading-spinner loading-xs"></span> Processing...';
+        btn.disabled = true;
+
         fetch('/trame/process', {
           method: 'POST',
           headers: {
@@ -143,7 +209,7 @@
           console.log('Success:', data);
           
           // Replace the rendered content with the new HTML
-          var renderedContent = document.getElementById('rendered-content');
+          var renderedContent = document.getElementById('attam-trame-rendered-content');
           renderedContent.innerHTML = data.rendered_html;
           
           // Process attam:path images in the new content
@@ -156,10 +222,67 @@
         .catch(function(error) {
           console.error('Error:', error);
           showToast('Error processing markdown', 'error');
+        })
+        .finally(function() {
+            // Restore button state
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+      });
+      // Handle save button click
+      document.getElementById('attam-trame-save-btn').addEventListener('click', function() {
+        var content = simplemde.value();
+        // Assuming title is not currently editable in this view, we can omit sending it or send the current one.
+        // If we want to allow title editing, we need an input field for it.
+        // For now, we'll send the current title to satisfy the schema if needed, or rely on backend to keep it.
+        // But the schema allows optional title. Let's send what we have or null.
+        var title = "{{ raw_trame.title }}"; 
+        
+        // Show loading state
+        var btn = this;
+        var originalText = btn.innerHTML;
+        btn.innerHTML = '<span class="loading loading-spinner loading-xs"></span> Saving...';
+        btn.disabled = true;
+
+        fetch('/trame/admin/{{ access_name }}/raw_trame_update/{{ raw_trame.id }}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            md_content: content,
+            title: title 
+          })
+        })
+        .then(function(response) {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
+        .then(function(data) {
+          console.log('Save Success:', data);
+          showToast('Trame saved successfully!', 'success');
+          
+          // Update the preview with the freshly rendered HTML from the server
+          if (data.rendered_html) {
+             var renderedContent = document.getElementById('attam-trame-rendered-content');
+             renderedContent.innerHTML = data.rendered_html;
+             if (typeof processAttamImages === 'function') {
+                processAttamImages();
+             }
+          }
+        })
+        .catch(function(error) {
+          console.error('Save Error:', error);
+          showToast('Error saving trame: ' + (error.detail || 'Unknown error'), 'error');
+        })
+        .finally(function() {
+            // Restore button state
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         });
       });
 </script>
-    {# djlint:on #}
-
-  </body>
-</html>
+  {# djlint:on #}
+{% endblock %}

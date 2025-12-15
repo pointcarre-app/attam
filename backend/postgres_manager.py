@@ -206,6 +206,49 @@ class PostgresManager:
             )
             logger.info(f"Inserted new raw_trame for user {username}")
 
+    def update_raw_trame(
+        self,
+        trame_id: int,
+        username: str,
+        md_content: str,
+        piece_count: int,
+        title: Optional[str] = None,
+        slug: Optional[str] = None,
+        saving_origin: str = "manual",
+        metadata: Optional[Dict[str, Any]] = None,
+    ):
+        """
+        Updates a record in the raw_trame table by id.
+        """
+        self.kill_connections()
+
+        query = """
+            UPDATE raw_trame
+            SET
+                username = %s,
+                title = %s,
+                saving_origin = %s,
+                md_content = %s,
+                piece_count = %s,
+                metadata = %s,
+                modified_at = (NOW() AT TIME ZONE 'UTC')
+            WHERE id = %s
+        """
+
+        self.safely_execute(
+            query,
+            vars=(
+                username,
+                title,
+                saving_origin,
+                md_content,
+                piece_count,
+                Json(metadata) if metadata is not None else None,
+                trame_id,
+            ),
+        )
+        logger.info(f"Updated raw_trame with id: {trame_id}")
+
     def delete_raw_trame_by_slug(self, slug: str):
         """
         Deletes a record from the raw_trame table by slug.

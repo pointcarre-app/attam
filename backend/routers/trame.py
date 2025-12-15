@@ -1,8 +1,9 @@
 from pathlib import Path
 from typing import Optional
-from fastapi import APIRouter, Request, Cookie, HTTPException
+from fastapi import APIRouter, Request, Cookie, HTTPException, Form
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
+from slugify import slugify
 import logging
 
 
@@ -111,6 +112,50 @@ async def debug(request: Request):
         "piece_model_fields": piece_model_fields,
     }
     return templates.TemplateResponse("trame_debug.html", context)
+
+
+# TODO : ensure logic
+@router.post("/admin/{access_name:str}/raw_trame_create")
+async def raw_trame_create(
+    request: Request,
+    access_name: str,
+    title: str = Form(...),
+    md_content: str = Form(""),
+    trame_access_token: Optional[str] = Cookie(None),
+):
+    """
+    Create a new raw trame.
+    """
+    # Verify token
+    token_user = verify_access_token(trame_access_token) if trame_access_token else None
+
+    # Check if logged in and user matches
+    if not token_user or token_user != access_name:
+        return RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
+
+    if DATABASE_URL:
+        try:
+            db_manager = PostgresManager(DATABASE_URL)
+
+            # Generate slug
+            slug = slugify(title)
+
+            # Calculate piece count
+            prepared_pieces = process_markdown_content(md_content)
+            piece_count = len(prepared_pieces)
+
+            db_manager.save_raw_trame(
+                username=access_name,
+                title=title,
+                slug=slug,
+                md_content=md_content,
+                piece_count=piece_count,
+                saving_origin="create",
+            )
+        except Exception as e:
+            logger.error(f"Failed to create raw trame: {e}")
+
+    return RedirectResponse(url=f"/trame/admin/{access_name}/raw_trame_list", status_code=303)
 
 
 # TODO : after dashboard
@@ -244,6 +289,82 @@ async def editor_raw_trame(
         "access_name": token_user,
     }
     return templates.TemplateResponse("trame/raw_trame_editor.html", context)
+
+
+class RawTrameUpdate(BaseModel):
+    md_content: str
+    title: Optional[str] = None
+
+
+@router.post("/admin/{access_name:str}/raw_trame_update/{raw_trame_id:int}")
+async def raw_trame_update(
+    request: Request,
+    access_name: str,
+    raw_trame_id: int,
+    update_data: RawTrameUpdate,
+    trame_access_token: Optional[str] = Cookie(None),
+):
+    """
+    Update an existing raw trame.
+    """
+    # Verify token
+    token_user = verify_access_token(trame_access_token) if trame_access_token else None
+
+    # Check if logged in and user matches
+    if not token_user or token_user != access_name:
+        # For AJAX requests, we might want to return 401/403 instead of redirect
+        raise HTTPException(status_code=403, detail="Not authenticated")
+
+    if DATABASE_URL:
+        try:
+            db_manager = PostgresManager(DATABASE_URL)
+
+            # Fetch existing to preserve other fields if needed,
+            # though our update_raw_trame method updates everything passed.
+            # We need the existing record to get the slug if we aren't changing it,
+            # or to make sure it exists.
+            existing = db_manager.get_raw_trame_by_id(raw_trame_id)
+            if not existing:
+                raise HTTPException(status_code=404, detail="Raw trame not found")
+
+            # Calculate piece count
+            prepared_pieces = process_markdown_content(update_data.md_content)
+            piece_count = len(prepared_pieces)
+
+            # Use existing values if not provided in update (though frontend should send current state)
+            # For this specific requirement: username, modified_at (handled by DB/manager), md_content, piece_count
+            # We also keep the title if passed, or fallback to existing
+            title_to_save = (
+                update_data.title if update_data.title is not None else existing.get("title")
+            )
+
+            # We'll preserve the slug and saving_origin from the existing record for now, or default "manual"
+            # If you want to update slug based on new title, you can do that here similar to create.
+            # For now, let's keep the slug stable to avoid breaking links.
+
+            db_manager.update_raw_trame(
+                trame_id=raw_trame_id,
+                username=access_name,  # Updating the user to the one who edits? Or keeping original? Req says "username"
+                title=title_to_save,
+                slug=existing.get("slug"),  # Preserve slug
+                md_content=update_data.md_content,
+                piece_count=piece_count,
+                saving_origin="update",
+                metadata=existing.get("metadata"),  # Preserve metadata
+            )
+
+            # Render the HTML for the response (so the editor can update preview if needed, though preview button does this too)
+            rendered_html = templates.get_template("pieces/_rendered_content.html").render(
+                prepared_pieces=prepared_pieces
+            )
+
+            return {"success": True, "piece_count": piece_count, "rendered_html": rendered_html}
+
+        except Exception as e:
+            logger.error(f"Failed to update raw trame: {e}")
+            raise HTTPException(status_code=500, detail=str(e))
+
+    raise HTTPException(status_code=500, detail="Database not configured")
 
 
 # Admin login routes

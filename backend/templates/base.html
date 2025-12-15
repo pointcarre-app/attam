@@ -39,7 +39,14 @@
     <!-- Navbar -->
 
 
-    {% include "navbar.html" %}
+    {% if request.url.path.startswith('/trame/admin/wasabi/raw_trame_editor/') %}
+      {# <!-- Content specific to paths like /trame/admin/wasabi/raw_trame_editor/1 -->
+                  <p>
+                    This is the raw_trame_editor section (ID: {{ request.url.path | replace('/trame/admin/wasabi/raw_trame_editor/', '') }})
+                  </p> #}
+    {% else %}
+      {% include "navbar.html" %}
+    {% endif %}
 
 
     {% block content %}{% endblock %}
