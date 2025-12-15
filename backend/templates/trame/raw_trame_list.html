@@ -45,7 +45,7 @@
       {% if raw_trame_records %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {% for record in raw_trame_records %}
-            <div class="card bg-base-100 border border-base-200 hover:border-base-300 transition-colors">
+            <div class="card bg-base-200 border border-base-300 hover:border-base-300 transition-colors">
               <div class="card-body p-5">
                 <div class="flex justify-between items-start mb-2">
                   <h3 class="card-title text-lg font-bold truncate w-full pr-2" title="{{ record.title or "Untitled" }}">
@@ -73,7 +73,7 @@
 
                 <div class="card-actions justify-end mt-auto pt-2 border-t border-base-200">
                   <a href="/trame/admin/{{ access_name_slug }}/raw_trame/{{ record.id }}"
-                     class="btn btn-sm btn-ghost hover:bg-base-200">View</a>
+                     class="btn btn-sm btn-outline btn-secondary">View</a>
                   <a href="/trame/admin/{{ access_name_slug }}/raw_trame_editor/{{ record.id }}"
                      class="btn btn-sm btn-primary">Edit</a>
                 </div>
