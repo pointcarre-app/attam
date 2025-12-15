@@ -57,3 +57,41 @@ ping: pong
 some paragrpah
 
 followed by this one
+
+
+### Footnotes
+
+
+FIRST EXAMPLE
+
+This statement needs a source.[^5]
+
+[^5]: Find more info [here](https://example.com).
+
+
+SECOND EXAMPLE
+
+This topic covers several points.[^7]
+
+[^7]: Points to consider:
+
+- First point
+
+- Second point
+
+
+
+THIRD EXAMPLE
+
+This is a statement.[^6]
+
+[^6]: This footnote contains *italic*, **bold**, and `code` text.
+
+
+
+### Works Cited
+
+- Smith, John. *Title of the Work*. Publisher, 2020.
+
+
+
