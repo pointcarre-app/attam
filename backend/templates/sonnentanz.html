@@ -11,29 +11,32 @@
 
     <!-- Public Resources -->
     <section class="mb-10">
-      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 font-heading">
         <span class="text-primary">✦</span> Public Resources
       </h2>
       <div class="grid gap-4 md:grid-cols-2">
-        <a href="/" class="card bg-base-200 hover:bg-base-300 transition-colors">
+        <a href="/" class="card bg-base-100 border border-base-200 hover:border-base-300 transition-colors">
           <div class="card-body p-5">
             <h3 class="card-title text-lg">Landing Page</h3>
             <p class="text-sm opacity-80">The main entry point of the application.</p>
           </div>
         </a>
-        <a href="/template" class="card bg-base-200 hover:bg-base-300 transition-colors">
+        <a href="/template"
+           class="card bg-base-100 border border-base-200 hover:border-base-300 transition-colors">
           <div class="card-body p-5">
             <h3 class="card-title text-lg">Design System</h3>
             <p class="text-sm opacity-80">DaisyUI component showcase and theme testing.</p>
           </div>
         </a>
-        <a href="/fonts" class="card bg-base-200 hover:bg-base-300 transition-colors">
+        <a href="/fonts"
+           class="card bg-base-100 border border-base-200 hover:border-base-300 transition-colors">
           <div class="card-body p-5">
             <h3 class="card-title text-lg">Font Gallery</h3>
             <p class="text-sm opacity-80">Preview all available typefaces.</p>
           </div>
         </a>
-        <a href="/routes" class="card bg-base-200 hover:bg-base-300 transition-colors">
+        <a href="/routes"
+           class="card bg-base-100 border border-base-200 hover:border-base-300 transition-colors">
           <div class="card-body p-5">
             <h3 class="card-title text-lg">Route Map</h3>
             <p class="text-sm opacity-80">Raw list of all registered endpoints.</p>
@@ -44,10 +47,10 @@
 
     <!-- Content System -->
     <section class="mb-10">
-      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 font-heading">
         <span class="text-secondary">✦</span> Content Viewer (Trame)
       </h2>
-      <div class="overflow-x-auto bg-base-100 rounded-box border border-base-300">
+      <div class="overflow-x-auto bg-base-100 border border-base-200">
         <table class="table">
           <thead>
             <tr>
@@ -78,12 +81,12 @@
 
     <!-- Dynamic URL Generator -->
     <section class="mb-10" id="url-generator">
-      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 font-heading">
         <span class="text-info">✦</span> Access URL Generator
       </h2>
-      <div class="bg-base-200 p-6 rounded-box">
+      <div class="border border-base-200 p-6 bg-base-100">
         <div class="form-control w-full max-w-xs mb-6">
-          <label class="label">
+          <label class="label mb-2">
             <span class="label-text">Enter Access Name (e.g. username)</span>
           </label>
           <input type="text"
@@ -94,7 +97,7 @@
         </div>
 
         <div id="urlList" class="hidden space-y-4">
-          <div class="overflow-x-auto bg-base-100 rounded-box border border-base-300">
+          <div class="overflow-x-auto bg-base-100 border border-base-200">
             <table class="table table-zebra w-full">
               <thead>
                 <tr>
@@ -118,10 +121,10 @@
 
     <!-- Administration -->
     <section class="mb-10">
-      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 font-heading">
         <span class="text-accent">✦</span> Administration
       </h2>
-      <div class="alert bg-base-200 shadow-sm mb-4">
+      <div class="alert mb-4 rounded-none border border-base-300 bg-base-100">
         <svg xmlns="http://www.w3.org/2000/svg"
              fill="none"
              viewBox="0 0 24 24"
@@ -132,14 +135,14 @@
         <div>
           <h3 class="font-bold">Access Pattern</h3>
           <div class="text-xs">
-            Admin URL pattern: <code class="badge badge-ghost">/trame/admin/{username}</code>
+            Admin URL pattern: <code class="badge badge-ghost rounded-sm">/trame/admin/{username}</code>
             <br />
             Replace <span class="font-mono">{username}</span> with your assigned user slug.
           </div>
         </div>
       </div>
 
-      <div class="steps steps-vertical lg:steps-horizontal w-full bg-base-100 p-4 rounded-box border border-base-300">
+      <div class="steps steps-vertical lg:steps-horizontal w-full bg-base-100 p-4 border border-base-200">
         <div class="step step-primary">
           <div class="text-left ml-2">
             <p class="font-bold">Login</p>
@@ -163,7 +166,7 @@
 
     <!-- Dev Tools -->
     <section>
-      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 font-heading">
         <span class="text-neutral-content">✦</span> Dev Tools
       </h2>
       <div class="flex flex-wrap gap-2">
