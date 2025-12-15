@@ -25,6 +25,7 @@ async def lifespan(app: FastAPI):
         try:
             db_manager = PostgresManager(DATABASE_URL)
             db_manager.create_raw_trame_table_if_not_exists()
+            db_manager.delete_all_autosaves()
             print("✓ Database initialized and table 'raw_trame' checked.")
 
             # Example insertion preparation

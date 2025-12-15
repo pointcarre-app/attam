@@ -296,7 +296,7 @@ async def editor_raw_trame(
         "trame_html_content": trame_html_content,
         "deps": dependencies,
         "access_name": token_user,
-        "autosave_interval": 120_000,
+        "autosave_interval": 180_000,
     }
     return templates.TemplateResponse("trame/raw_trame_editor.html", context)
 
@@ -304,6 +304,7 @@ async def editor_raw_trame(
 class RawTrameUpdate(BaseModel):
     md_content: str
     title: Optional[str] = None
+    original_id: Optional[int] = None
 
 
 @router.post("/admin/{access_name:str}/raw_trame_autosave")
@@ -335,6 +336,11 @@ async def raw_trame_autosave(
             prepared_pieces = process_markdown_content(autosave_data.md_content)
             piece_count = len(prepared_pieces)
 
+            # Prepare metadata with original_id if provided
+            metadata = {}
+            if autosave_data.original_id:
+                metadata["original_id"] = autosave_data.original_id
+
             db_manager.save_raw_trame(
                 username=access_name,
                 title=title,
@@ -342,6 +348,7 @@ async def raw_trame_autosave(
                 md_content=autosave_data.md_content,
                 piece_count=piece_count,
                 saving_origin="autosave",
+                metadata=metadata,
             )
 
             return {"success": True}
@@ -351,6 +358,50 @@ async def raw_trame_autosave(
             raise HTTPException(status_code=500, detail=str(e))
 
     raise HTTPException(status_code=500, detail="Database not configured")
+
+
+@router.post("/admin/{access_name:str}/raw_trame_archive/{raw_trame_id:int}")
+async def raw_trame_archive(
+    request: Request,
+    access_name: str,
+    raw_trame_id: int,
+    trame_access_token: Optional[str] = Cookie(None),
+):
+    """
+    Archive an existing raw trame.
+    """
+    # Verify token
+    token_user = verify_access_token(trame_access_token) if trame_access_token else None
+
+    # Check if logged in and user matches
+    if not token_user or token_user != access_name:
+        return RedirectResponse(url=f"/trame/admin/{access_name}", status_code=303)
+
+    if DATABASE_URL:
+        try:
+            db_manager = PostgresManager(DATABASE_URL)
+            existing = db_manager.get_raw_trame_by_id(raw_trame_id)
+            if not existing:
+                raise HTTPException(status_code=404, detail="Raw trame not found")
+
+            # We reuse the update logic but set saving_origin to 'archived'
+            # We preserve everything else
+            db_manager.update_raw_trame(
+                trame_id=raw_trame_id,
+                username=access_name,
+                title=existing.get("title"),
+                slug=existing.get("slug"),
+                md_content=existing.get("md_content"),
+                piece_count=existing.get("piece_count"),
+                saving_origin="archived",
+                metadata=existing.get("metadata"),
+            )
+
+        except Exception as e:
+            logger.error(f"Failed to archive raw trame: {e}")
+            raise HTTPException(status_code=500, detail=str(e))
+
+    return RedirectResponse(url=f"/trame/admin/{access_name}/raw_trame_list", status_code=303)
 
 
 @router.post("/admin/{access_name:str}/raw_trame_update/{raw_trame_id:int}")

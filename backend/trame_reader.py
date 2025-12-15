@@ -32,14 +32,15 @@ def prepare_piece_for_rendering(piece: Piece) -> Dict[str, Any]:
         }
 
     elif piece_type == "Paragraph":
-        print(piece.page_element_bs4)
+        # print(piece.page_element_bs4)
         return {
             "template": "pieces/paragraph.html",
             "data": {"text": str(piece.page_element_bs4)},
         }
 
     elif piece_type == "UnorderedList":
-        items = [li.string for li in piece.page_element_bs4.find_all("li")]
+        items = [li.decode_contents() for li in piece.page_element_bs4.find_all("li")]
+        print(piece.page_element_bs4)
         return {"template": "pieces/unordered_list.html", "data": {"items": items}}
 
     elif piece_type in ["Code", "YamlCode"]:

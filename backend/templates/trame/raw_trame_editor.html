@@ -71,24 +71,40 @@
     <div id="attam-trame-header" class="w-full px-4 py-3 flex-none bg-base-200">
       <div class="flex justify-between items-center">
         <div class="flex items-center gap-4">
-          <h1 class="text-2xl font-bold whitespace-nowrap">
-            {{ raw_trame.title or "Untitled Trame" }} <span class="text-sm font-normal opacity-70 ml-2 hidden sm:inline">(Editor)</span>
+          <h1 class="text-2xl font-bold whitespace-nowrap flex items-center gap-3">
+            {{ raw_trame.title or "Untitled Trame" }}
+            <span class="text-sm font-normal opacity-70 hidden sm:inline">(Editor)</span>
+            <span id="autosave-badge"
+                  class="badge badge-ghost badge-sm font-mono opacity-0 transition-opacity duration-300"></span>
           </h1>
         </div>
 
         <div class="flex items-center gap-3">
           <!-- Editor Controls moved to top bar -->
           <div id="attam-trame-controls"
-               class="flex items-center gap-3 mr-2 px-3 py-1 bg-base-100 rounded-lg border border-base-content/10">
-            <label class="flex items-center gap-2 cursor-pointer select-none">
-              <span class="text-xs font-bold text-base-content/70 uppercase tracking-wider">Mono</span>
-              <input type="checkbox" id="attam-trame-mono-toggle" class="toggle toggle-xs toggle-primary" checked />
-            </label>
-            <div class="w-px h-4 bg-base-content/20"></div>
-            <button id="attam-trame-process-btn"
-                    class="btn btn-xs btn-ghost hover:bg-secondary/20 hover:text-secondary whitespace-nowrap">
+               class="flex items-center gap-6 mr-2 px-4 py-2 bg-base-100 rounded-lg border border-base-content/10">
+            <button id="attam-trame-copy-btn"
+                    class="btn btn-sm btn-ghost hover:bg-secondary/20 hover:text-secondary whitespace-nowrap"
+                    title="Copy Markdown Content">
               <svg xmlns="http://www.w3.org/2000/svg"
-                   class="h-3 w-3 mr-1"
+                   class="h-4 w-4 mr-1"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              Copy
+            </button>
+            <div class="w-px h-6 bg-base-content/20"></div>
+            <label class="flex items-center gap-3 cursor-pointer select-none">
+              <span class="text-sm font-bold text-base-content/70 uppercase tracking-wider">Mono</span>
+              <input type="checkbox" id="attam-trame-mono-toggle" class="toggle toggle-sm toggle-primary" checked />
+            </label>
+            <div class="w-px h-6 bg-base-content/20"></div>
+            <button id="attam-trame-process-btn"
+                    class="btn btn-sm btn-ghost hover:bg-secondary/20 hover:text-secondary whitespace-nowrap">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   class="h-4 w-4 mr-1"
                    fill="none"
                    viewBox="0 0 24 24"
                    stroke="currentColor">
@@ -139,6 +155,7 @@
       var autosaveInterval = {{ autosave_interval | tojson }};
       var currentTitle = {{ raw_trame.title | tojson }};
       var accessName = {{ access_name | tojson }};
+      var currentId = {{ raw_trame.id | tojson }};
 
       // Autosave logic
       if (autosaveInterval) {
@@ -155,12 +172,35 @@
                 },
                 body: JSON.stringify({
                     md_content: content,
-                    title: currentTitle
+                    title: currentTitle,
+                    original_id: currentId
                 })
             })
             .then(function(response) {
                 if (response.ok) {
                     console.log('Autosaved successfully');
+                    
+                    // Update autosave badge
+                    var badge = document.getElementById('autosave-badge');
+                    var now = new Date();
+                    var timeString = now.toLocaleTimeString();
+                    
+                    badge.textContent = 'Autosaved: ' + timeString;
+                    badge.classList.remove('opacity-0', 'badge-ghost');
+                    badge.classList.add('badge-success', 'badge-soft');
+                    
+                    // Fade out back to ghost/invisible after a delay if desired, 
+                    // or just keep it visible as "Last autosave: ..."
+                    // Let's keep it visible but switch back to ghost style after 3s to be less distracting
+                    setTimeout(function() {
+                        badge.classList.remove('badge-success', 'badge-soft');
+                        badge.classList.add('badge-ghost');
+                        // Optional: keep it visible (opacity-100) or fade out (opacity-0)
+                        // Requirement says "display in success soft... everytime autosave works"
+                        // It doesn't explicitly say hide it.
+                        // I'll leave it visible as a "Last saved" indicator.
+                        badge.classList.remove('opacity-0'); 
+                    }, 3000);
                 } else {
                     console.warn('Autosave failed with status:', response.status);
                 }
@@ -195,6 +235,72 @@
           cm.style.fontFamily = 'ui-sans-serif, system-ui, sans-serif';
         }
       });
+
+      // --- Robust Copy to Clipboard Logic ---
+      document.getElementById('attam-trame-copy-btn').addEventListener('click', function() {
+        var content = simplemde.value();
+        
+        // 1. Try Modern Async API
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(content)
+                .then(function() {
+                    showToast('Copied to clipboard!', 'success');
+                })
+                .catch(function(err) {
+                    console.warn('Clipboard API failed, trying fallback...', err);
+                    fallbackCopyTextToClipboard(content);
+                });
+        } else {
+            // 2. Legacy Fallback
+            fallbackCopyTextToClipboard(content);
+        }
+      });
+
+      function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // Ensure textarea is not visible but part of DOM
+        // Using fixed position prevents scrolling to the bottom
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        // Avoid zooming on iOS
+        textArea.style.fontSize = "16px"; 
+        
+        document.body.appendChild(textArea);
+        
+        // iOS-compatible selection strategy
+        if (navigator.userAgent.match(/ipad|iphone/i)) {
+            // Create a range for selection on iOS
+            var range = document.createRange();
+            range.selectNodeContents(textArea);
+            var selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            textArea.setSelectionRange(0, 999999);
+        } else {
+            textArea.select();
+        }
+
+        try {
+            var successful = document.execCommand('copy');
+            if (successful) {
+                showToast('Copied to clipboard!', 'success');
+            } else {
+                showToast('Copy failed (execCommand)', 'error');
+            }
+        } catch (err) {
+            console.error('Fallback copy error:', err);
+            showToast('Copy failed', 'error');
+        }
+        
+        // Cleanup
+        document.body.removeChild(textArea);
+        if (window.getSelection) {
+            window.getSelection().removeAllRanges();
+        }
+      }
 
       // Toast notification function
       function showToast(message, type) {

@@ -1,8 +1,5 @@
 <ul class="list-disc list-inside space-y-2 mb-4 sm:mb-5 md:mb-6 ml-4 sm:ml-6">
   {% for item in items %}
-    <li class="text-sm sm:text-base md:text-lg text-base-content">{{ item }}</li>
+    <li class="text-sm sm:text-base md:text-lg text-base-content">{{ item | safe }}</li>
   {% endfor %}
 </ul>
-
-
-

@@ -257,6 +257,14 @@ class PostgresManager:
         self.safely_execute(query, vars=(slug,))
         logger.info(f"Deleted raw_trame with slug: {slug}")
 
+    def delete_all_autosaves(self):
+        """
+        Deletes all records from the raw_trame table where saving_origin is 'autosave'.
+        """
+        query = "DELETE FROM raw_trame WHERE saving_origin = 'autosave'"
+        self.safely_execute(query)
+        logger.info("Deleted all autosaved raw_trames.")
+
     def get_raw_trame_by_id(self, trame_id: int) -> Optional[Dict[str, Any]]:
         """
         Retrieves a single record from the raw_trame table by id.
