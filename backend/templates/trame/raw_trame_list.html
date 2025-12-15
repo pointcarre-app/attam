@@ -11,75 +11,98 @@
       </a>
     </div>
 
-    <div class="mb-12">
-      <h2 class="text-xl mb-4 font-heading font-semibold border-b border-base-200 pb-2">Create New</h2>
-      <form action="/trame/admin/{{ access_name_slug }}/raw_trame_create" method="post" class="space-y-4">
-        <div class="form-control w-full">
-          <label class="label mb-2">
-            <span class="label-text">Title</span>
-          </label>
-          <input type="text" name="title" placeholder="Trame Title" class="input input-bordered w-full" required />
-        </div>
+    <div class="mb-12 flex justify-end">
+      <!-- Open the modal using ID.showModal() method -->
+      <button class="btn btn-primary" onclick="create_trame_modal.showModal()">Create New Trame</button>
+      <dialog id="create_trame_modal" class="modal">
+        <div class="modal-box">
+          <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          </form>
+          <h3 class="font-bold text-lg mb-4">Create New Trame</h3>
+          <form action="/trame/admin/{{ access_name_slug }}/raw_trame_create" method="post" class="space-y-4">
+            <div class="form-control w-full">
+              <label class="label mb-2">
+                <span class="label-text">Title</span>
+              </label>
+              <input type="text" name="title" placeholder="Trame Title" class="input input-bordered w-full" required />
+            </div>
 
-        <div class="form-control w-full">
-          <label class="label mb-2">
-            <span class="label-text">Markdown Content</span>
-          </label>
-          <textarea name="md_content"
-                    class="textarea textarea-bordered h-24 font-mono w-full"
-                    placeholder="# New Trame content..."></textarea>
-        </div>
+            <div class="form-control w-full">
+              <label class="label mb-2">
+                <span class="label-text">Markdown Content</span>
+              </label>
+              <textarea name="md_content"
+                        class="textarea textarea-bordered h-24 font-mono w-full"
+                        placeholder="# New Trame content..."></textarea>
+            </div>
 
-        <div class="flex justify-end mt-4">
-          <button type="submit" class="btn btn-primary">Create Trame</button>
+            <div class="flex justify-end mt-6">
+              <button type="submit" class="btn btn-primary">Create Trame</button>
+            </div>
+          </form>
         </div>
-      </form>
+      </dialog>
     </div>
 
     <div>
       <div class="mb-6">
-        <h2 class="text-xl font-heading font-semibold border-b border-base-200 pb-2">List</h2>
-        <p class="text-sm opacity-70 mt-1">List of all saved raw trames.</p>
+        <div role="tablist" class="tabs tabs-lifted">
+          <a role="tab"
+             class="tab {{ 'tab-active' if exclude_auto_and_archived else '' }}"
+             href="?exclude_auto_and_archived=True">From User</a>
+          <a role="tab"
+             class="tab {{ 'tab-active' if not exclude_auto_and_archived else '' }}"
+             href="?exclude_auto_and_archived=False">Auto and Archived</a>
+        </div>
       </div>
 
       {% if raw_trame_records %}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {% for record in raw_trame_records %}
-            <div class="card bg-base-200 border border-base-300 hover:border-base-300 transition-colors">
-              <div class="card-body p-5">
-                <div class="flex justify-between items-start mb-2">
-                  <h3 class="card-title text-lg font-bold truncate w-full pr-2" title="{{ record.title or "Untitled" }}">
-                    {{ record.title or "Untitled" }}
-                  </h3>
-                  <span class="badge badge-ghost font-mono text-xs shrink-0">#{{ record.id }}</span>
-                </div>
-
-                <div class="flex flex-wrap gap-2 mb-4">
-                  <span class="badge badge-primary badge-sm badge-outline">{{ record.username }}</span>
-                  <span class="badge badge-ghost badge-sm text-xs">{{ record.saving_origin }}</span>
-                  <span class="badge badge-secondary badge-sm badge-outline">{{ record.piece_count }} pieces</span>
-                </div>
-
-                <div class="text-xs opacity-60 mb-4 font-mono space-y-1">
-                  <div class="flex justify-between">
-                    <span>Created:</span>
-                    <span>{{ record.created_at.strftime("%Y-%m-%d %H:%M") if record.created_at else '-' }}</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span>Modified:</span>
-                    <span>{{ record.modified_at.strftime("%Y-%m-%d %H:%M") if record.modified_at else '-' }}</span>
-                  </div>
-                </div>
-
-                <div class="card-actions justify-end mt-auto pt-2 border-t border-base-200">
-                  <a href="/trame/admin/{{ access_name_slug }}/raw_trame/{{ record.id }}"
-                     class="btn btn-sm btn-outline btn-secondary">View</a>
-                  <a href="/trame/admin/{{ access_name_slug }}/raw_trame_editor/{{ record.id }}"
-                     class="btn btn-sm btn-primary">Edit</a>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
+        <div class="overflow-x-auto bg-base-100 rounded-lg border border-base-200">
+          <table class="table table-zebra w-full">
+            <!-- head -->
+            <thead class="bg-base-200 text-base-content uppercase text-xs font-bold">
+              <tr>
+                <th class="w-16">ID</th>
+                <th class="w-1/3">Title</th>
+                <th>Context</th>
+                <th>Pieces</th>
+                <th>Dates</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for record in raw_trame_records %}
+                <tr class="hover">
+                  <th class="font-mono text-xs opacity-50">#{{ record.id }}</th>
+                  <td>
+                    <div class="font-bold truncate max-w-xs" title="{{ record.title or 'Untitled' }}">
+                      {{ record.title or "Untitled" }}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex flex-col gap-1 items-start">
+                      <span class="badge badge-ghost badge-sm">{{ record.username }}</span>
+                      <span class="badge badge-sm {{ 'badge-neutral' if record.saving_origin == 'manual' else 'badge-ghost' }}">{{ record.saving_origin }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge badge-secondary badge-outline badge-sm">{{ record.piece_count }}</span>
+                  </td>
+                  <td class="text-xs font-mono opacity-70">
+                    <div>C: {{ record.created_at.strftime("%Y-%m-%d %H:%M") if record.created_at else '-' }}</div>
+                    <div>M: {{ record.modified_at.strftime("%Y-%m-%d %H:%M") if record.modified_at else '-' }}</div>
+                  </td>
+                  <td class="text-right space-x-1">
+                    <a href="/trame/admin/{{ access_name_slug }}/raw_trame/{{ record.id }}"
+                       class="btn btn-xs btn-outline btn-secondary">View</a>
+                    <a href="/trame/admin/{{ access_name_slug }}/raw_trame_editor/{{ record.id }}"
+                       class="btn btn-xs btn-primary">Edit</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       {% else %}
         <div class="alert alert-info mt-4 rounded-none border border-info/20 bg-info/10 text-info-content">

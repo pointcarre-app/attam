@@ -136,6 +136,40 @@
   {# djlint:off #}
     <script>
       var markdownContent = {{ trame_html_content | tojson }};
+      var autosaveInterval = {{ autosave_interval | tojson }};
+      var currentTitle = {{ raw_trame.title | tojson }};
+      var accessName = {{ access_name | tojson }};
+
+      // Autosave logic
+      if (autosaveInterval) {
+        setInterval(function() {
+            var content = simplemde.value();
+            
+            // Only autosave if there is content
+            if (!content) return;
+
+            fetch('/trame/admin/' + accessName + '/raw_trame_autosave', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    md_content: content,
+                    title: currentTitle
+                })
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    console.log('Autosaved successfully');
+                } else {
+                    console.warn('Autosave failed with status:', response.status);
+                }
+            })
+            .catch(function(err) {
+                console.error('Autosave error:', err);
+            });
+        }, autosaveInterval);
+      }
       
       var simplemde = new SimpleMDE({
         element: document.getElementById("attam-trame-markdown-editor"),
@@ -236,7 +270,7 @@
         // If we want to allow title editing, we need an input field for it.
         // For now, we'll send the current title to satisfy the schema if needed, or rely on backend to keep it.
         // But the schema allows optional title. Let's send what we have or null.
-        var title = "{{ raw_trame.title }}"; 
+        var title = currentTitle; 
         
         // Show loading state
         var btn = this;

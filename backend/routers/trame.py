@@ -163,6 +163,7 @@ async def raw_trame_create(
 async def raw_trame_list(
     request: Request,
     access_name: str,
+    exclude_auto_and_archived: bool = True,
     trame_access_token: Optional[str] = Cookie(None),
 ):
     """
@@ -180,7 +181,14 @@ async def raw_trame_list(
     if DATABASE_URL:
         try:
             db_manager = PostgresManager(DATABASE_URL)
-            raw_trame_records = db_manager.get_all_raw_trames()
+            if exclude_auto_and_archived:
+                raw_trame_records = db_manager.get_all_raw_trames(
+                    exclude_saving_origins=["autosave", "archived"]
+                )
+            else:
+                raw_trame_records = db_manager.get_all_raw_trames(
+                    saving_origins=["autosave", "archived"]
+                )
         except Exception as e:
             logger.error(f"Failed to fetch raw trames: {e}")
 
@@ -191,6 +199,7 @@ async def raw_trame_list(
         "access_name": token_user,
         "access_name_slug": access_name,
         "raw_trame_records": raw_trame_records,
+        "exclude_auto_and_archived": exclude_auto_and_archived,
     }
     return templates.TemplateResponse("trame/raw_trame_list.html", context)
 
@@ -287,6 +296,7 @@ async def editor_raw_trame(
         "trame_html_content": trame_html_content,
         "deps": dependencies,
         "access_name": token_user,
+        "autosave_interval": 120_000,
     }
     return templates.TemplateResponse("trame/raw_trame_editor.html", context)
 
@@ -294,6 +304,53 @@ async def editor_raw_trame(
 class RawTrameUpdate(BaseModel):
     md_content: str
     title: Optional[str] = None
+
+
+@router.post("/admin/{access_name:str}/raw_trame_autosave")
+async def raw_trame_autosave(
+    request: Request,
+    access_name: str,
+    autosave_data: RawTrameUpdate,
+    trame_access_token: Optional[str] = Cookie(None),
+):
+    """
+    Autosave a raw trame (creates a new record).
+    """
+    # Verify token
+    token_user = verify_access_token(trame_access_token) if trame_access_token else None
+
+    # Check if logged in and user matches
+    if not token_user or token_user != access_name:
+        raise HTTPException(status_code=403, detail="Not authenticated")
+
+    if DATABASE_URL:
+        try:
+            db_manager = PostgresManager(DATABASE_URL)
+
+            # Generate slug
+            title = autosave_data.title or "Untitled"
+            slug = slugify(title)
+
+            # Calculate piece count
+            prepared_pieces = process_markdown_content(autosave_data.md_content)
+            piece_count = len(prepared_pieces)
+
+            db_manager.save_raw_trame(
+                username=access_name,
+                title=title,
+                slug=slug,
+                md_content=autosave_data.md_content,
+                piece_count=piece_count,
+                saving_origin="autosave",
+            )
+
+            return {"success": True}
+
+        except Exception as e:
+            logger.error(f"Failed to autosave raw trame: {e}")
+            raise HTTPException(status_code=500, detail=str(e))
+
+    raise HTTPException(status_code=500, detail="Database not configured")
 
 
 @router.post("/admin/{access_name:str}/raw_trame_update/{raw_trame_id:int}")

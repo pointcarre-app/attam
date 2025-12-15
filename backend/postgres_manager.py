@@ -265,9 +265,23 @@ class PostgresManager:
         result = self.safely_execute(query, vars=(trame_id,), fetch_all=True)
         return result[0] if result else None
 
-    def get_all_raw_trames(self) -> List[Dict[str, Any]]:
+    def get_all_raw_trames(
+        self,
+        exclude_saving_origins: Optional[List[str]] = None,
+        saving_origins: Optional[List[str]] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Retrieves all records from the raw_trame table.
         """
+        if saving_origins:
+            placeholders = ", ".join(["%s"] * len(saving_origins))
+            query = f"SELECT * FROM raw_trame WHERE saving_origin IN ({placeholders}) ORDER BY created_at DESC"
+            return self.safely_execute(query, vars=tuple(saving_origins), fetch_all=True)
+
+        if exclude_saving_origins:
+            placeholders = ", ".join(["%s"] * len(exclude_saving_origins))
+            query = f"SELECT * FROM raw_trame WHERE saving_origin NOT IN ({placeholders}) ORDER BY created_at DESC"
+            return self.safely_execute(query, vars=tuple(exclude_saving_origins), fetch_all=True)
+
         query = "SELECT * FROM raw_trame ORDER BY created_at DESC"
         return self.safely_execute(query, fetch_all=True)
