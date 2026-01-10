@@ -1,0 +1,83 @@
+<figure class="m-0 p-0 rounded-none w-full h-full block">
+  <svg viewBox="90 40 160 210"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-0">
+
+    <!-- Define arrow markers -->
+    <defs>
+    <marker id="arrow" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto" class="fill-base-content" opacity="0.8">
+    <polygon points="0 0, 4 2, 0 4" />
+    </marker>
+    <marker id="arrow-success" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto" class="fill-success" opacity="1">
+    <polygon points="0 0, 4 2, 0 4" />
+    </marker>
+    </defs>
+
+    <!-- Simple flow lines -->
+    <!-- Enseignant to Development -->
+    <line x1="120" y1="79" x2="120" y2="105" class="stroke-base-content" stroke-width="0.8" opacity="0.3" marker-end="url(#arrow)" />
+
+    <!-- Development to Hosting -->
+    <line x1="120" y1="134" x2="120" y2="160" class="stroke-base-content" stroke-width="0.8" opacity="0.3" marker-end="url(#arrow)" />
+
+    <!-- Hosting to Zero Cost -->
+    <line x1="120" y1="189" x2="120" y2="215" class="stroke-success" stroke-width="1" opacity="0.4" marker-end="url(#arrow-success)" />
+
+    <!-- 1. ENSEIGNANT (top) -->
+    <g id="creation">
+    <circle cx="120" cy="65" r="12" class="fill-accent-soft" />
+    <circle cx="120" cy="65" r="12" class="stroke-accent fill-none" stroke-width="0.5" opacity="0.8" />
+    <!-- Pen icon -->
+    <g transform="translate(114, 59) scale(0.5)" class="stroke-accent">
+    <path d="M11.5 15H7a4 4 0 0 0-4 4v2"  fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"  fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="10" cy="7" r="4"  fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <!-- Label -->
+    <text x="140" y="62" text-anchor="start" class="fill-base-content" font-size="9" font-weight="400">Enseignant</text>
+    <text x="140" y="73" text-anchor="start" class="fill-base-content" font-size="7" opacity="0.6">écrit</text>
+    </g>
+
+    <!-- 2. DÉVELOPPEMENT (second) -->
+    <g id="development">
+    <circle cx="120" cy="120" r="12" class="fill-primary-soft" />
+    <circle cx="120" cy="120" r="12" class="stroke-primary fill-none" stroke-width="0.5" opacity="0.9" />
+    <!-- Code icon -->
+    <g transform="translate(113, 113) scale(0.6)">
+    <path d="M10 12.5 8 15l2 2.5" class="stroke-primary" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="m14 12.5 2 2.5-2 2.5" class="stroke-primary" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M14 2v4a2 2 0 0 0 2 2h4" class="stroke-primary" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" class="stroke-primary" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <!-- Label -->
+    <text x="140" y="117" text-anchor="start" class="fill-base-content" font-size="9" font-weight="400">Maths.pm</text>
+    <text x="140" y="128" text-anchor="start" class="fill-base-content" font-size="7" opacity="0.6">mutualise</text>
+    </g>
+
+    <!-- 3. HÉBERGEMENT STATIQUE (third) -->
+    <g id="hosting">
+    <circle cx="120" cy="175" r="12" class="fill-base-200" />
+    <circle cx="120" cy="175" r="12" class="stroke-base-content fill-none" stroke-width="0.5" opacity="0.8" />
+    <!-- Server icon -->
+    <rect x="116" y="171" width="8" height="2" rx="0.5" class="fill-base-content" opacity="0.9" />
+    <rect x="116" y="174" width="8" height="2" rx="0.5" class="fill-base-content" opacity="0.7" />
+    <rect x="116" y="177" width="8" height="2" rx="0.5" class="fill-base-content" opacity="0.5" />
+    <circle cx="117.5" cy="172" r="0.7" class="fill-success" />
+    <!-- Label -->
+    <text x="140" y="172" text-anchor="start" class="fill-base-content" font-size="9" font-weight="400">Hébergement</text>
+    <text x="140" y="183" text-anchor="start" class="fill-base-content" font-size="7" opacity="0.6">statique</text>
+    </g>
+
+    <!-- 4. COÛT MARGINAL NUL (bottom) -->
+    <g id="zero-cost">
+    <circle cx="120" cy="230" r="12" class="fill-success" opacity="0.1" />
+    <circle cx="120" cy="230" r="12" class="stroke-success fill-none" stroke-width="0.6" opacity="0.6" />
+    <text x="120" y="234" text-anchor="middle" class="fill-success" font-size="11" font-weight="500">0€</text>
+    <text x="140" y="230" text-anchor="start" class="fill-base-content" font-size="9" font-weight="400">Coût marginal nul</text>
+    <text x="140" y="241" text-anchor="start" class="fill-success" font-size="8" font-weight="500">∞ élèves</text>
+    </g>
+
+  </svg>
+</figure>

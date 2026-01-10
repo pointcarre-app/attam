@@ -1,0 +1,77 @@
+<figure id="teachers-figure-svg" class="m-0 p-0 rounded-box w-full" style="max-height: 120px;">
+  <div class="flex items-center justify-center gap-2- pt-5 w-full">
+
+    <!-- Box 1: 12x-8 = 0 -->
+    <div class="flex flex-col items-center gap-2">
+      <div class="bg-base-300 text-base-content rounded-lg p-2 min-w-[40px] h-[60px] flex items-center justify-center">
+        <span class="katex-display" style="font-size:0.85rem !important;">$$12x-8 = 0$$</span>
+      </div>
+      <span class="text-base-content text-sm">Générer</span>
+    </div>
+
+    <!-- Arrow 1 -->
+    <div class="flex flex-col items-center gap-2">
+      <div class="rounded-lg p-2 min-w-[40px] h-[60px] flex items-center justify-center">
+        <div class="text-base-content opacity-70">
+          <svg width="30" height="20" viewBox="0 0 30 20" class="fill-none">
+            <path d="M 5 10 L 20 10 M 15 5 L 20 10 L 15 15" stroke="currentColor" stroke-width="2" />
+          </svg>
+        </div>
+      </div>
+      <span class="text-transparent text-sm">Arrow</span>
+    </div>
+
+    <!-- Box 2: x=\dfrac{2}{3} -->
+    <div class="flex flex-col items-center gap-2">
+      <div class="bg-primary text-primary-content rounded-lg p-2 min-w-[40px] h-[60px] flex items-center justify-center">
+        <span class="katex-display" style="font-size:0.85rem !important;">$$x=\dfrac{2}{3}$$</span>
+      </div>
+      <span class="text-primary text-sm">Résoudre</span>
+    </div>
+
+    <!-- Arrow 2 -->
+    <div class="flex flex-col items-center gap-2">
+      <div class="rounded-lg p-2 min-w-[40px] max-h-[50px] flex items-center justify-center">
+        <div class="text-base-content opacity-70">
+          <svg width="30" height="20" viewBox="0 0 30 20" class="fill-none">
+            <path d="M 5 10 L 20 10 M 15 5 L 20 10 L 15 15" stroke="currentColor" stroke-width="2" />
+          </svg>
+        </div>
+      </div>
+      <span class="text-transparent text-sm">Arrow</span>
+    </div>
+
+    <!-- Box 3: x=\dfrac{12}{8} -->
+    <div class="flex flex-col items-center gap-2">
+      <div class="bg-secondary text-secondary-content rounded-lg p-2 min-w-[40px] max-h-[60px] flex items-center justify-center opacity-60">
+        <span class="katex-display" style="font-size:0.85rem !important;">$$ \dfrac{12}{8} \eqsim \dfrac{3}{2} $$</span>
+      </div>
+      <span class="text-secondary text-sm">Corriger</span>
+    </div>
+
+  </div>
+</figure>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.getElementById("teachers-figure-svg"), {
+            delimiters: [{
+                left: "$$",
+                right: "$$",
+                display: true
+            }, {
+                left: "$",
+                right: "$",
+                display: false
+            }, {
+                left: "\\(",
+                right: "\\)",
+                display: false
+            }, {
+                left: "\\[",
+                right: "\\]",
+                display: true
+            }],
+            throwOnError: false
+        });
+    });
+</script>

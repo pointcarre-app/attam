@@ -1,0 +1,68 @@
+<figure class="m-0 p-0 rounded-none w-full h-full block">
+  <svg viewBox="0 0 300 200"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-4">
+
+    <!-- Connection lines -->
+    <line x1="60" y1="100" x2="150" y2="100" class="stroke-base-content" stroke-width="1" opacity="0.2" />
+    <line x1="150" y1="100" x2="240" y2="100" class="stroke-base-content" stroke-width="1" opacity="0.2" />
+
+    <!-- Input -->
+    <g>
+    <circle cx="60" cy="100" r="25" class="fill-primary-soft" />
+    <circle cx="60" cy="100" r="25" class="stroke-primary fill-none" stroke-width="1.5" opacity="0.8" />
+    <text x="60" y="105" text-anchor="middle" class="fill-primary" font-size="16" font-weight="600">x²</text>
+    </g>
+
+    <!-- Operation -->
+    <g>
+    <circle cx="150" cy="100" r="30" class="fill-secondary-soft" />
+    <circle cx="150" cy="100" r="30" class="stroke-secondary fill-none" stroke-width="1.5" opacity="0.8" />
+    <text x="150" y="105" text-anchor="middle" class="fill-secondary" font-size="20" font-weight="600">√</text>
+    </g>
+
+    <!-- Result -->
+    <g>
+    <circle cx="240" cy="100" r="25" class="fill-accent-soft" />
+    <circle cx="240" cy="100" r="25" class="stroke-accent fill-none" stroke-width="1.5" opacity="0.8" />
+    <text x="240" y="105" text-anchor="middle" class="fill-accent" font-size="16" font-weight="600">x</text>
+    </g>
+
+    <!-- Flow animation dots -->
+    <circle r="2" class="fill-primary" opacity="0">
+    <animate attributeName="opacity" values="0;0.8;0.8;0" dur="2s" repeatCount="indefinite" />
+    <animateMotion dur="2s" repeatCount="indefinite">
+    <mpath href="#simple-flow" />
+    </animateMotion>
+    </circle>
+
+    <circle r="2" class="fill-primary" opacity="0">
+    <animate attributeName="opacity" values="0;0.8;0.8;0" dur="2s" begin="0.5s" repeatCount="indefinite" />
+    <animateMotion dur="2s" begin="0.5s" repeatCount="indefinite">
+    <mpath href="#simple-flow" />
+    </animateMotion>
+    </circle>
+
+    <circle r="2" class="fill-primary" opacity="0">
+    <animate attributeName="opacity" values="0;0.8;0.8;0" dur="2s" begin="1s" repeatCount="indefinite" />
+    <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
+    <mpath href="#simple-flow" />
+    </animateMotion>
+    </circle>
+
+    <!-- Define animation path -->
+    <path id="simple-flow" d="M 60 100 L 240 100" fill="none" opacity="0" />
+
+    <!-- Labels -->
+    <text x="60" y="140" text-anchor="middle" class="fill-base-content" font-size="10" opacity="0.6">Problème</text>
+    <text x="150" y="140" text-anchor="middle" class="fill-base-content" font-size="10" opacity="0.6">Méthode</text>
+    <text x="240" y="140" text-anchor="middle" class="fill-base-content" font-size="10" opacity="0.6">Solution</text>
+
+    <!-- Example values -->
+    <text x="150" y="50" text-anchor="middle" class="fill-base-content" font-size="12" font-weight="500">
+    Exemple: 225 → √225 → 15
+    </text>
+  </svg>
+</figure>

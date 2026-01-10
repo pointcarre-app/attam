@@ -1,0 +1,104 @@
+<figure class="m-0 p-0 rounded-none" style="width: 100%; height: 100%; display: block;">
+  <svg viewBox="0 0 500 120"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-0">
+    <!-- Data Visualization Elements -->
+
+    <!-- Bar Chart (section 1: 0-125) -->
+    <g id="bar-chart">
+    <!-- Y-axis -->
+    <line x1="15" y1="20" x2="15" y2="90" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+    <!-- X-axis -->
+    <line x1="15" y1="90" x2="110" y2="90" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+
+    <!-- Bars (only 3 bars with primary, secondary, accent) -->
+    <rect x="30" y="50" width="20" height="40" class="fill-primary" opacity="0.8" />
+    <rect x="55" y="35" width="20" height="55" class="fill-secondary" opacity="0.8" />
+    <rect x="80" y="60" width="20" height="30" class="fill-accent" opacity="0.8" />
+
+    <!-- Grid lines -->
+    <line x1="15" y1="30" x2="110" y2="30" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    <line x1="15" y1="50" x2="110" y2="50" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    <line x1="15" y1="70" x2="110" y2="70" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    </g>
+
+    <!-- Line Chart (section 2: 125-250) -->
+    <g id="line-chart">
+    <!-- Y-axis -->
+    <line x1="140" y1="20" x2="140" y2="90" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+    <!-- X-axis -->
+    <line x1="140" y1="90" x2="235" y2="90" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+
+    <!-- Line path -->
+    <polyline points="150,80 165,40 180,55 195,30 210,45 225,60" class="stroke-primary fill-none" stroke-width="2.5" opacity="0.9" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Data points -->
+    <circle cx="150" cy="80" r="3" class="fill-primary stroke-primary" stroke-width="1" />
+    <circle cx="165" cy="40" r="3" class="fill-primary stroke-primary" stroke-width="1" />
+    <circle cx="180" cy="55" r="3" class="fill-primary stroke-primary" stroke-width="1" />
+    <circle cx="195" cy="30" r="3" class="fill-primary stroke-primary" stroke-width="1" />
+    <circle cx="210" cy="45" r="3" class="fill-primary stroke-primary" stroke-width="1" />
+    <circle cx="225" cy="60" r="3" class="fill-primary stroke-primary" stroke-width="1" />
+
+    <!-- Grid lines -->
+    <line x1="140" y1="30" x2="235" y2="30" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    <line x1="140" y1="50" x2="235" y2="50" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    <line x1="140" y1="70" x2="235" y2="70" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    </g>
+
+    <!-- Pie Chart (section 3: 250-375, centered at 312) -->
+    <g id="pie-chart">
+    <!-- Square border around pie chart -->
+    <rect x="275" y="23" width="74" height="74" class="stroke-base-200 fill-none" stroke-width="1.5" opacity="0.7" />
+
+    <!-- Pie slices using path elements - complete circle with 4 slices -->
+    <!-- Slice 1 (40%) -->
+    <path d="M 312 60 L 312 30 A 30 30 0 0 1 337 45 Z" class="fill-primary" opacity="0.8" />
+    <!-- Slice 2 (30%) -->
+    <path d="M 312 60 L 337 45 A 30 30 0 0 1 337 75 Z" class="fill-secondary" opacity="0.8" />
+    <!-- Slice 3 (20%) -->
+    <path d="M 312 60 L 337 75 A 30 30 0 0 1 297 85 Z" class="fill-accent" opacity="0.8" />
+    <!-- Slice 4 (10%) - using base-300 instead of success -->
+    <path d="M 312 60 L 297 85 A 30 30 0 0 1 312 30 Z" class="fill-base-300" opacity="0.8" />
+
+    <!-- Center point -->
+    <circle cx="312" cy="60" r="2" class="fill-base-content" opacity="0.5" />
+    </g>
+
+    <!-- Scatter Plot (section 4: 375-500) -->
+    <g id="scatter-plot">
+    <!-- Y-axis -->
+    <line x1="390" y1="20" x2="390" y2="90" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+    <!-- X-axis -->
+    <line x1="390" y1="90" x2="485" y2="90" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+
+    <!-- Scattered points with only primary, secondary, accent colors -->
+    <circle cx="400" cy="75" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="408" cy="60" r="3" class="fill-secondary" opacity="0.7" />
+    <circle cx="418" cy="70" r="3" class="fill-accent" opacity="0.7" />
+    <circle cx="425" cy="45" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="432" cy="55" r="3" class="fill-secondary" opacity="0.7" />
+    <circle cx="440" cy="35" r="3" class="fill-accent" opacity="0.7" />
+    <circle cx="448" cy="65" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="455" cy="40" r="3" class="fill-secondary" opacity="0.7" />
+    <circle cx="463" cy="50" r="3" class="fill-accent" opacity="0.7" />
+    <circle cx="470" cy="30" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="475" cy="60" r="3" class="fill-secondary" opacity="0.7" />
+    <circle cx="480" cy="45" r="3" class="fill-accent" opacity="0.7" />
+
+    <!-- Trend line -->
+    <line x1="395" y1="80" x2="480" y2="35" class="stroke-warning" stroke-width="1.5" opacity="0.5" stroke-dasharray="3,3" />
+    </g>
+
+    <!-- Python/JS code hints (decorative elements) -->
+    <g id="code-hints" opacity="0.5">
+    <!-- Python symbol (simplified)
+<text x="45" y="110" class="fill-info" font-family="monospace" font-size="10">plt.show()</text> -->
+
+    <!-- D3.js hint
+    <text x="290" y="110" class="fill-warning" font-family="monospace" font-size="10">d3.select()</text> -->
+    </g>
+  </svg>
+</figure>

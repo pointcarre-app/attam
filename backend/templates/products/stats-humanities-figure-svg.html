@@ -1,0 +1,137 @@
+<figure class="m-0 p-0 rounded-none" style="width: 100%; height: 100%; display: block;">
+  <svg viewBox="0 0 500 120"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-0">
+    <!-- Statistics for Social Sciences Visualization -->
+
+    <!-- Survey/Poll Data Collection (section 1: 0-125) -->
+    <g id="survey-data">
+    <!-- Background -->
+    <rect x="10" y="15" width="110" height="80" class="fill-base-200" opacity="0.1" rx="3" />
+
+    <!-- Survey forms/questionnaires representation -->
+    <rect x="20" y="25" width="25" height="35" rx="2" class="fill-base-200" opacity="0.4" stroke="currentColor" stroke-width="1" />
+    <rect x="25" y="35" width="25" height="35" rx="2" class="fill-base-200" opacity="0.6" stroke="currentColor" stroke-width="1" />
+    <rect x="30" y="45" width="25" height="35" rx="2" class="fill-base-200" opacity="0.8" stroke="currentColor" stroke-width="1" />
+
+    <!-- Survey response indicators (checkboxes/dots) -->
+    <circle cx="35" cy="50" r="2" class="fill-primary" opacity="0.8" />
+    <circle cx="40" cy="50" r="2" class="fill-secondary" opacity="0.8" />
+    <circle cx="45" cy="50" r="2" class="fill-accent" opacity="0.8" />
+
+    <circle cx="35" cy="58" r="2" class="fill-accent" opacity="0.8" />
+    <circle cx="40" cy="58" r="2" class="fill-primary" opacity="0.8" />
+    <circle cx="45" cy="58" r="2" class="fill-secondary" opacity="0.8" />
+
+    <!-- Data collection arrows -->
+    <path d="M 65 40 L 85 40" class="stroke-primary" stroke-width="2" opacity="0.6" />
+    <path d="M 80 35 L 85 40 L 80 45" class="stroke-primary" stroke-width="2" opacity="0.6" />
+
+    <!-- Raw data points -->
+    <circle cx="90" cy="30" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="95" cy="40" r="3" class="fill-secondary" opacity="0.7" />
+    <circle cx="100" cy="35" r="3" class="fill-accent" opacity="0.7" />
+    <circle cx="90" cy="50" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="105" cy="45" r="3" class="fill-secondary" opacity="0.7" />
+    <circle cx="95" cy="60" r="3" class="fill-accent" opacity="0.7" />
+    </g>
+
+    <!-- Statistical Analysis - Normal Distribution (section 2: 125-250) -->
+    <g id="normal-distribution">
+    <!-- Background -->
+    <rect x="135" y="15" width="110" height="80" class="fill-base-200" opacity="0.1" rx="3" />
+
+    <!-- Axes -->
+    <line x1="145" y1="85" x2="235" y2="85" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+    <line x1="190" y1="25" x2="190" y2="85" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+
+    <!-- Normal distribution curve (bell curve) -->
+    <path d="M 150 80 Q 170 35, 190 25 Q 210 35, 230 80" class="stroke-primary fill-none" stroke-width="3" opacity="0.8" />
+
+    <!-- Standard deviation markers -->
+    <line x1="170" y1="25" x2="170" y2="85" class="stroke-secondary" stroke-width="1" opacity="0.4" stroke-dasharray="3,3" />
+    <line x1="210" y1="25" x2="210" y2="85" class="stroke-secondary" stroke-width="1" opacity="0.4" stroke-dasharray="3,3" />
+
+    <!-- Mean line -->
+    <line x1="190" y1="25" x2="190" y2="85" class="stroke-accent" stroke-width="2" opacity="0.6" stroke-dasharray="4,2" />
+
+    <!-- Data points under the curve -->
+    <circle cx="165" cy="65" r="2" class="fill-primary" opacity="0.6" />
+    <circle cx="175" cy="50" r="2" class="fill-primary" opacity="0.6" />
+    <circle cx="185" cy="40" r="2" class="fill-primary" opacity="0.6" />
+    <circle cx="195" cy="40" r="2" class="fill-primary" opacity="0.6" />
+    <circle cx="205" cy="50" r="2" class="fill-primary" opacity="0.6" />
+    <circle cx="215" cy="65" r="2" class="fill-primary" opacity="0.6" />
+
+    <!-- Confidence interval shading -->
+    <polygon points="170,80 170,50 210,50 210,80" class="fill-secondary" opacity="0.2" />
+    </g>
+
+    <!-- Correlation/Regression Analysis (section 3: 250-375) -->
+    <g id="correlation">
+    <!-- Background -->
+    <rect x="260" y="15" width="110" height="80" class="fill-base-200" opacity="0.1" rx="3" />
+
+    <!-- Axes -->
+    <line x1="270" y1="85" x2="360" y2="85" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+    <line x1="270" y1="85" x2="270" y2="25" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+
+    <!-- Scatter plot points showing correlation -->
+    <circle cx="280" cy="75" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="290" cy="70" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="300" cy="65" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="310" cy="55" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="320" cy="50" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="330" cy="45" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="340" cy="35" r="3" class="fill-primary" opacity="0.7" />
+    <circle cx="350" cy="30" r="3" class="fill-primary" opacity="0.7" />
+
+    <!-- Regression line -->
+    <line x1="275" y1="78" x2="355" y2="28" class="stroke-secondary" stroke-width="2.5" opacity="0.8" />
+
+    <!-- Confidence bands around regression line -->
+    <polygon points="275,82 285,75 295,68 305,60 315,53 325,46 335,38 345,31 355,24 355,32 345,39 335,46 325,54 315,61 305,68 295,76 285,83 275,86" class="fill-secondary" opacity="0.15" />
+
+    <!-- Grid lines -->
+    <line x1="270" y1="45" x2="360" y2="45" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    <line x1="270" y1="65" x2="360" y2="65" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    <line x1="315" y1="25" x2="315" y2="85" class="stroke-base-content" stroke-width="0.3" opacity="0.3" stroke-dasharray="2,2" />
+    </g>
+
+    <!-- Hypothesis Testing/Statistical Inference (section 4: 375-500) -->
+    <g id="hypothesis-testing">
+    <!-- Background -->
+    <rect x="385" y="15" width="110" height="80" class="fill-base-200" opacity="0.1" rx="3" />
+
+    <!-- Two sample distributions for comparison -->
+    <!-- Sample 1 (left distribution) -->
+    <path d="M 395 75 Q 405 45, 415 35 Q 425 45, 435 75" class="stroke-primary fill-none" stroke-width="2.5" opacity="0.7" />
+    <polygon points="395,75 405,60 415,50 425,60 435,75 435,80 395,80" class="fill-primary" opacity="0.2" />
+
+    <!-- Sample 2 (right distribution) -->
+    <path d="M 445 75 Q 455 40, 465 30 Q 475 40, 485 75" class="stroke-secondary fill-none" stroke-width="2.5" opacity="0.7" />
+    <polygon points="445,75 455,55 465,45 475,55 485,75 485,80 445,80" class="fill-secondary" opacity="0.2" />
+
+    <!-- Significance test indicators -->
+    <line x1="415" y1="30" x2="465" y2="25" class="stroke-accent" stroke-width="2" opacity="0.6" stroke-dasharray="4,4" />
+
+    <!-- Critical region -->
+    <rect x="440" y="20" width="10" height="65" class="fill-accent" opacity="0.15" />
+
+    <!-- P-value visualization (small area under curve) -->
+    <polygon points="475,40 485,75 485,80 475,80" class="fill-accent" opacity="0.4" />
+
+    <!-- Sample means -->
+    <circle cx="415" cy="35" r="3" class="fill-primary" opacity="0.9" />
+    <circle cx="465" cy="30" r="3" class="fill-secondary" opacity="0.9" />
+    </g>
+
+    <!-- Connecting arrows between sections -->
+    <path d="M 125 55 L 130 55" class="stroke-base-content" stroke-width="1.5" opacity="0.4" />
+    <path d="M 250 55 L 255 55" class="stroke-base-content" stroke-width="1.5" opacity="0.4" />
+    <path d="M 375 55 L 380 55" class="stroke-base-content" stroke-width="1.5" opacity="0.4" />
+
+  </svg>
+</figure>

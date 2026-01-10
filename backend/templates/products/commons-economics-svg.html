@@ -1,0 +1,84 @@
+<figure class="m-0 p-0 rounded-none w-full h-full block">
+  <svg viewBox="0 0 300 260"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-0">
+
+    <!-- Define arrow markers -->
+    <defs>
+    <marker id="arrow-flow" markerWidth="3" markerHeight="3" refX="1.5" refY="1.5" orient="auto" class="fill-primary" opacity="0.4">
+    <polygon points="0 0, 3 1.5, 0 3" />
+    </marker>
+    </defs>
+
+    <!-- Main title -->
+    <text x="150" y="20" text-anchor="middle" class="fill-base-content" font-size="11" font-weight="600">
+    Commun numérique éducatif
+    </text>
+    <text x="150" y="34" text-anchor="middle" class="fill-primary" font-size="8" opacity="0.8">
+    Un modèle économique optimal
+    </text>
+
+    <!-- Very light background -->
+    <rect x="90" y="48" width="120" height="160" rx="6" class="fill-primary" opacity="0.03" />
+
+    <!-- 1. Content creation -->
+    <g transform="translate(150, 75)">
+    <circle r="12" class="fill-accent" opacity="0.1" />
+    <circle r="12" class="stroke-accent fill-none" stroke-width="0.5" opacity="0.6" />
+    <!-- Tiny pen icon -->
+    <path d="M -2 -1 L 1 -4 L 2 -3 L -1 0 L -2.5 0.5 Z" class="fill-accent" opacity="0.7" transform="scale(0.8)" />
+    <text x="0" y="-20" text-anchor="middle" class="fill-base-content" font-size="7.5">Création unique</text>
+    <text x="0" y="26" text-anchor="middle" class="fill-base-content" font-size="6.5" opacity="0.6">par les enseignants</text>
+    </g>
+
+    <!-- Small arrow -->
+    <path d="M 150 89 L 150 106" class="stroke-primary" stroke-width="0.8" opacity="0.25" marker-end="url(#arrow-flow)" />
+
+    <!-- 2. Development -->
+    <g transform="translate(150, 125)">
+    <circle r="12" class="fill-primary" opacity="0.1" />
+    <circle r="12" class="stroke-primary fill-none" stroke-width="0.5" opacity="0.6" />
+    <!-- Tiny code brackets -->
+    <text x="0" y="2" text-anchor="middle" class="fill-primary" font-size="9" font-weight="500">&lt;/&gt;</text>
+    <text x="0" y="-20" text-anchor="middle" class="fill-base-content" font-size="7.5">Développement libre</text>
+    <text x="0" y="26" text-anchor="middle" class="fill-base-content" font-size="6.5" opacity="0.6">interface accessible</text>
+    </g>
+
+    <!-- Small arrow -->
+    <path d="M 150 139 L 150 156" class="stroke-primary" stroke-width="0.8" opacity="0.25" marker-end="url(#arrow-flow)" />
+
+    <!-- 3. Zero cost -->
+    <g transform="translate(150, 175)">
+    <circle r="12" class="fill-success" opacity="0.1" />
+    <circle r="12" class="stroke-success fill-none" stroke-width="0.6" opacity="0.8" />
+    <text x="0" y="3" text-anchor="middle" class="fill-success" font-size="11" font-weight="600">0€</text>
+    <text x="0" y="-20" text-anchor="middle" class="fill-base-content" font-size="7.5">Coût marginal nul</text>
+    <text x="0" y="26" text-anchor="middle" class="fill-base-content" font-size="6.5" opacity="0.6">hébergement statique</text>
+    </g>
+
+    <!-- Compact result -->
+    <g transform="translate(150, 220)">
+    <rect x="-45" y="-10" width="90" height="20" rx="10" class="fill-success" opacity="0.06" />
+    <rect x="-45" y="-10" width="90" height="20" rx="10" class="stroke-success fill-none" stroke-width="0.6" opacity="0.4" />
+    <text x="0" y="0" text-anchor="middle" class="fill-success" font-size="8" font-weight="600">∞ élèves</text>
+    <text x="0" y="9" text-anchor="middle" class="fill-base-content" font-size="6" opacity="0.6">même investissement</text>
+    </g>
+
+    <!-- Very minimal comparison -->
+    <g transform="translate(240, 125)" opacity="0.3">
+    <text x="0" y="0" text-anchor="middle" class="fill-base-content" font-size="5.5">vs</text>
+    <text x="0" y="7" text-anchor="middle" class="fill-error" font-size="5.5">abonnement</text>
+    <text x="0" y="14" text-anchor="middle" class="fill-error" font-size="5">+ serveurs</text>
+    <text x="0" y="21" text-anchor="middle" class="fill-error" font-size="5">€ × n × t</text>
+    </g>
+
+    <!-- Very subtle pulse -->
+    <circle cx="150" cy="175" r="16" class="fill-none stroke-success" stroke-width="0.4" opacity="0">
+    <animate attributeName="r" values="16;19;16" dur="4s" repeatCount="indefinite" />
+    <animate attributeName="opacity" values="0.2;0.05;0.2" dur="4s" repeatCount="indefinite" />
+    </circle>
+
+  </svg>
+</figure>

@@ -1,0 +1,68 @@
+<figure class="m-0 p-0 rounded-none w-full h-full block">
+  <svg viewBox="0 0 500 120"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-0">
+    <!-- PM: Pedagogical Message - Abstract visualization -->
+
+    <!-- Markdown representation (left rectangle) -->
+    {# <rect x="60" y="25" width="120" height="70" rx="3" class="fill-base-200 stroke-base-content" stroke-width="1" opacity="0.8" /> #}
+
+    <!-- Three stacked colored rectangles inside -->
+    <rect x="70" y="30" width="100" height="18" rx="2" class="fill-secondary" opacity="0.7" />
+    <rect x="70" y="52" width="100" height="18" rx="2" class="fill-primary" opacity="0.7" />
+    <rect x="70" y="74" width="100" height="18" rx="2" class="fill-accent" opacity="0.7" />
+
+    <!-- Connection lines from rectangles to squares -->
+    <path d="M 170 39 Q 240 30, 322 32" class="stroke-secondary" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="4,2" />
+    <path d="M 170 61 L 310 60" class="stroke-primary" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="4,2" />
+    <path d="M 170 83 Q 240 88, 324 88" class="stroke-accent" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="4,2" />
+
+    <!-- Central circle (interactive hub) -->
+    <circle cx="350" cy="60" r="40" class="fill-base-100 stroke-base-300" stroke-width="1" opacity="0.9" />
+
+    <!-- Points distributed equally around the circle -->
+    <!-- 9 points with 40° intervals, starting from 270° (left) -->
+    <!-- Left (270° = π radians) - Square for straight connection -->
+    <rect x="305" y="55" width="10" height="10" rx="1" class="fill-primary" />
+
+    <!-- 310° -->
+    <rect x="317" y="27" width="10" height="10" rx="1" class="fill-secondary" />
+
+    <!-- 350° -->
+    <circle cx="347" cy="22" r="5" class="fill-primary" />
+
+    <!-- 30° -->
+    <circle cx="370" cy="25" r="5" class="fill-secondary" />
+
+    <!-- 70° -->
+    <circle cx="387" cy="45" r="5" class="fill-accent" />
+
+    <!-- 110° -->
+    <circle cx="387" cy="75" r="5" class="fill-primary" />
+
+    <!-- 150° -->
+    <circle cx="370" cy="95" r="5" class="fill-accent" />
+
+    <!-- 190° -->
+    <circle cx="347" cy="98" r="5" class="fill-secondary" />
+
+    <!-- 230° -->
+    <rect x="319" y="83" width="10" height="10" rx="1" class="fill-accent" opacity="0.8" />
+
+    <!-- Connecting lines from squares to matching circles -->
+    <!-- From left square (primary) to primary circles -->
+    <line x1="310" y1="60" x2="347" y2="22" class="stroke-primary" stroke-width="1" />
+    <line x1="310" y1="60" x2="387" y2="75" class="stroke-primary" stroke-width="1" />
+
+    <!-- From 310° square (secondary) to secondary circles -->
+    <line x1="322" y1="32" x2="370" y2="25" class="stroke-secondary" stroke-width="1" />
+    <line x1="322" y1="32" x2="347" y2="98" class="stroke-secondary" stroke-width="1" />
+
+    <!-- From 230° square (accent) to accent circles -->
+    <line x1="324" y1="88" x2="387" y2="45" class="stroke-accent" stroke-width="1" />
+    <line x1="324" y1="88" x2="370" y2="95" class="stroke-accent" stroke-width="1" />
+
+  </svg>
+</figure>

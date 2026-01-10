@@ -1,0 +1,44 @@
+<figure class="m-0 p-0 rounded-none w-full h-full block">
+  <svg viewBox="0 0 500 120"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-0">
+    <!-- Oscillating Movement Display - Square to Circle and back -->
+
+    <!-- Main trajectory - Primary shapes (perfect alignment) -->
+    <rect x="20" y="75" width="12" height="12" rx="0" class="fill-primary"></rect>
+    <rect x="60" y="45" width="12" height="12" rx="1" class="fill-primary"></rect>
+    <rect x="100" y="25" width="12" height="12" rx="3" class="fill-primary"></rect>
+    <rect x="140" y="15" width="12" height="12" rx="6" class="fill-primary"></rect>
+    <rect x="180" y="20" width="12" height="12" rx="6" class="fill-primary"></rect>
+    <rect x="220" y="35" width="12" height="12" rx="4" class="fill-primary"></rect>
+    <rect x="260" y="52" width="12" height="12" rx="2" class="fill-primary"></rect>
+    <rect x="300" y="75" width="12" height="12" rx="1" class="fill-primary"></rect>
+    <rect x="340" y="81" width="12" height="12" rx="3" class="fill-primary"></rect>
+    <rect x="380" y="78" width="12" height="12" rx="6" class="fill-primary"></rect>
+    <rect x="420" y="68" width="12" height="12" rx="4" class="fill-primary"></rect>
+    <rect x="460" y="55" width="12" height="12" rx="0" class="fill-primary"></rect>
+
+    <!-- Secondary trajectory - "L'impair" shapes (chaotic zigzag pattern) -->
+    <rect x="35" y="105" width="10" height="10" rx="0" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="75" y="35" width="10" height="10" rx="5" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="115" y="95" width="10" height="10" rx="2" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="155" y="5" width="10" height="10" rx="5" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="195" y="85" width="10" height="10" rx="0" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="235" y="15" width="10" height="10" rx="3" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="275" y="100" width="10" height="10" rx="5" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="315" y="25" width="10" height="10" rx="1" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="355" y="90" width="10" height="10" rx="4" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="395" y="10" width="10" height="10" rx="5" class="fill-secondary" opacity="0.8"></rect>
+    <rect x="435" y="75" width="10" height="10" rx="0" class="fill-secondary" opacity="0.8"></rect>
+
+    <!-- Main trajectory line -->
+    <path d="M 26 81 Q 100 10, 180 26 T 300 81 Q 380 95, 466 61" class="stroke-primary" stroke-width="1" fill="none" stroke-dasharray="3,2" opacity="0.6">
+    </path>
+
+    <!-- Secondary "imperfect" zigzag trajectory line -->
+    <path d="M 40 110 L 80 40 L 120 100 L 160 10 L 200 90 L 240 20 L 280 105 L 320 30 L 360 95 L 400 15 L 440 80" class="stroke-secondary" stroke-width="1" fill="none" stroke-dasharray="1,4" opacity="0.4">
+    </path>
+  </svg>
+</figure>

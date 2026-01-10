@@ -26,10 +26,18 @@ DOMAINS: dict[str, DomainConfig] = {
     "potaunoir": DomainConfig(
         name="Pot Au Noir",
         name_html="<span>Pot <span class='text-base-content/50' style='font-weight:300 !important;'>Au</span> Noir</span>",
-        hosts=["pot-au-noir.fr", "pot-au-noir.com", "localhost", "127.0.0.1", "*"],
+        hosts=["pot-au-noir.fr", "pot-au-noir.com"],
         logo="/static/trames/potaunoir/logo-1.png",
         theme="pan-light",
         slug="pot-au-noir",
+    ),
+    "mathspm": DomainConfig(
+        name="Maths.pm",
+        name_html="<span>Maths.pm</span>",
+        hosts=["localhost", "127.0.0.1", "*"],
+        logo=None,
+        theme="anchor",
+        slug="maths.pm",
     ),
     # "alidade": DomainConfig(
     #     name="Alidade",

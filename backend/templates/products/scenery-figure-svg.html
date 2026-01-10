@@ -1,0 +1,53 @@
+<figure class="m-0 p-0 rounded-none w-full h-full block">
+  <svg viewBox="0 0 500 120"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-0">
+    <!-- Scenery: Abstract testing layers visualization -->
+
+    <!-- Orchestrator layer above -->
+    {# <rect x="195" y="8" width="110" height="26" rx="2" class="stroke-base-300" stroke-width="2" opacity="0.9" /> #}
+    {# <rect x="195" y="8" width="110" height="26" rx="2" class="fill-base-300" stroke-width="2" opacity="0.4" /> #}
+
+    <!-- Circles inside orchestrator (primary, secondary, accent) -->
+    <circle cx="200" cy="11" r="10" stroke-width="2" class="stroke-primary" opacity="1" />
+    <circle cx="250" cy="11" r="10" stroke-width="2" class="stroke-secondary" opacity="1" />
+    <circle cx="300" cy="11" r="10" stroke-width="2" class="stroke-accent" opacity="1" />
+
+    <!-- Dashed lines from orchestrator circles to intermediary square -->
+    <path d="M 205 20 L 246 45" class="stroke-primary" stroke-width="1.5" opacity="0.5" stroke-dasharray="3,3" />
+    <path d="M 250 20 L 250 45" class="stroke-secondary" stroke-width="1.5" opacity="0.5" stroke-dasharray="3,3" />
+    <path d="M 295 20 L 254 45" class="stroke-accent" stroke-width="1.5" opacity="0.5" stroke-dasharray="3,3" />
+
+    <!-- Intermediary square (centered) -->
+    {# <rect x="245" y="49" width="10" height="10" rx="1" class="stroke-base-content" fill="none" stroke-width="2" opacity="0.6" /> #}
+    {# <rect x="245" y="49" width="10" height="10" rx="1" class="fill-base-content" opacity="0.6" /> #}
+
+
+    <!-- Dashed lines from intermediary square to stages -->
+    <path d="M 246 53 L 150 87" class="stroke-primary" stroke-width="2" opacity="0.6" stroke-dasharray="4,4" />
+    <path d="M 250 53 L 250 87" class="stroke-secondary" stroke-width="2" opacity="0.6" stroke-dasharray="4,4" />
+    <path d="M 254 53 L 350 87" class="stroke-accent" stroke-width="2" opacity="0.6" stroke-dasharray="4,4" />
+
+    <!-- Background layer (test environment) -->
+    <rect x="50" y="77" width="400" height="43" rx="2" class="fill-base-200" opacity="0.3" />
+
+    <!-- Test stages as abstract planes - all equal size -->
+    <!-- Stage 1: Setup -->
+    <rect x="70" y="87" width="80" height="35" rx="1" class="stroke-primary" fill="none" stroke-width="4" />
+    <rect x="80" y="94" width="60" height="21" rx="1" class="fill-primary" stroke="none" opacity="0.7" />
+
+    <!-- Stage 2: Action -->
+    <rect x="210" y="87" width="80" height="35" rx="1" class="stroke-secondary" fill="none" stroke-width="4" />
+    <rect x="220" y="94" width="60" height="21" rx="1" class="fill-secondary" stroke="none" opacity="0.4" />
+
+    <!-- Stage 3: Assert -->
+    <rect x="350" y="87" width="80" height="35" rx="1" class="stroke-accent" fill="none" stroke-width="4" />
+    <rect x="360" y="94" width="60" height="21" rx="1" class="fill-accent" stroke="none" opacity="0.4" />
+
+
+    <circle cx="250" cy="49" r="8" class="fill-base-300 stroke-base-content" stroke-width="2" opacity="1" />
+
+  </svg>
+</figure>

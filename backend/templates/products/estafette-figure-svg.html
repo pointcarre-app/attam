@@ -1,0 +1,66 @@
+<figure class="m-0 p-0 rounded-none w-full h-full block">
+  <svg viewBox="0 0 500 120"
+       width="100%"
+       height="100%"
+       xmlns="http://www.w3.org/2000/svg"
+       class="block m-0 p-0">
+    <!-- Estafette: Relay messenger visualization -->
+
+    <!-- Define the motion path -->
+    <defs>
+    <path id="messagePath" d="M 60 60 Q 120 40, 180 60 Q 240 40, 300 60 Q 360 40, 420 60" />
+    </defs>
+
+    <!-- Connection paths (drawn first to appear behind) -->
+    <path d="M 60 60 Q 120 40, 180 60" class="stroke-primary" stroke-width="2" fill="none" stroke-dasharray="5,3" opacity="0.4" />
+    <path d="M 180 60 Q 240 40, 300 60" class="stroke-secondary" stroke-width="2" fill="none" stroke-dasharray="5,3" opacity="0.4" />
+    <path d="M 300 60 Q 360 40, 420 60" class="stroke-accent" stroke-width="2" fill="none" stroke-dasharray="5,3" opacity="0.4" />
+
+    <!-- Service nodes (representing OVH, Scaleway, etc.) -->
+    <!-- Node 1 -->
+    <circle cx="60" cy="60" r="15" class="fill-base-200 stroke-primary" stroke-width="2" />
+    <circle cx="60" cy="60" r="8" class="fill-primary" />
+
+    <!-- Node 2 -->
+    <circle cx="180" cy="60" r="15" class="fill-base-200 stroke-secondary" stroke-width="2" />
+    <rect x="172" y="52" width="16" height="16" rx="2" class="fill-secondary" />
+
+    <!-- Node 3 -->
+    <circle cx="300" cy="60" r="15" class="fill-base-200 stroke-accent" stroke-width="2" />
+    <polygon points="300,52 308,68 292,68" class="fill-accent" />
+
+    <!-- Node 4 -->
+    <circle cx="420" cy="60" r="15" class="fill-base-200 stroke-base-content" stroke-width="2" />
+    <rect x="412" y="52" width="16" height="16" rx="6" class="fill-base-content" />
+
+    <!-- Single animated message envelope traveling along the path -->
+    <g opacity="0">
+    <!-- Message envelope shape with better centering -->
+    <g transform="translate(-8, -6)">
+    <rect x="0" y="0" width="16" height="12" rx="2" class="fill-primary stroke-primary" stroke-width="1">
+    </rect>
+    <!-- Envelope flap detail -->
+    <path d="M 0 2 L 8 7 L 16 2" class="stroke-primary" stroke-width="0.8" fill="none"></path>
+    </g>
+
+    <!-- Motion along the path -->
+    <animateMotion dur="3s" repeatCount="indefinite" rotate="auto">
+    <mpath href="#messagePath" />
+    </animateMotion>
+    <!-- Fade in at start to hide initial position -->
+    <animate attributeName="opacity" values="0;1;1;1;1;1;1;1" dur="3s" repeatCount="indefinite" />
+    </g>
+
+    <!-- Speed lines that follow the message -->
+    <g opacity="0">
+    <line x1="-25" y1="-2" x2="-15" y2="-2" class="stroke-base-content" stroke-width="1" opacity="0.5" />
+    <line x1="-25" y1="0" x2="-12" y2="0" class="stroke-base-content" stroke-width="1.5" opacity="0.7" />
+    <line x1="-25" y1="2" x2="-15" y2="2" class="stroke-base-content" stroke-width="1" opacity="0.5" />
+
+    <animateMotion dur="3s" repeatCount="indefinite" rotate="auto">
+    <mpath href="#messagePath" />
+    </animateMotion>
+    <animate attributeName="opacity" values="0;0.8;0.8;0.8;0.8;0.8;0.8;0" dur="3s" repeatCount="indefinite" />
+    </g>
+  </svg>
+</figure>
